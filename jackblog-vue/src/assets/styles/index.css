@@ -1,0 +1,77 @@
+/*自定义css*/
+.vue-toast-manager_container.\--top {
+  top: 45px;
+}
+.navbar-box {
+  width: 100%;
+  height: 61px;
+}
+.navbar-skin {
+  background:#f0f0f0;
+}
+.navbar-menu {
+  margin-left: 15%;
+  height: 100%;
+}
+.navbar-menu a.navtitle{
+  display: block;
+  margin: 0 auto;
+  text-align: center;
+  padding: 10px;
+  float: left;
+  width: 140px;
+  background-color: #f0f0f0;
+  font-size: 24px;
+}
+.navbar-menu a.navbar-item {
+  float: right;
+  width: 10%;
+  background-color: #f0f0f0;
+  margin-top:15px;
+  padding-bottom: 0;
+}
+.navbar-menu a.navbar-item-expand {
+  float: right;
+  width: 5%;
+  background-color: #f0f0f0;
+  margin-top:25px;
+  padding-bottom: 0;
+}
+.navbar-menu .active {
+  background-color: #f0f0f0;
+  color: black;
+  text-shadow: 0 1px 0 #f0f0f0;
+}
+.navbar-menu a.navbar-item:hover {
+  background-color: #f0f0f0;
+  color: #e78170;
+}
+.navbar-expanded {
+  margin-left: 25%;
+}
+.sidebar-box{
+  top: 61px;
+  left: 0;
+  height: 100%
+}
+.main-box {
+  margin-top: 61px;
+  padding-left: 0px;
+  text-align: center;
+}
+.main-box .row{
+  text-align: center;
+  min-height: 600px;
+}
+.main-content{
+  width:70%;
+  margin-left:15%;
+  margin-right:15%;
+}
+footer{
+  padding: 10px 0 10px 0;
+  text-align: center;
+}
+.footer-container{
+  padding-left:0;
+}

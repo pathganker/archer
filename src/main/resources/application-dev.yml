@@ -1,0 +1,24 @@
+spring:
+  datasource:
+      driverClassName: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://127.0.0.1:3306/manage?useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+      username: root
+      password: root1010@mysql
+  redis:
+    database: 0
+    host: 192.168.246.128
+    port: 6379
+    password: redis@1010
+    timeout: 1000
+    jedis:
+      pool:
+        max-active: 8
+        max-idle: 8
+        max-wait: -1
+        min-idle:  0
+
+
+        
+        
+          
+      
