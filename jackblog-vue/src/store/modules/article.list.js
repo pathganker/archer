@@ -16,7 +16,8 @@ const actions = {
   getArticleList({ commit }, {options, isAdd=false}){
     commit(REQUEST_ARTICLE_LIST)
     api.getFrontArticleList(options).then(response => {
-      if(!response.ok){
+      console.log(response)
+      if(response.status!=200){
         return commit(GET_ARTICLE_LIST_FAILURE)
       }
       const json = response.data

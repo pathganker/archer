@@ -1,7 +1,7 @@
 {
-  "name": "jackblog-vue",
-  "version": "2.3.0",
-  "description": "Jackblog vue 版",
+  "name": "qingblog-vue",
+  "version": "1.0.0",
+  "description": "QingBlog",
   "scripts": {
     "start": "npm-run-all --sequential build start:dist",
     "dev": "webpack-dev-server --open --progress --profile --watch",
@@ -11,24 +11,8 @@
     "clean": "rimraf dist",
     "pm2-start": "pm2 start --no-daemon process.json"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/jackhutu/jackblog-vue.git"
-  },
-  "keywords": [
-    "vue",
-    "vue2",
-    "vuex",
-    "jackblog",
-    "webpack3"
-  ],
-  "author": "Jack Hu",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/jackhutu/jackblog-vue/issues"
-  },
-  "homepage": "https://github.com/jackhutu/jackblog-vue#readme",
   "devDependencies": {
+    "axios": "0.16.2",
     "babel-core": "6.26.0",
     "babel-eslint": "^8.0.0",
     "babel-loader": "7.1.2",
@@ -75,8 +59,6 @@
     "webpack-dev-server": "^2.8.2"
   },
   "dependencies": {
-    "express": "4.15.4",
-    "npm": "^6.8.0",
-    "serve-favicon": "^2.4.4"
+    "npm": "^6.8.0"
   }
 }

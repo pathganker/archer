@@ -57,7 +57,7 @@ public class CorsFilter implements Filter{
         res.addHeader("Access-Control-Allow-Methods", "GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS, TRACES");
         res.addHeader("Access-Control-Max-Age", "3600");
         res.addHeader("Access-Control-Allow-Credentials", "true");
-    //    res.addHeader("Access-Control-Allow-Headers", "Auth-Token, Auth-Device");
+        res.addHeader("Access-Control-Allow-Headers", "content-type");
         chain.doFilter(request, response);
 	}
 

@@ -1,5 +1,4 @@
 import {UserResource,AuthResource,ArticleResource,TagResource,MobileResource,CommentResource} from './resources'
-import fetch from '../utils/fetch'
 export default {
   localLogin: function (data) {
     return AuthResource.save({id:'local'},data)
@@ -24,11 +23,7 @@ export default {
     return ArticleResource.get({id:'getIndexImage'})
   },
   getFrontArticleList:function (options) {
-    return fetch({
-      url: 'article/getFrontArticleList',
-      method: 'get',
-      param: options
-    })
+    return ArticleResource.get({id: 'getFrontArticleList', ...options})
   },
   getFrontArticleCount:function () {
     return ArticleResource.get({id: 'getFrontArticleCount'})

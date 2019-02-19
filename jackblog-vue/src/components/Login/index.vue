@@ -4,7 +4,7 @@
     <div class="signin-container">
       <h4 class="title">登 录</h4>
       <div id="signinForm">
-        <form class="signin-form form-horizontal" @submit.prevent="login()" novalidate>
+        <form class="signin-form form-horizontal" @submit.prevent="login()">
           <div class="form-group">
             <div class="input-group">
               <div class="input-group-addon">
@@ -63,8 +63,8 @@ export default {
   data() {
     return {
       user: {
-        email: '',
-        password: '',
+        email: 'zankokutenshi@yeah.net',
+        password: '123456',
         captcha: ''
       }
     }
@@ -77,15 +77,18 @@ export default {
     ...mapActions([
       'getSnsLogins',
       'getCaptchaUrl',
-      'localLogin'
     ]),
-    login() {  
+    login() {
       this.$validator.validateAll().then(result => {
         if(result){
           this.localLogin(this.user)
+        }else{
+          //this.showMsg(result,)
+          this.$Message.error("填写正确的用户名或密码")
         }
-      }).catch(() => {
+      }).catch((error) => {
         //提示错误
+        alert(error)
       })
     }
   }
