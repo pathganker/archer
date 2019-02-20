@@ -14,7 +14,7 @@ const state = {
 
 const actions = {
   getArticleList({ commit }, {options, isAdd=false}){
-    commit(REQUEST_ARTICLE_LIST)
+    //commit(REQUEST_ARTICLE_LIST)
     api.getFrontArticleList(options).then(response => {
       console.log(response)
       if(response.status!=200){

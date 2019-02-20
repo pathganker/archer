@@ -2,7 +2,7 @@
 		<div class="navbar-box navbar-skin">
 		  <div class="navbar-menu">
       		<router-link :to="{ path: '/' }" class="navtitle " :class="{'active':$route.name !== 'apps'}" title="首页">
-						青青子衿
+						青团子
 					</router-link>
       		<!-- <router-link :to="{ path: '/apps',activeClass: 'active'}" class="navbar-item mobile" active-class="active" title="移动应用">
 						<i class="fa fa-mobile"></i>

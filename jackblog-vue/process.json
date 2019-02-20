@@ -2,7 +2,6 @@
 	"apps" : [
     {
       "name"              : "jackblog-vue",
-      "script"            : "./server.js",
       "log_date_format"   : "YYYY-MM-DD HH:mm Z",
       "out_file"          : "./logs/pm2-out.log",
       "error_file"        : "./logs/pm2-err.log",
