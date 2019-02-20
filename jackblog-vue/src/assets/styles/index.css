@@ -13,6 +13,45 @@
   margin-left: 15%;
   height: 100%;
 }
+@media (max-width: 767px) {
+  .day-mode .navbar-skin {
+    background-color: #f0f0f0;
+    -moz-box-shadow: 0 1px 4px #eee;
+    -webkit-box-shadow: 0 1px 4px #eee;
+    box-shadow: 0 1px 4px #eee;
+  }
+  .day-mode .navbar-skin .dropdown-menu {
+    background-color: white;
+  }
+  .day-mode .navbar-skin a.shrink-avatar:hover img {
+    border-color: #f49484;
+  }
+  .day-mode .navbar-skin a.shrink-avatar:after {
+    border-top: 4px solid black;
+  }
+  .day-mode .navbar-item-expand{
+    display: none;
+  }
+}
+@media (max-width: 767px) {
+  .navbar-menu a.navbar-item {
+    margin: 0px 0px 0px 0px;
+  }
+  .night-mode .navbar-menu a.navtitle{
+    background: #3f3f3f;
+    color: gray;
+  }
+  .night-mode .navbar-menu a.navbar-item{
+    background: #3f3f3f;
+  }
+  .night-mode .navbar-menu a.navbar-item:hover{
+    background: black;
+    color:white;
+  }
+  .night-mode .navbar-item-expand{
+    display: none;
+  }
+}
 .navbar-menu a.navtitle{
   display: block;
   margin: 0 auto;
@@ -20,15 +59,17 @@
   padding: 10px;
   float: left;
   width: 140px;
-  background-color: #f0f0f0;
+  height: 100%;
+  background: #f0f0f0;
   font-size: 24px;
 }
+
 .navbar-menu a.navbar-item {
   float: right;
   width: 10%;
+  height: 50%;
   background-color: #f0f0f0;
-  margin-top:15px;
-  padding-bottom: 0;
+  margin: 20px 0px 10px 0px;
 }
 .navbar-menu a.navbar-item-expand {
   float: right;
@@ -42,6 +83,7 @@
   color: black;
   text-shadow: 0 1px 0 #f0f0f0;
 }
+
 .navbar-menu a.navbar-item:hover {
   background-color: #f0f0f0;
   color: #e78170;

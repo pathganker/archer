@@ -1,27 +1,40 @@
-import {UserResource,AuthResource,ArticleResource,TagResource,MobileResource,CommentResource} from './resources'
 import fetch from '../utils/fetch'
 export default {
   localLogin: function (data) {
-    return AuthResource.save({id:'local'},data)
+    return fetch({
+      
+    })
   },
   getSnsLogins: function () {
-    return UserResource.get({id:'snsLogins'})
+    return fetch({
+
+    })
   },
   getMe: function () {
-    return UserResource.get({id:'me'})
+    return fetch({
+      
+    })
   },
   mdUser: function (data) {
-    return UserResource.update({id:'mdUser'},data)
+    return fetch({
+      
+    })
   },
   getTagList:function () {
-    return TagResource.get({id: 'getFrontTagList'})
+    return fetch({
+      
+    })
   },
   getApps:function () {
-    return MobileResource.get({id: 'getApps'})
+    return fetch({
+      
+    })
   },
   //article
   getIndexImage:function () {
-    return ArticleResource.get({id:'getIndexImage'})
+    return fetch({
+      
+    })
   },
   getFrontArticleList:function (options) {
     return fetch({
@@ -31,31 +44,49 @@ export default {
     })
   },
   getFrontArticleCount:function () {
-    return ArticleResource.get({id: 'getFrontArticleCount'})
+    return fetch({
+      
+    })
   },
   getFrontArticle:function (id) {
-    return ArticleResource.get({id: id, controller: 'getFrontArticle'})
+    return fetch({
+      
+    })
   },
   toggleLike:function (id) {
-    return ArticleResource.update({id:id,controller:'toggleLike'},{})
+    return fetch({
+      
+    })
   },
   getPrenext:function (id,options) {
-    return ArticleResource.get({id:id,controller: 'getPrenext', ...options})
+    return fetch({
+      
+    })
   },
   //comment
   getFrontCommentList:function (id) {
-    return CommentResource.get({id:id,controller: 'getFrontCommentList'})
+    return fetch({
+      
+    })
   },
   addNewComment:function (data) {
-    return CommentResource.save({id:'addNewComment'},data)
+    return fetch({
+      
+    })
   },
   addNewReply: function (id,data) {
-    return CommentResource.save({id:id, controller:'addNewReply'},data)
+    return fetch({
+      
+    })
   },
   delComment:function (id) {
-    return CommentResource.remove({id:id})
+    return fetch({
+      
+    })
   },
   delReply: function (id,data) {
-    return CommentResource.update({id:id, controller:'delReply'},data)
+    return fetch({
+      
+    })
   }
 }
