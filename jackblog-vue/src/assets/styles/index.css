@@ -11,12 +11,26 @@
 }
 .navbar-menu {
   height: 100%;
+  width: 100%;
+  padding: 0px 10px 0px 10px;
+  min-width: 356px;
 }
 @media (max-width: 767px) {
+  .day-mode .navbar-menu{
+    float: left;
+    height: 100%;
+  }
+  .day-mode .navbar-menu .navbar-items {
+    margin: 0px 0px 0px 0px;
+    height: 100%;
+  }
   .day-mode .navbar-menu a.navbar-item {
     height: 100%;
     width: 40px;
     margin: 0px 0px 0px 0px;
+  }
+  .day-mode .navbar-menu a.navtitle{
+    margin-left: 0px;
   }
   .day-mode .navbar-skin {
     background-color: #f0f0f0;
@@ -38,18 +52,21 @@
   }
 }
 @media (max-width: 767px) {
-  .night-mode .navbar-menu a.navbar-item {
-    height: 100%;
-    width: 40px;
+  .night-mode .navbar-menu .navbar-items {
     margin: 0px 0px 0px 0px;
+    height: 100%;
   }
   .night-mode .navbar-menu a.navtitle{
-    left: 10px;
+    margin-left: 0px;
     background: #3f3f3f;
     color: gray;
   }
   .night-mode .navbar-menu a.navbar-item{
     background: #3f3f3f;
+    height: 100%;
+    width: 40px;
+    margin: 0px 0px 0px 0px;
+    
   }
   .night-mode .navbar-menu a.navbar-item:hover{
     background: black;
@@ -60,31 +77,35 @@
   }
 }
 .navbar-menu a.navtitle{
-  margin-top: 10px;
-  margin-left: 10%;
   display: block;
-  text-align: center;
+  text-align: left;
   padding: 10px;
   float: left;
-  width: 140px;
+  margin-left: 10%;
+  width: 100px;
   height: 50%;
   background: #f0f0f0;
   font-size: 24px;
 }
-
-.navbar-menu a.navbar-item {
+.navbar-menu .navbar-items{
   float: right;
-  width: 10%;
+  height: 100%;
+  margin: 0px 0px 0px 0px;
+}
+.navbar-menu a.navbar-item {
+  float: left;
+  width: 100px;
   height: 50%;
   background-color: #f0f0f0;
-  margin: 20px 0px 10px 0px;
+  margin: 25px 0px 0px 0px;
+  
 }
 .navbar-menu a.navbar-item-expand {
-  float: right;
-  width: 5%;
+  float: left;
+  width: 40px;
+  text-align: center;
+  margin: 35px 0px 0px 0px;
   background-color: #f0f0f0;
-  margin: 30px 0px 10px 0px;
-  padding-bottom: 0;
 }
 .navbar-menu .active {
   background-color: #f0f0f0;
@@ -99,6 +120,10 @@
 .navbar-expanded {
   margin-left: 25%;
 }
+.navbar-shrink {
+  float: left;
+  width: 40px;
+}
 .sidebar-box{
   top: 61px;
   left: 0;
@@ -108,6 +133,7 @@
   margin-top: 61px;
   padding-left: 0px;
   text-align: center;
+  min-width: 356px;
 }
 .main-box .row{
   text-align: center;
