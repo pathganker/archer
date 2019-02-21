@@ -4,24 +4,24 @@
     <div class="signin-container">
       <h4 class="title">登 录</h4>
       <div id="signinForm">
-        <form class="signin-form form-horizontal" @submit.prevent="login()">
+        <form class="signin-form form-horizontal" ref="signinForm" :model="siginForm" :rules="siginRules">
           <div class="form-group">
             <div class="input-group">
               <div class="input-group-addon">
                 <i class="fa fa-envelope-o"></i>
               </div>
-              <input type="text" name="email" v-model="user.email" v-validate="'required|email|min:3'" data-vv-delay="100" class="form-control" placeholder="邮箱"></input>
+              <input type="text" name="username" v-model="siginForm.username" data-vv-delay="100" class="form-control" placeholder="邮箱"></input>
             </div>
           </div>
           <div class="form-group">
             <div class="input-group">
               <div class="input-group-addon"><i class="fa fa-unlock-alt"></i></div>
-              <input type="password" name="password" v-model="user.password" v-validate="'required|min:5'" class="form-control" placeholder="密码"></input>
+              <input type="password" name="password" v-model="siginForm.password" class="form-control" placeholder="密码"></input>
             </div>
           </div>
           <div class="form-group">
             <div class="col-xs-6 captcha-code">
-              <input type="text" name="captcha" v-model="user.captcha" v-validate="'required|min:5|max:6'" maxlength="6" class="form-control" placeholder="验证码"></input>
+              <input type="text" name="captcha" v-model="siginForm.captcha" maxlength="6" class="form-control" placeholder="验证码"></input>
             </div>
             <div class="col-xs-6 captcha-img">
               <a href="javascript:;" @click.prevent="getCaptchaUrl()">
@@ -31,7 +31,7 @@
   
           </div>
           <div class="form-group">
-            <button class="btn btn-primary btn-lg btn-block" type="submit" id="signin_btn">登 录</button>
+            <button class="btn btn-primary btn-lg btn-block" @click.prevent="login('siginForm')" id="signin_btn">登 录</button>
           </div>
         </form>
       </div>
@@ -48,7 +48,7 @@
 import { Validator } from 'vee-validate'
 import snsloginbtns from './snsLogin'
 import { mapState, mapActions } from 'vuex'
-
+import {validateEmail} from '../../utils/validate'
 export default {
   components: {
     snsloginbtns
@@ -61,11 +61,30 @@ export default {
     })
   },
   data() {
+    const validateUsername = (rule, value, callback) => {
+      callback( this.showMsg("请输入符合格式的用户名",'error'));
+      if (!validateEmail(value)) {
+        
+      } else {
+        callback();
+      }
+    }
+    const validateCaptcha = (rule, value, callback) => {
+       callback();
+    }
     return {
-      user: {
-        email: 'zankokutenshi@yeah.net',
+      siginForm: {
+        username: 'zankokutenshi@yeah.net',
         password: '123456',
         captcha: ''
+      },
+      siginRules:{
+        username: [
+            { required: true, trigger: 'blur', validator: validateUsername }
+        ],
+        captcha: [
+            { required: true, trigger: 'blur', validator: validateCaptcha }
+        ]
       }
     }
   },
@@ -77,19 +96,16 @@ export default {
     ...mapActions([
       'getSnsLogins',
       'getCaptchaUrl',
+      'localLogin',
+      'showMsg'
     ]),
     login() {
-      this.$validator.validateAll().then(result => {
-        if(result){
-          this.localLogin(this.user)
-        }else{
-          //this.showMsg(result,)
-          this.$Message.error("填写正确的用户名或密码")
-        }
-      }).catch((error) => {
-        //提示错误
-        alert(error)
-      })
+      // this.$refs.siginForm.validate(valid => {
+      //   if(valid){
+      //     this.showMsg("SUCCESS",'info');
+      //   }
+      // })
+
     }
   }
 }
