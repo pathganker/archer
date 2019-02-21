@@ -6,11 +6,8 @@
 import VueToast from 'vue-toast'
 import { mapState,mapActions } from 'vuex'
 
-
 export default {
-  components: { 
-    VueToast
-  },
+  components: { VueToast },
   computed: {
     ...mapState({
       msg: ({showmsg}) => showmsg.message 
@@ -32,14 +29,13 @@ export default {
       'showMsg',
       'hideMsg'
     ]),     
-    showToastr(content,type='error',position='left bottom'){
+    showToastr(content,type='error',position='top right'){
       const toast = this.$refs.toast
-      toast.setOptions({ maxToasts:2, position:position})
+      toast.setOptions({ maxToasts:3, position: position })
       toast.showToast(content, {
-        position:  position,
         theme: type,
         timeLife: 2000,
-        closeBtn: true
+        closeBtn: false
       })
     }
   }

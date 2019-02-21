@@ -11,7 +11,7 @@
 	      </a>
 	    </li>
 	    <li>
-	      <a class="weibo" href="https://weibo.com/2459209222" target="_blank">
+	      <a class="weibo" href="https://weibo.com/u/2459209222" target="_blank">
 	        <i class="fa fa-weibo"></i>
 	      </a>
 	    </li>

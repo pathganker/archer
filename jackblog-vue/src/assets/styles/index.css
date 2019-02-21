@@ -12,14 +12,13 @@
 .navbar-menu {
   height: 100%;
   width: 100%;
-  padding: 0px 10% 0px 10%;
+  padding: 0px 10px 0px 10px;
   min-width: 356px;
 }
 @media (max-width: 767px) {
   .day-mode .navbar-menu{
     float: left;
     height: 100%;
-    padding: 0px 1% 0px 2%;
   }
   .day-mode .navbar-menu .navbar-items {
     margin: 0px 0px 0px 0px;
@@ -82,7 +81,7 @@
   text-align: left;
   padding: 10px;
   float: left;
-  margin: 10px 0px 0px 0px;
+  margin-left: 10%;
   width: 100px;
   height: 50%;
   background: #f0f0f0;
@@ -116,7 +115,7 @@
 
 .navbar-menu a.navbar-item:hover {
   background-color: #f0f0f0;
-  color: #3b6cf3;
+  color: #e78170;
 }
 .navbar-expanded {
   margin-left: 25%;
@@ -138,43 +137,17 @@
 }
 .main-box .row{
   text-align: center;
-  min-height: 100px;
+  min-height: 600px;
 }
 .main-content{
-  margin-left:10%;
-  margin-right:25%;
+  width:70%;
+  margin-left:15%;
+  margin-right:15%;
 }
 footer{
-  margin-left: 10%;
-  margin-right: 20%;
-  margin-top: 40px;
-  padding: 10px 10px 10px 10px;
+  padding: 10px 0 10px 0;
   text-align: center;
-  height: 80px;
 }
 .footer-container{
-  
   padding-left:0;
-}
-.main-content .load-more {
-  margin-bottom: 0;
-}
-.main-content .load-more .ladda-button {
-  background: gray;
-  width: 300px;
-  height: 40px;
-  border-radius: 20px;
-  padding: 0px 0px 0px 0px;
-  outline: none;
-}
-
-.day-mode .sort-tags .active {
-  color: white;
-  border-color: #3b6cf3;
-  background-color: #3b6cf3;
-}
-.day-mode .sort-tags a:hover {
-  color: white;
-  border-color: #3b6cf3;
-  background-color: #3b6cf3;
 }

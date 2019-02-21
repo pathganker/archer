@@ -1,5 +1,5 @@
 <template>
-<div>
+  <div>
     <div class="container-fluid main-box">
       <div class="row">
         <!-- <Sidebar :index-img="indexImg"></Sidebar> -->
@@ -11,7 +11,7 @@
       </div>
     </div>
     <Footerbar></Footerbar>
-    </div>
+  </div>
 </template>
 <script>
 import Sidebar from './sidebar.vue'

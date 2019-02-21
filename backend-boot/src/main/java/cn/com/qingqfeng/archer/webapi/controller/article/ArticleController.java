@@ -64,17 +64,7 @@ public class ArticleController {
 		article_3.setCommentCount(9999999);
 		article_3.setTitle("我是一个恶人，我莫得感情");
 		article_3.setPublishTime(new Date());
-		for (int i =0 ;i<10;i++){
-			ArticleDTO article = new ArticleDTO();
-			article.setId(UUID.randomUUID().toString());
-			article.setImages(images);
-			article.setLikeCount(100000);
-			article.setVisitCount(1000000);
-			article.setCommentCount(9999999);
-			article.setTitle("我是一个恶人，我莫得感情");
-			article.setPublishTime(new Date());
-			test.add(article);
-		}
+		
 		test.add(article_1);
 		test.add(article_2);
 		test.add(article_3);
