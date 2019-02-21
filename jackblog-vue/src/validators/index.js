@@ -1,17 +1,26 @@
 import Vue from 'vue'
 import VeeValidate from 'vee-validate'
 import { Validator } from 'vee-validate'
+import zh from 'vee-validate/dist/locale/zh_CN'
 
+Validator.addLocale(zh)
 Validator.extend('nickname', {
   getMessage: field => '请输入正确的呢称(2-15字符，中英文、数字和下划线)',
   validate: value => /^[(\u4e00-\u9fa5)0-9a-zA-Z\_\s@]+$/.test(value)
 })
-
+Validator.extend('username', {
+  messages: {
+    zh_CN:field => field + '请输入正确的邮箱地址',
+  },
+  validate: value => {
+    return  /^[a-z0-9](?:[-_.+]?[a-z0-9]+)*@saber\.org$/.test(value)
+  }
+})
 const config = {
   errorBagName: 'errors', // change if property conflicts.
   fieldsBagName: 'fields', 
   delay: 0, 
-  locale: 'en', 
+  locale: 'zh_CN', 
   dictionary: null, 
   strict: true, 
   enableAutoClasses: true,

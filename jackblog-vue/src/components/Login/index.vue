@@ -4,24 +4,24 @@
     <div class="signin-container">
       <h4 class="title">登 录</h4>
       <div id="signinForm">
-        <form class="signin-form form-horizontal" ref="signinForm" :model="siginForm" :rules="siginRules">
+        <form class="signin-form form-horizontal">
           <div class="form-group">
             <div class="input-group">
               <div class="input-group-addon">
                 <i class="fa fa-envelope-o"></i>
               </div>
-              <input type="text" name="username" v-model="siginForm.username" data-vv-delay="100" class="form-control" placeholder="邮箱"></input>
+              <input type="text" name="username" v-model="siginForm.username" v-validate="'required|username|min:3'" data-vv-delay="100" class="form-control" placeholder="邮箱"></input>
             </div>
           </div>
           <div class="form-group">
             <div class="input-group">
               <div class="input-group-addon"><i class="fa fa-unlock-alt"></i></div>
-              <input type="password" name="password" v-model="siginForm.password" class="form-control" placeholder="密码"></input>
+              <input type="password" name="password" v-model="siginForm.password" v-validate="'required|min:5|max:6'" class="form-control" placeholder="密码"></input>
             </div>
           </div>
           <div class="form-group">
             <div class="col-xs-6 captcha-code">
-              <input type="text" name="captcha" v-model="siginForm.captcha" maxlength="6" class="form-control" placeholder="验证码"></input>
+              <input type="text" name="captcha" v-model="siginForm.captcha" maxlength="6" v-validate="'required|min:4'" class="form-control" placeholder="验证码"></input>
             </div>
             <div class="col-xs-6 captcha-img">
               <a href="javascript:;" @click.prevent="getCaptchaUrl()">
@@ -48,7 +48,6 @@
 import { Validator } from 'vee-validate'
 import snsloginbtns from './snsLogin'
 import { mapState, mapActions } from 'vuex'
-import {validateEmail} from '../../utils/validate'
 export default {
   components: {
     snsloginbtns
@@ -61,30 +60,11 @@ export default {
     })
   },
   data() {
-    const validateUsername = (rule, value, callback) => {
-      callback( this.showMsg("请输入符合格式的用户名",'error'));
-      if (!validateEmail(value)) {
-        
-      } else {
-        callback();
-      }
-    }
-    const validateCaptcha = (rule, value, callback) => {
-       callback();
-    }
     return {
       siginForm: {
         username: 'zankokutenshi@yeah.net',
         password: '123456',
-        captcha: ''
-      },
-      siginRules:{
-        username: [
-            { required: true, trigger: 'blur', validator: validateUsername }
-        ],
-        captcha: [
-            { required: true, trigger: 'blur', validator: validateCaptcha }
-        ]
+        captcha: '3241'
       }
     }
   },
