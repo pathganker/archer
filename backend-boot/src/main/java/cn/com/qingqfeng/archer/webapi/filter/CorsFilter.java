@@ -56,8 +56,8 @@ public class CorsFilter implements Filter{
         res.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");
         res.addHeader("Access-Control-Allow-Methods", "GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS, TRACES");
         res.addHeader("Access-Control-Max-Age", "3600");
-        res.addHeader("Access-Control-Allow-Credentials", "true");
         res.addHeader("Access-Control-Allow-Headers", "content-type");
+        res.addHeader("Access-Control-Allow-Credentials", "true");
         chain.doFilter(request, response);
 	}
 
