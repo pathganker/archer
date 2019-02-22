@@ -1,8 +1,11 @@
 import fetch from '../utils/fetch'
 export default {
   localLogin: function (data) {
+    console.log(data)
     return fetch({
-      
+      url: 'users/login',
+      method: 'post',
+      data: data
     })
   },
   getSnsLogins: function () {
@@ -40,7 +43,7 @@ export default {
     return fetch({
       url: 'article/getFrontArticleList',
       method: 'get',
-      param: options
+      params: options
     })
   },
   getFrontArticleCount:function () {
@@ -87,6 +90,15 @@ export default {
   delReply: function (id,data) {
     return fetch({
       
+    })
+  },
+  checkCaptch: function (data) {
+    return fetch({
+      url: 'auth/vercode',
+      method: 'get',
+      params: {
+        captcha: data
+      }
     })
   }
 }

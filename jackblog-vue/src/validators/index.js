@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VeeValidate from 'vee-validate'
 import { Validator } from 'vee-validate'
+import api from '../api'
 
 Validator.remove('required')
 Validator.extend('required',{
@@ -17,8 +18,20 @@ Validator.extend('username', {
 })
 Validator.extend('captcha', {
   getMessage: field => '验证码错误',
-  validate: value => true
+  validate: value => api.checkCaptch(value).then(response => {
+    const json=response.data
+    if(200 == json.code){
+      return true
+    }
+    if(113 == json.code){
+      return false
+    }
+  }).catch(error => {
+    console.log(error)
+  })
 })
+
+
 const config = {
   errorBagName: 'errors', // change if property conflicts.
   fieldsBagName: 'fields', 

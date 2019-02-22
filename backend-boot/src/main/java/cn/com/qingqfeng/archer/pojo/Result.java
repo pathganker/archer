@@ -22,14 +22,22 @@ public class Result implements Serializable{
 	 * @FieldsserialVersionUID
 	 */
 	private static final long serialVersionUID = 7883070263735616459L;
+	
 	/** 返回码 */
-	private String code;
+	private Integer code;
 	/** 描述 */
 	private String message;
 	/** 数据 */
 	private Object data;
 	
-	public String getCode() {
+	public Result(){
+		
+	}
+	public Result(ApiCodeEnum code, Object data){
+		this.code=code.getErrorCode();
+		this.data=data;
+	}
+	public Integer getCode() {
 		return code;
 	}
 	public void setCode(ApiCodeEnum code) {

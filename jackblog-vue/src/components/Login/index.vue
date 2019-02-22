@@ -10,7 +10,7 @@
               <div class="input-group-addon">
                 <i class="fa fa-envelope-o"></i>
               </div>
-              <input type="text" name="username" data-vv-as="用户名" v-model="siginForm.username" v-validate="'required|username'" data-vv-delay="100" class="form-control" placeholder="邮箱"></input>
+              <input type="text" name="username" data-vv-as="用户名" v-model="user.username" v-validate="'required|username'" data-vv-delay="100" class="form-control" placeholder="邮箱"></input>
             </div>
             <span class="tip-span">{{ errors.first('username') }}</span>
             <span class="tip-span">{{ errors.first('required') }}</span>
@@ -18,23 +18,23 @@
           <div class="form-group">
             <div class="input-group">
               <div class="input-group-addon"><i class="fa fa-unlock-alt"></i></div>
-              <input type="password" name="password" data-vv-as="密码" v-model="siginForm.password" v-validate="'required|password'" class="form-control" placeholder="密码"></input>
+              <input type="password" name="password" data-vv-as="密码" v-model="user.password" v-validate="'required'" class="form-control" placeholder="密码"></input>
             </div>
             <span class="tip-span">{{ errors.first('password') }}</span>
           </div>
           <div class="form-group">
             <div class="col-xs-6 captcha-code">
-              <input type="text" name="captcha" data-vv-as="验证码" v-model="siginForm.captcha" v-validate="'required|captcha|min:4'" maxlength="6" class="form-control" placeholder="验证码"></input>
+              <input type="text" name="captcha" data-vv-as="验证码"  v-validate="'required|captcha'" maxlength="6" class="form-control" placeholder="验证码"></input>
             </div>
             <div class="col-xs-6 captcha-img">
               <a href="javascript:;" @click.prevent="getCaptchaUrl()">
                 <img :src="captchaUrl"></img>
               </a>
             </div>
-          <span class="tip-span">{{ errors.first('captcha') }}</span>
+          <span class="tip-span-captcha">{{ errors.first('captcha') }}</span>
           </div>
           <div class="form-group">
-            <button class="btn btn-primary btn-lg btn-block" @click.prevent="login('siginForm')" id="signin_btn">登 录</button>
+            <button class="btn btn-primary btn-lg btn-block" @click.prevent="login(user)" id="signin_btn">登 录</button>
           </div>
         </form>
       </div>
@@ -63,10 +63,9 @@ export default {
   },
   data() {
     return {
-      siginForm: {
+      user: {
         username: 'zankokutenshi@yeah.net',
-        password: '123456',
-        captcha: '3241'
+        password: '123456'
       }
     }
   },
@@ -82,12 +81,15 @@ export default {
       'showMsg'
     ]),
     login() {
-      // this.$refs.siginForm.validate(valid => {
-      //   if(valid){
-      //     this.showMsg("SUCCESS",'info');
-      //   }
-      // })
-
+      this.$validator.validateAll().then(valid => {
+        if(valid){
+          this.localLogin(this.user)
+        }
+        else{
+          this.getCaptchaUrl()
+          this.showMsg("请填写表单",'error');
+        }
+      })
     }
   }
 }

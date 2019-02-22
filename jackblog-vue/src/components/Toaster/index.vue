@@ -39,7 +39,7 @@ export default {
         position:  position,
         theme: type,
         timeLife: 2000,
-        closeBtn: true
+        closeBtn: false
       })
     }
   }

@@ -3,9 +3,6 @@
  */
 package cn.com.qingqfeng.archer.webapi.controller.user;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,12 +10,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import cn.com.qingqfeng.archer.enumEntity.ApiCodeEnum;
 import cn.com.qingqfeng.archer.pojo.Result;
-import cn.com.qingqfeng.archer.utils.VerifyCodeUtils;
 
 /**   
  * <p> 类名：  LoginController   </p>
@@ -31,6 +29,10 @@ import cn.com.qingqfeng.archer.utils.VerifyCodeUtils;
 @RequestMapping("users")
 public class UserController {
 	
+	private final static String DEVICEID = "Auth-device";
+	/** token的前缀 组成规则  + diviceId*/
+	private final static String ARCHER_API_TOKEN_KEY_PREFIX = "archer.api.token.uid_";
+	
 	@RequestMapping("snsLogins")
 	public Result requestSnsLogins() {
 		Result result = new Result();
@@ -42,25 +44,22 @@ public class UserController {
 		return result;
 	}
 	
-	@RequestMapping("getCaptcha")
-	public void requestCaptcha(HttpServletRequest req, HttpServletResponse res) {
-		// 生成随机字串
-		String verifyCode = VerifyCodeUtils.generateVerifyCode(4);
-		// 存入会话session
+	@RequestMapping(value="login", method={RequestMethod.GET,RequestMethod.POST})
+	public Result requestCaptcha(HttpServletRequest req, HttpServletResponse res) {
+		Result rs = new Result();
+		String username = req.getParameter("username");
+		String password = req.getParameter("password");
+		String deviceId = req.getHeader(DEVICEID);
 		HttpSession session = req.getSession(true);
-		// 删除以前的
-		session.removeAttribute("verCode");
-		session.removeAttribute("codeTime");
-		session.setAttribute("verCode", verifyCode.toLowerCase());
-		session.setAttribute("codeTime", LocalDateTime.now());
-		// 生成图片
-		int w = 200, h = 40;
-		try {
-			OutputStream out = res.getOutputStream();
-			VerifyCodeUtils.outputImage(w, h, out, verifyCode);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		String token = RandomStringUtils.random(32, deviceId + System.currentTimeMillis() + ""); //生成token
+		if("zankokutenshi@yeah.net".equals(username) && "123456".equals(password)){
+			session.setAttribute("token", ARCHER_API_TOKEN_KEY_PREFIX+deviceId+token);
+			rs.setData(token);
+			rs.setCode(ApiCodeEnum.SUCCESS);
+		}else{
+			rs.setCode(ApiCodeEnum.USER_NAME_OR_PWD);
 		}
+		return rs;
 	}
+	
 }

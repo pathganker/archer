@@ -23,19 +23,19 @@ const actions = {
   },
   localLogin(store, userInfo){
     api.localLogin(userInfo).then(response => {
-      if(!response.ok){
+      const json=response.data
+      if(200!=json.code){
         getCaptchaUrl(store)
-        return showMsg(store,response.data.error_msg || '登录失败')
+        return showMsg(store,json.message || '登录失败')
       }
-      const token = response.data.token
+      const token = json.token
       saveCookie('token',token)
       store.dispatch('getUserInfo')
       store.commit(LOGIN_SUCCESS, {token: token })
       showMsg(store,'登录成功,欢迎光临!','success')
       router.push({path:'/'})
-    }, response => {
-      getCaptchaUrl(store)
-      showMsg(store,response.data.error_msg || '登录失败')
+    }).catch(error => {
+      console.log(error) 
     })
   },
   getUserInfo({ commit }){

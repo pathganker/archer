@@ -183,3 +183,10 @@ footer{
   color: red;
   padding: 10px 0px 0px 0px;
 }
+.tip-span-captcha{
+  float: left;
+  color: red;
+  padding: 10px 0px 0px 0px;
+  height: 30px;
+  width: 90px;
+}
