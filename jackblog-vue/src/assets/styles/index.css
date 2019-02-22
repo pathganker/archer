@@ -178,3 +178,8 @@ footer{
   border-color: #3b6cf3;
   background-color: #3b6cf3;
 }
+.tip-span {
+  float: left;
+  color: red;
+  padding: 10px 0px 0px 0px;
+}
