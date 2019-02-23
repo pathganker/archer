@@ -5,7 +5,7 @@ package cn.com.qingqfeng.archer.pojo;
 
 import java.io.Serializable;
 
-import cn.com.qingqfeng.archer.enumEntity.ApiCodeEnum;
+import cn.com.qingqfeng.archer.enums.ApiCodeEnum;
 
 
 

@@ -1,5 +1,5 @@
 /**   */
-package cn.com.qingqfeng.archer.enumEntity;
+package cn.com.qingqfeng.archer.enums;
 
 /**
  * 

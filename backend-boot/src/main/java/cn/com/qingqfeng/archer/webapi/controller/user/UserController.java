@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import cn.com.qingqfeng.archer.enumEntity.ApiCodeEnum;
+import cn.com.qingqfeng.archer.enums.ApiCodeEnum;
 import cn.com.qingqfeng.archer.pojo.Result;
 
 /**   

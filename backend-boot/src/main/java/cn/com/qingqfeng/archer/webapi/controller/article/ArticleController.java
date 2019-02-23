@@ -11,7 +11,7 @@ import java.util.UUID;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import cn.com.qingqfeng.archer.enumEntity.ApiCodeEnum;
+import cn.com.qingqfeng.archer.enums.ApiCodeEnum;
 import cn.com.qingqfeng.archer.pojo.Result;
 import cn.com.qingqfeng.archer.pojo.article.ArticleDTO;
 import cn.com.qingqfeng.archer.pojo.article.ImageDTO;
