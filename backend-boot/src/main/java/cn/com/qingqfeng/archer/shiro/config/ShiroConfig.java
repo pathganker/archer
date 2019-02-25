@@ -19,6 +19,7 @@ import com.alibaba.fastjson.support.spring.FastJsonRedisSerializer;
 import cn.com.qingqfeng.archer.service.user.impl.UserServiceImpl;
 import cn.com.qingqfeng.archer.shiro.realm.UserRealm;
 import cn.com.qingqfeng.archer.shiro.session.SessionDao;
+import cn.com.qingqfeng.archer.shiro.session.ShiroSession;
 import cn.com.qingqfeng.archer.shiro.session.ShiroSessionFactory;
 
 /**   
@@ -38,19 +39,19 @@ public class ShiroConfig {
     public RedisTemplate<String, Object> redisTemplate() {
     	RedisTemplate<String, Object> template = new RedisTemplate<String, Object>();
     	template.setConnectionFactory(factory);
-    	Jackson2JsonRedisSerializer<String> keySerializer = new Jackson2JsonRedisSerializer<String>(String.class);
-    	Jackson2JsonRedisSerializer <SimpleSession> valueSerializer = new Jackson2JsonRedisSerializer<SimpleSession>(SimpleSession.class);
+    	FastJsonRedisSerializer<String> keySerializer = new FastJsonRedisSerializer<String>(String.class);
+    	FastJsonRedisSerializer <ShiroSession> valueSerializer = new FastJsonRedisSerializer<ShiroSession>(ShiroSession.class);
         template.setKeySerializer(keySerializer);
     	template.setValueSerializer(valueSerializer);
     	template.setHashKeySerializer(keySerializer);
-    	template.setValueSerializer(valueSerializer);
+    	template.setHashValueSerializer(valueSerializer);
         template.afterPropertiesSet();
         return template;
     }
     @Bean
 	public SessionDao sessionDao(){
 		SessionDao sessionDao = new SessionDao();
-		Jackson2JsonRedisSerializer <SimpleSession> valueSerializer = new Jackson2JsonRedisSerializer<SimpleSession>(SimpleSession.class);
+		FastJsonRedisSerializer <ShiroSession> valueSerializer = new FastJsonRedisSerializer<ShiroSession>(ShiroSession.class);
 		sessionDao.setValueSerializer(valueSerializer);
 		sessionDao.setRedisManager(redisTemplate());
 		return sessionDao;
@@ -73,7 +74,7 @@ public class ShiroConfig {
 		sessionManager.setSessionValidationSchedulerEnabled(true);
 		sessionManager.setSessionIdCookieEnabled(true);
 		sessionManager.setSessionIdCookie(sessionIdCookie());
-	//	sessionManager.setSessionFactory(sessionFactory());
+		sessionManager.setSessionFactory(sessionFactory());
 		return sessionManager;	
 	}
 	

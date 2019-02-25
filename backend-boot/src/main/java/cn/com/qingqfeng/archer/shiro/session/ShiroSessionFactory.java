@@ -6,8 +6,10 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.SessionContext;
 import org.apache.shiro.session.mgt.SessionFactory;
-import org.apache.shiro.session.mgt.SimpleSession;
 import org.apache.shiro.web.session.mgt.WebSessionContext;
+
+import cn.com.qingqfeng.archer.utils.WebUtils;
+import eu.bitwalker.useragentutils.UserAgent;
 
 
 /**   
@@ -19,27 +21,29 @@ import org.apache.shiro.web.session.mgt.WebSessionContext;
  * 
  */
 public class ShiroSessionFactory implements SessionFactory{
-
 	/** (non-Javadoc)
 	 * @see org.apache.shiro.session.mgt.SessionFactory#createSession(org.apache.shiro.session.mgt.SessionContext)
 	 */
 	@Override
 	public Session createSession(SessionContext initData) {
-        SimpleSession session = new SimpleSession();
+		ShiroSession session = new ShiroSession();
         if (initData != null && initData instanceof WebSessionContext)
         {
             WebSessionContext sessionContext = (WebSessionContext) initData;
             HttpServletRequest request = (HttpServletRequest) sessionContext.getServletRequest();
-            if (request != null)
-            {
-//                UserAgent userAgent = UserAgent.parseUserAgentString(request.getHeader("User-Agent"));
-//                // 获取客户端操作系统
-//                String os = userAgent.getOperatingSystem().getName();
-//                // 获取客户端浏览器
-//                String browser = userAgent.getBrowser().getName();
-//                session.setHost(IpUtils.getIpAddr(request));
-//                session.setBrowser(browser);
-//                session.setOs(os);
+            if (request != null){	  
+            	session.setHost(WebUtils.getRemoteIpAddr(request));
+            	if(null == request.getRequestedSessionId()) {
+            		return session;
+            	}
+            	session.setSid(request.getRequestedSessionId());
+                UserAgent userAgent = UserAgent.parseUserAgentString(request.getHeader("User-Agent"));
+                // 获取客户端操作系统
+                String os = userAgent.getOperatingSystem().getName();
+                // 获取客户端浏览器
+                String browser = userAgent.getBrowser().getName();
+                session.setBrowser(browser);
+                session.setOs(os);
             }
         }
         return session;

@@ -16,9 +16,10 @@ import org.apache.shiro.session.mgt.eis.AbstractSessionDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.SerializationException;
+
+import com.alibaba.fastjson.support.spring.FastJsonRedisSerializer;
 
 
 /**   
@@ -57,9 +58,9 @@ public class SessionDao extends AbstractSessionDAO{
 
 	private static final int MILLISECONDS_IN_A_SECOND = 1000;
 	private RedisTemplate<String, Object> redisTemplate;
-	private RedisSerializer<String> keySerializer = new Jackson2JsonRedisSerializer<String>(String.class);
+	private RedisSerializer<String> keySerializer = new FastJsonRedisSerializer<String>(String.class);
 	@SuppressWarnings("rawtypes")
-	private RedisSerializer valueSerializer = new Jackson2JsonRedisSerializer<Object>(Object.class);
+	private RedisSerializer valueSerializer = new FastJsonRedisSerializer<Object>(Object.class);
 	private static ThreadLocal<Map<Serializable, SessionInMemory>> sessionsInThread = new ThreadLocal<Map<Serializable, SessionInMemory>>();
 	
 	@Override

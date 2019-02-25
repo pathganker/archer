@@ -1,7 +1,7 @@
 /**   */
 package cn.com.qingqfeng.archer.shiro.session;
 
-import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
+import org.apache.shiro.session.mgt.DefaultSessionManager;
 
 /**   
  * <p>类名称: SessionManager </p> 
@@ -11,6 +11,6 @@ import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
  * @version 1.0
  * 
  */
-public class SessionManager extends DefaultWebSessionManager{
+public class SessionManager extends DefaultSessionManager{
 	
 }
