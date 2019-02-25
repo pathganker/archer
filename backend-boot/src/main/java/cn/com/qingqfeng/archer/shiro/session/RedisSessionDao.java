@@ -19,6 +19,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.SerializationException;
 
+import cn.com.qingqfeng.archer.shiro.serializer.StringSerializer;
+
 import com.alibaba.fastjson.support.spring.FastJsonRedisSerializer;
 
 
@@ -30,10 +32,10 @@ import com.alibaba.fastjson.support.spring.FastJsonRedisSerializer;
  * @version 1.0
  * 
  */
-public class SessionDao extends AbstractSessionDAO{
+public class RedisSessionDao extends AbstractSessionDAO{
 
 
-	private static Logger logger = LoggerFactory.getLogger(SessionDao.class);
+	private static Logger logger = LoggerFactory.getLogger(RedisSessionDao.class);
 
 	private static final String DEFAULT_SESSION_KEY_PREFIX = "shiro:session:";
 	private String keyPrefix = DEFAULT_SESSION_KEY_PREFIX;
@@ -58,7 +60,7 @@ public class SessionDao extends AbstractSessionDAO{
 
 	private static final int MILLISECONDS_IN_A_SECOND = 1000;
 	private RedisTemplate<String, Object> redisTemplate;
-	private RedisSerializer<String> keySerializer = new FastJsonRedisSerializer<String>(String.class);
+	private static StringSerializer keySerializer = new StringSerializer();
 	@SuppressWarnings("rawtypes")
 	private RedisSerializer valueSerializer = new FastJsonRedisSerializer<Object>(Object.class);
 	private static ThreadLocal<Map<Serializable, SessionInMemory>> sessionsInThread = new ThreadLocal<Map<Serializable, SessionInMemory>>();
@@ -214,14 +216,6 @@ public class SessionDao extends AbstractSessionDAO{
 		this.keyPrefix = keyPrefix;
 	}
 
-	public RedisSerializer<String> getKeySerializer() {
-		return keySerializer;
-	}
-
-	public void setKeySerializer(RedisSerializer<String> keySerializer) {
-		this.keySerializer = keySerializer;
-	}
-
 	@SuppressWarnings("rawtypes")
 	public RedisSerializer getValueSerializer() {
 		return valueSerializer;
@@ -247,4 +241,15 @@ public class SessionDao extends AbstractSessionDAO{
 		this.expire = expire;
 	}
 
+	public static StringSerializer getKeySerializer() {
+		return keySerializer;
+	}
+	public static void setKeySerializer(StringSerializer keySerializer) {
+		RedisSessionDao.keySerializer = keySerializer;
+	}
+	
+	@Override
+	protected void assignSessionId(Session session, Serializable sessionId) {
+	        ((SimpleSession) session).setId(sessionId);
+	    }
 }

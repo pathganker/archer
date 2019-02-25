@@ -18,36 +18,38 @@ public enum ApiCodeEnum {
 	SERVICE_WRONG(500),
 	/** 对该接口无权限 请申请使用该接口 */
 	API_AUTHORITY(403),
-	/** 用户名和密码错误 请输入正确的用户名和密码 */
-	USER_NAME_OR_PWD(101),
+	/** 用户名错误  */
+	USER_NAME(101),
+	/** 密码错误 */
+	USER_PASSWORD(102),
 	/** Token失效 请重新登陆 */
-	TOKEN_TIME_OUT(102),
+	TOKEN_TIME_OUT(103),
 	/** 缺少签名 请使用正确的签名 */
-	TOKEN_LOST(103),
+	TOKEN_LOST(104),
 	/** 错误参数 请输入正确参数 */
-	TOKEN_WRONG(104),
+	TOKEN_WRONG(105),
 	/** 错误参数 请输入正确参数 */
-	ARGS_WRONG(105),
+	ARGS_WRONG(106),
 	/** 接口访问次数超限 请明天再试。（默认一天内最多访问1000次） */
-	API_ACCESS_RATE_OUT(106),
+	API_ACCESS_RATE_OUT(107),
 	/** 更换设备，请重新登陆 重新登录 */
-	CHANGE_DEVICE(107),
+	CHANGE_DEVICE(108),
 	/** 注册的邮箱不正确（不是邮箱） */
-	REGIST_EMAIL_WRONG(108),
+	REGIST_EMAIL_WRONG(109),
 	/** 邮箱已注册 */
-	REGIST_EMAIL_EXIST(109),
+	REGIST_EMAIL_EXIST(110),
 	/** 注册的手机号码不正确（不是手机号） */
-	REGIST_MOBILEPHONE_WRONG(110),
+	REGIST_MOBILEPHONE_WRONG(111),
 	/** 手机号已注册 */
-	REGIST_MOBILEPHONE_EXIST(111),
+	REGIST_MOBILEPHONE_EXIST(112),
 	/** 时间戳错误 */
-	TIMESTAMP_ERROR(112),
+	TIMESTAMP_ERROR(113),
 	/** 验证码错误 */
-	CAPTCHA_WRONG(113),
+	CAPTCHA_WRONG(114),
 	/** 设备id为空 */
-	DEVICE_ID_NULL(114),
+	DEVICE_ID_NULL(115),
 	/** 用户id错误 */
-	USER_ID_ERROR(115);
+	USER_ID_ERROR(116);
 	
 	/** 错误码 */
 	private Integer errorCode;

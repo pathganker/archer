@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,13 +45,15 @@ public class AuthController {
 	public void getCaptcha(HttpServletRequest req, HttpServletResponse res) {
 		// 生成随机字串
 		String verifyCode = VerifyCodeUtils.generateVerifyCode(4);
-		// 存入会话session
-		HttpSession session = req.getSession(true);
-		// 删除以前的
-		session.removeAttribute("verCode");
-		session.removeAttribute("codeTime");
-		session.setAttribute("verCode", verifyCode.toLowerCase());
-		session.setAttribute("codeTime", LocalDateTime.now());
+		Subject user = SecurityUtils.getSubject();
+		user.getSession().setAttribute("verCode", verifyCode.toLowerCase());
+//		// 存入会话session
+//		HttpSession session = req.getSession(true);
+//		// 删除以前的
+//		session.removeAttribute("verCode");
+//		session.removeAttribute("codeTime");
+//		session.setAttribute("verCode", verifyCode.toLowerCase());
+//		session.setAttribute("codeTime", LocalDateTime.now());
 		// 生成图片
 		int w = 200, h = 40;
 		try {
@@ -76,12 +80,14 @@ public class AuthController {
 	@RequestMapping(value="vercode", method={RequestMethod.GET})
 	public Result validateCaptcha(HttpServletRequest req, HttpServletResponse res) {
 		Result rs = new Result();
+		Subject user = SecurityUtils.getSubject();	
 		String captcha = (String) req.getParameter("captcha");
 		//大写转小写
 		if(null != captcha){
 			captcha=captcha.toLowerCase();
 		}
-		String verCode = (String) req.getSession().getAttribute("verCode");
+//		String verCode = (String) req.getSession().getAttribute("verCode");
+		String verCode = (String) user.getSession().getAttribute("verCode");
 		if (null != verCode && verCode.equals(captcha)){
 			rs.setCode(ApiCodeEnum.SUCCESS);
 		}else{

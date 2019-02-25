@@ -1,6 +1,7 @@
 /**   */
 package cn.com.qingqfeng.archer.shiro.session;
 
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.shiro.session.Session;
@@ -31,12 +32,8 @@ public class ShiroSessionFactory implements SessionFactory{
         {
             WebSessionContext sessionContext = (WebSessionContext) initData;
             HttpServletRequest request = (HttpServletRequest) sessionContext.getServletRequest();
-            if (request != null){	  
+            if (request != null){
             	session.setHost(WebUtils.getRemoteIpAddr(request));
-            	if(null == request.getRequestedSessionId()) {
-            		return session;
-            	}
-            	session.setSid(request.getRequestedSessionId());
                 UserAgent userAgent = UserAgent.parseUserAgentString(request.getHeader("User-Agent"));
                 // 获取客户端操作系统
                 String os = userAgent.getOperatingSystem().getName();

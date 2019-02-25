@@ -3,9 +3,13 @@ export default {
   localLogin: function (data) {
     console.log(data)
     return fetch({
+      headers: {'Content-Type':'application/x-www-form-urlencoded'},
       url: 'users/login',
       method: 'post',
-      data: data
+      data: {
+        'username': 1,
+        'password': 2
+      }
     })
   },
   getSnsLogins: function () {

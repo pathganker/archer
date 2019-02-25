@@ -3,6 +3,11 @@ package cn.com.qingqfeng.archer.service.user.impl;
 
 import java.util.Set;
 
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import cn.com.qingqfeng.archer.dao.user.IUserDao;
+import cn.com.qingqfeng.archer.pojo.user.UserDO;
 import cn.com.qingqfeng.archer.pojo.user.UserDTO;
 import cn.com.qingqfeng.archer.service.user.IUserService;
 
@@ -15,6 +20,9 @@ import cn.com.qingqfeng.archer.service.user.IUserService;
  * 
  */
 public class UserServiceImpl implements IUserService{
+	
+	@Autowired
+	private IUserDao userDao;
 
 	/** (non-Javadoc)
 	 * @see cn.com.qingqfeng.archer.service.user.IUserService#requestRoleIdByName(java.lang.String)
@@ -39,8 +47,13 @@ public class UserServiceImpl implements IUserService{
 	 */
 	@Override
 	public UserDTO requestUserByName(String username) {
-		// TODO Auto-generated method stub
-		return null;
+		UserDTO user = new UserDTO();
+		UserDO userDO = this.userDao.queryUserByName(username);
+		if(null == userDO){
+			return user;
+		}
+		BeanUtils.copyProperties(userDO, user);
+		return user;
 	}
 
 }

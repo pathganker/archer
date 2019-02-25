@@ -6,6 +6,7 @@ import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.cache.Cache;
@@ -53,8 +54,10 @@ public class UserRealm extends AuthorizingRealm {
 	 */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-
-        String username = (String)token.getPrincipal();
+    	
+    	UsernamePasswordToken uptoken = (UsernamePasswordToken)token;
+    	
+        String username = uptoken.getUsername();
 
         UserDTO user = userService.requestUserByName(username);
 
@@ -62,7 +65,7 @@ public class UserRealm extends AuthorizingRealm {
             throw new UnknownAccountException();//没找到帐号
         }
 
-        //交给AuthenticatingRealm使用CredentialsMatcher进行密码匹配，如果觉得人家的不好可以自定义实现
+        //交给AuthenticatingRealm使用CredentialsMatcher进行密码匹配
         SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
         		user.getUsername(), //用户名
         		user.getPassword(), //密码
@@ -131,8 +134,4 @@ public class UserRealm extends AuthorizingRealm {
         this.userService = userService;
     }
     
-//    public void setRedisCacheManager(RedisCacheManager cacheManager){
-//    	cacheManager.setValueSerializer(new FastJsonRedisSerializer<SimpleAuthenticationInfo>(SimpleAuthenticationInfo.class));
-//    	this.setCacheManager(cacheManager);
-//    }
 }

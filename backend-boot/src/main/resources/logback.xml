@@ -31,6 +31,7 @@
     <logger name="io.netty" level="ERROR" />
     <logger name="com.zaxxer" level="ERROR" />
     <logger name="com.alibaba.druid" level="WARN" />
+<!--     <logger name="cn.com.qingqfeng.archer" level="WARN" /> -->
     <root level="${logback.defaultlevel}">
         <appender-ref ref="fileDefault"/>
         <appender-ref ref="stdout"/>
