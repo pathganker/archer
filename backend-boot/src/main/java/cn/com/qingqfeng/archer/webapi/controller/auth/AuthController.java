@@ -86,8 +86,7 @@ public class AuthController {
 		if(null != captcha){
 			captcha=captcha.toLowerCase();
 		}
-//		String verCode = (String) req.getSession().getAttribute("verCode");
-		String verCode = (String) user.getSession().getAttribute("verCode");
+		String verCode = (String) req.getSession().getAttribute("verCode");
 		if (null != verCode && verCode.equals(captcha)){
 			rs.setCode(ApiCodeEnum.SUCCESS);
 		}else{

@@ -5,13 +5,14 @@ import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
 import org.apache.shiro.mgt.DefaultSubjectDAO;
 import org.apache.shiro.mgt.SecurityManager;
-import org.apache.shiro.session.mgt.DefaultSessionManager;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
 import cn.com.qingqfeng.archer.service.user.impl.UserServiceImpl;
 import cn.com.qingqfeng.archer.shiro.realm.UserRealm;
+import cn.com.qingqfeng.archer.shiro.session.StatelessSessionManager;
 
 /**   
  * <p>类名称: StateLessShiroConfig </p> 
@@ -22,7 +23,7 @@ import cn.com.qingqfeng.archer.shiro.realm.UserRealm;
  * 
  */
 @Configuration
-public class StateLessShiroConfig {
+public class StatelessShiroConfig {
 	
 	@Bean
 	public DefaultSessionStorageEvaluator sessionStorageEvaluator(){
@@ -39,8 +40,8 @@ public class StateLessShiroConfig {
     }
     
 	@Bean
-	public DefaultSessionManager sessionManager(){
-		DefaultSessionManager sessionManager = new DefaultSessionManager();
+	public StatelessSessionManager sessionManager(){
+		StatelessSessionManager sessionManager = new StatelessSessionManager();
 		sessionManager.setSessionValidationSchedulerEnabled(false);
 		return sessionManager;	
 	}
