@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import cn.com.qingqfeng.archer.service.user.impl.UserServiceImpl;
 import cn.com.qingqfeng.archer.shiro.realm.UserRealm;
 import cn.com.qingqfeng.archer.shiro.session.StatelessSessionManager;
+import cn.com.qingqfeng.archer.shiro.session.StatelessSubjectFactory;
 
 /**   
  * <p>类名称: StateLessShiroConfig </p> 
@@ -37,6 +38,10 @@ public class StatelessShiroConfig {
     	DefaultSubjectDAO subjectDao = new DefaultSubjectDAO();
     	subjectDao.setSessionStorageEvaluator(sessionStorageEvaluator());
     	return subjectDao;
+    }
+    @Bean
+    public StatelessSubjectFactory subjectFactory() {
+    	return new StatelessSubjectFactory();
     }
     
 	@Bean
@@ -73,8 +78,8 @@ public class StatelessShiroConfig {
 	public SecurityManager securityManager(){
 		DefaultWebSecurityManager securityManager =  new DefaultWebSecurityManager();
 		securityManager.setRealm(userRealm());
-		securityManager.setSessionManager(sessionManager());
 		securityManager.setSubjectDAO(subjectDao());
+		securityManager.setSubjectFactory(subjectFactory());
 		return securityManager;
 	}
 	

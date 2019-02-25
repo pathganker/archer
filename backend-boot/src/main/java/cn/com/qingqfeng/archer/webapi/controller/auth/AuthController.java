@@ -3,21 +3,28 @@ package cn.com.qingqfeng.archer.webapi.controller.auth;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.xml.bind.DatatypeConverter;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import cn.com.qingqfeng.archer.enums.ApiCodeEnum;
 import cn.com.qingqfeng.archer.pojo.Result;
 import cn.com.qingqfeng.archer.utils.VerifyCodeUtils;
+import io.jsonwebtoken.CompressionCodecs;
+import io.jsonwebtoken.JwtBuilder;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 
 /**   
  * <p>类名称: AuthController </p> 
@@ -30,6 +37,9 @@ import cn.com.qingqfeng.archer.utils.VerifyCodeUtils;
 @RestController
 @RequestMapping("auth")
 public class AuthController {
+	
+	 private final String SECRET_KEY = "*(-=4eklfasdfarerf41585fdasf";
+
 	/**
 	 * 
 	 * <p>方法名:  getCaptcha </p> 
@@ -80,7 +90,6 @@ public class AuthController {
 	@RequestMapping(value="vercode", method={RequestMethod.GET})
 	public Result validateCaptcha(HttpServletRequest req, HttpServletResponse res) {
 		Result rs = new Result();
-		Subject user = SecurityUtils.getSubject();	
 		String captcha = (String) req.getParameter("captcha");
 		//大写转小写
 		if(null != captcha){
@@ -93,5 +102,42 @@ public class AuthController {
 			rs.setCode(ApiCodeEnum.CAPTCHA_WRONG);
 		}
 		return rs;
+	}
+	
+	@RequestMapping(value="jwttoken", method= {RequestMethod.POST})
+    public Result applyToken(@RequestParam(name="clientKey") String clientKey) {
+		Result rs = new Result();
+        // 签发一个Json Web Token
+        // 令牌ID=uuid，用户=clientKey，签发者=clientKey
+        // token有效期=1分钟，用户角色=null,用户权限=create,read,update,delete
+        String jwt = issueJwt(UUID.randomUUID().toString(), clientKey, 
+                                    "token-server",60000l, null, "create,read,update,delete", SignatureAlgorithm.RS256);
+        rs.setData(jwt);
+        return rs;
+    }
+	
+    private String issueJwt(String id, String subject, String issuer, Long period,
+    		String roles, String permissions, SignatureAlgorithm algorithm) {
+		long currentTimeMillis = System.currentTimeMillis();// 当前时间戳
+		byte[] secretKeyBytes = DatatypeConverter.parseBase64Binary(SECRET_KEY);// 秘钥
+		JwtBuilder jwt  =  Jwts.builder();
+		if(StringUtils.isNotBlank(id)) jwt.setId(id);
+			jwt.setSubject(subject);// 用户名主题
+		if(StringUtils.isNotBlank(issuer)) 
+			jwt.setIssuer(issuer);//签发者
+		if(StringUtils.isNotBlank(issuer)) 
+			jwt.setIssuer(issuer);//签发者  
+		jwt.setIssuedAt(new Date(currentTimeMillis));//签发时间
+		if(null != period){
+			Date expiration = new Date(currentTimeMillis+period);
+			jwt.setExpiration(expiration);//有效时间
+		}
+		if(StringUtils.isNotBlank(roles)) 
+			jwt.claim("roles", roles);//角色
+		if(StringUtils.isNotBlank(permissions)) 
+			jwt.claim("perms", permissions);//权限
+		jwt.compressWith(CompressionCodecs.DEFLATE);//压缩，可选GZIP
+		jwt.signWith(algorithm, secretKeyBytes);//加密设置
+		return jwt.compact();
 	}
 }
