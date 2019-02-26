@@ -3,8 +3,6 @@
  */
 package cn.com.qingqfeng.archer.webapi.controller.user;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,11 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("users")
 public class UserController {
 	
-	private final static  Logger LOGGER = LoggerFactory.getLogger(UserController.class);
-	
-	private final static String DEVICEID = "Auth-device";
-	/** token的前缀 组成规则  + diviceId*/
-	private final static String ARCHER_API_TOKEN_KEY_PREFIX = "archer.api.token.uid_";
 	
 
 	

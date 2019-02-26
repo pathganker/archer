@@ -3,7 +3,18 @@
  */
 package cn.com.qingqfeng.archer.utils;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import cn.com.qingqfeng.archer.pojo.Result;
+
+import com.alibaba.fastjson.JSON;
 
 /**   
  * <p> 类名：  WebUtils   </p>
@@ -12,7 +23,9 @@ import javax.servlet.http.HttpServletRequest;
  * @author lijunliang 
  * @version 1.0   
  */
-public class WebUtils {
+public class ArcherWebUtils {
+	
+	private static final Logger	LOGGER = LoggerFactory.getLogger(ArcherWebUtils.class);
 	/**
 	 * 
 	 * <p> 方法名 ：getRemoteIpAddr  </p> 
@@ -35,6 +48,21 @@ public class WebUtils {
 			ip = request.getRemoteAddr();
 		}
 		return ip;
+	}
+	
+	public static void handlerReturnJSON(ServletResponse response, Result rt) {
+		response.setContentType("application/json; charset=utf-8");
+		PrintWriter out = null;
+		try {
+			out = response.getWriter();
+			out.append(JSON.toJSONString(rt));
+		} catch (IOException e) {
+			LOGGER.info("返回登录验证失败异常:{}", e);		
+		} finally {
+			if (out != null) {
+				out.close();
+			}
+		}
 	}
 
 }

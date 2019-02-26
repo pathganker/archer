@@ -61,14 +61,21 @@
 						</router-link>   
 	      	</div>
 					<div class="navbar-items">
-						<a class="navbar-item " href="" title="首页">首页
-			      </a>
-						<a class="navbar-item " href="" title="分类">分类
-						</a>
-						<a class="navbar-item " href="" title="动态">动态
-						</a>
-						<a class="navbar-item " href="" title="关于">关于
-			      </a>
+						<router-link :to="{ path: '/' }" class="navbar-item expanded-avatar" title="首页">
+						首页
+						</router-link>
+						<router-link :to="{ path: '/settings' }" class="navbar-item expanded-avatar" title="设置">
+						设置
+						</router-link>
+						<router-link :to="{ path: '/' }" class="navbar-item expanded-avatar" title="设置">
+						设置
+						</router-link>
+						<router-link :to="{ path: '/settings' }" class="navbar-item expanded-avatar" title="设置">
+						设置
+						</router-link>
+						<router-link :to="{ path: '/' }" class="navbar-item expanded-avatar" title="设置">
+						设置
+						</router-link>
 					</div>
 		  </div> 
 		  <!-- <div class="navbar-expanded">
@@ -98,7 +105,8 @@ export default {
   computed: {
     ...mapState({
       auth: state => state.auth,
-      styleMode: state => state.globalVal.styleMode     
+			styleMode: state => state.globalVal.styleMode,
+			accessToken: state => state.globalVal.accessToken
     }),
     defaultAvatar() {
       return defaultAvatar
@@ -106,6 +114,7 @@ export default {
   }, 
   created (){
 		document.body.className = this.styleMode
+		this.getAccessToken()
     if(this.auth.token){
       this.getUserInfo()
     }
@@ -114,7 +123,8 @@ export default {
     ...mapActions([
       'changeStyleMode',
       'logout',
-      'getUserInfo'
+			'getUserInfo',
+			'getAccessToken'
     ]),		
     changeMode(){
       this.changeStyleMode()

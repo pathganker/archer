@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import cn.com.qingqfeng.archer.dao.user.IUserDao;
 import cn.com.qingqfeng.archer.pojo.user.UserDO;
@@ -19,6 +20,7 @@ import cn.com.qingqfeng.archer.service.user.IUserService;
  * @version 1.0
  * 
  */
+@Service
 public class UserServiceImpl implements IUserService{
 	
 	@Autowired

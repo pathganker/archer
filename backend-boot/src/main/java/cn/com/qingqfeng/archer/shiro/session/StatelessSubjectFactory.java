@@ -8,7 +8,8 @@ import org.apache.shiro.subject.Subject;
 import org.apache.shiro.subject.SubjectContext;
 import org.apache.shiro.web.mgt.DefaultWebSubjectFactory;
 
-import cn.com.qingqfeng.archer.shiro.token.ArcherToken;
+import cn.com.qingqfeng.archer.shiro.token.HmacToken;
+import cn.com.qingqfeng.archer.shiro.token.JwtToken;
 
 /**   
  * <p> 类名：  StatelessFactory   </p>
@@ -18,10 +19,10 @@ import cn.com.qingqfeng.archer.shiro.token.ArcherToken;
  * @version 1.0   
  */
 public class StatelessSubjectFactory extends DefaultWebSubjectFactory{
-	
+	@Override
     public Subject createSubject(SubjectContext context) { 
         AuthenticationToken token = context.getAuthenticationToken();
-        if((token instanceof ArcherToken)){
+        if((token instanceof HmacToken) || (token) instanceof JwtToken){
             // 当token为HmacToken时， 不创建 session 
             context.setSessionCreationEnabled(false);
         }

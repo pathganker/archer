@@ -1,17 +1,25 @@
 /**   */
 package cn.com.qingqfeng.archer.shiro.config;
 
-import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import javax.servlet.Filter;
+
 import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
 import org.apache.shiro.mgt.DefaultSubjectDAO;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.web.filter.authc.AnonymousFilter;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import cn.com.qingqfeng.archer.service.user.impl.UserServiceImpl;
-import cn.com.qingqfeng.archer.shiro.realm.UserRealm;
+import cn.com.qingqfeng.archer.service.user.IUserService;
+import cn.com.qingqfeng.archer.shiro.filter.JwtFilter;
+import cn.com.qingqfeng.archer.shiro.filter.JwtRoleFilter;
+import cn.com.qingqfeng.archer.shiro.realm.JwtRealm;
 import cn.com.qingqfeng.archer.shiro.session.StatelessSessionManager;
 import cn.com.qingqfeng.archer.shiro.session.StatelessSubjectFactory;
 
@@ -26,76 +34,82 @@ import cn.com.qingqfeng.archer.shiro.session.StatelessSubjectFactory;
 @Configuration
 public class StatelessShiroConfig {
 	
-	@Bean
-	public DefaultSessionStorageEvaluator sessionStorageEvaluator(){
+	private DefaultSessionStorageEvaluator sessionStorageEvaluator(){
 		DefaultSessionStorageEvaluator sessionStorageEvaluator = new DefaultSessionStorageEvaluator();
 		sessionStorageEvaluator.setSessionStorageEnabled(false);
 		return sessionStorageEvaluator;
 	}
-	
-    @Bean
-    public DefaultSubjectDAO subjectDao(){
+	//subject dao
+	private DefaultSubjectDAO subjectDao(){
     	DefaultSubjectDAO subjectDao = new DefaultSubjectDAO();
     	subjectDao.setSessionStorageEvaluator(sessionStorageEvaluator());
     	return subjectDao;
     }
-    @Bean
-    public StatelessSubjectFactory subjectFactory() {
+    //subject factroy
+	private StatelessSubjectFactory subjectFactory() {
     	return new StatelessSubjectFactory();
     }
-    
-	@Bean
-	public StatelessSessionManager sessionManager(){
+    //session manager
+	private StatelessSessionManager sessionManager(){
 		StatelessSessionManager sessionManager = new StatelessSessionManager();
 		sessionManager.setSessionValidationSchedulerEnabled(false);
 		return sessionManager;	
 	}
-	@Bean
-	public UserServiceImpl userService(){
-		return new UserServiceImpl();
-	}
-	@Bean
-	public HashedCredentialsMatcher credentialsMatcher(){
-		HashedCredentialsMatcher credentialsMatcher = new HashedCredentialsMatcher();
-		credentialsMatcher.setHashAlgorithmName("md5");
-		credentialsMatcher.setHashIterations(2);
-		credentialsMatcher.setStoredCredentialsHexEncoded(true);
-		return credentialsMatcher;
-	}
-	@Bean
-	public UserRealm userRealm(){
-		UserRealm userRealm = new UserRealm();
-		userRealm.setUserService(userService());
-		userRealm.setCredentialsMatcher(credentialsMatcher());
-//		userRealm.setCachingEnabled(true);
-//		userRealm.setCacheManager(cacheManager());
-//		userRealm.setAuthenticationCachingEnabled(true);
-//		userRealm.setAuthenticationCacheName("authenticationCache");
-		return userRealm;
-	}
 	
-	@Bean
-	public SecurityManager securityManager(){
+	private JwtRealm jwtRealm(){
+		return new JwtRealm();
+	}
+	@Autowired
+	private IUserService userService;
+	
+//	private HmacRealm hmacRealm(){
+//		HmacRealm hmacRealm = new HmacRealm();
+//		hmacRealm.setCryptogramService(new CryptogramService());
+//		hmacRealm.setUserService(userService);
+//		return hmacRealm;
+//	}
+	private SecurityManager securityManager(){
 		DefaultWebSecurityManager securityManager =  new DefaultWebSecurityManager();
-		securityManager.setRealm(userRealm());
+//		List<Realm> realms = new ArrayList<Realm>();
+//		realms.add(hmacRealm());
+//		realms.add(jwtRealm());
+//		securityManager.setRealms(realms);
+		securityManager.setRealm(jwtRealm());
 		securityManager.setSubjectDAO(subjectDao());
 		securityManager.setSubjectFactory(subjectFactory());
+		securityManager.setSessionManager(sessionManager());
 		return securityManager;
 	}
 	
+//	private MethodInvokingFactoryBean methodInvokingFactoryBean(){
+//		MethodInvokingFactoryBean methodInvokingFactoryBean = new MethodInvokingFactoryBean();
+//		methodInvokingFactoryBean.setStaticMethod("org.apache.shiro.SecurityUtils.setSecurityManager");
+//		methodInvokingFactoryBean.setArguments(securityManager());
+//		return methodInvokingFactoryBean;
+//	}
+	//filter
+	private JwtRoleFilter jwtRoleFilter(){
+		return new JwtRoleFilter();
+	}
+	private JwtFilter jwtFilter(){
+		return new JwtFilter();
+	}
+	private AnonymousFilter anon(){
+		return new AnonymousFilter(); 
+	}
 	@Bean
 	public ShiroFilterFactoryBean shiroFilter() {
 		ShiroFilterFactoryBean shiroFilter = new ShiroFilterFactoryBean();
 		shiroFilter.setSecurityManager(securityManager());
-//		Map<String, Filter> filterMap = new LinkedHashMap<String, Filter>();
-//		filterMap.put("kickout", kickoutFilter());
-//		filterMap.put("url", urlFilter());
-//		filterMap.put("anon", anon());
-//		shiroFilter.setFilters(filterMap);
-//		Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
-//		filterChainDefinitionMap.put("/login/**", "anon");
-//		filterChainDefinitionMap.put("/**", "kickout,url");
-//		shiroFilter.setFilterChainDefinitionMap(filterChainDefinitionMap);
+		Map<String, Filter> filterMap = new LinkedHashMap<String, Filter>();
+		filterMap.put("jwt", jwtFilter());
+		filterMap.put("role", jwtRoleFilter());
+		filterMap.put("anon", anon());
+		shiroFilter.setFilters(filterMap);
+		Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
+		filterChainDefinitionMap.put("/auth/jwttoken", "anon");
+		filterChainDefinitionMap.put("/**", "jwt,role[ordinary]");
+		shiroFilter.setFilterChainDefinitionMap(filterChainDefinitionMap);
 		return shiroFilter;
 	}
 }

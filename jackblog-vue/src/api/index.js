@@ -3,13 +3,9 @@ export default {
   localLogin: function (data) {
     console.log(data)
     return fetch({
-      headers: {'Content-Type':'application/x-www-form-urlencoded'},
       url: 'users/login',
       method: 'post',
-      data: {
-        'username': 1,
-        'password': 2
-      }
+      data: data
     })
   },
   getSnsLogins: function () {
@@ -103,6 +99,12 @@ export default {
       params: {
         captcha: data
       }
+    })
+  },
+  getAccessToken: function(){
+    return fetch({
+      url: 'auth/jwttoken',
+      method: 'post'
     })
   }
 }

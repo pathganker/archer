@@ -14,26 +14,28 @@ import org.apache.shiro.authc.AuthenticationToken;
  * @author lijunliang 
  * @version 1.0   
  */
-public class ArcherToken implements AuthenticationToken{
+public class HmacToken implements AuthenticationToken{
 	/**
 	 * @FieldsserialVersionUID
 	 */
 	private static final long serialVersionUID = 1L;
 	
-    private String tid;// 客户标识（可以是用户名、app id等等）
+    private String clientKey;// 客户标识（可以是用户名、app id等等）
     private String digest;// 消息摘要
     private long timestamp;// 时间戳
-    private Map<String, String> parameters;// 访问参数
+    private Map<String, String[]> parameters;// 访问参数
     private String host;// 客户端IP
     private String os;
+    private String browser;
     
-    public ArcherToken(String tid, String digest, long timestamp, String host, String os,
-    		Map<String, String> parameters) {
-    	this.tid = tid;
+    public HmacToken(String clientKey, String digest, long timestamp, String host, String os, String browser,
+    		Map<String, String[]> parameters) {
+    	this.clientKey = clientKey;
     	this.digest = digest;
     	this.timestamp = timestamp;
     	this.host = host;
     	this.os = os;
+    	this.setBrowser(browser);
     	this.parameters = parameters;
     }
 
@@ -45,7 +47,7 @@ public class ArcherToken implements AuthenticationToken{
 	 */
 	@Override
 	public Object getPrincipal() {
-		return this.tid;
+		return this.clientKey;
 	}
 
 	/**   
@@ -59,12 +61,13 @@ public class ArcherToken implements AuthenticationToken{
 		return this.digest;
 	}
 
-	public String getTid() {
-		return tid;
+
+	public String getClientKey() {
+		return clientKey;
 	}
 
-	public void setTid(String tid) {
-		this.tid = tid;
+	public void setClientKey(String clientKey) {
+		this.clientKey = clientKey;
 	}
 
 	public String getDigest() {
@@ -83,11 +86,11 @@ public class ArcherToken implements AuthenticationToken{
 		this.timestamp = timestamp;
 	}
 
-	public Map<String, String> getParameters() {
+	public Map<String, String[]> getParameters() {
 		return parameters;
 	}
 
-	public void setParameters(Map<String, String> parameters) {
+	public void setParameters(Map<String, String[]> parameters) {
 		this.parameters = parameters;
 	}
 
@@ -105,5 +108,13 @@ public class ArcherToken implements AuthenticationToken{
 
 	public void setOs(String os) {
 		this.os = os;
+	}
+
+	public String getBrowser() {
+		return browser;
+	}
+
+	public void setBrowser(String browser) {
+		this.browser = browser;
 	}
 }
