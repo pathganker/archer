@@ -16,8 +16,8 @@ const service = axios.create({
   }
 })
 // request拦截器
-service.interceptors.request.use(config => {
-  config = refreshToken(store, config)
+service.interceptors.request.use(async function (config){
+  let temp = await refreshToken(store, config)
   // if(store.getters.accessToken){
   //   config.headers['Auth-jwt']=store.getters.accessToken
   // }else{
@@ -28,20 +28,17 @@ service.interceptors.request.use(config => {
   //     })
   //     console.log(test)
   //   }
-  let retry = new Promise((resolve,reject) => {
-    resolve(config=>{
-      //config.headers['Auth-jwt']=store.getters.accessToken
-      console.log(config)
-      return config
-    })
-    
-  })
+  // let retry = new Promise((resolve,reject) => {
+  //   console.log(temp)
+  //   resolve(temp) 
+  // })
   // // setTokenByStore(config)
   // //setTokenByQuery(store, config)
   // return retry
   // console.log(store.getters)
   //console.log(config)
-  return retry
+  // return retry
+  return temp
 }, error => {
   return Promise.reject(error)
 })
@@ -99,10 +96,10 @@ async function refreshToken(store, config){
   }else{
     if(!store.getters.isRefreshToken){
       store.commit(REFRESH_ACCESS_TOKEN,{isRefreshToken: true})
-      const test = await store.dispatch('getAccessToken').then( data =>{
-        store.commit(REFRESH_ACCESS_TOKEN,{isRefreshToken: false})
+      let test = await store.dispatch('getAccessToken').then( data =>{
         return (data.data.data.jwt)
       })
+      store.commit(REFRESH_ACCESS_TOKEN,{isRefreshToken: false})
       config.headers['Auth-jwt']=test
     }
   }

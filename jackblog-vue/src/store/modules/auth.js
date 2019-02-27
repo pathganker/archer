@@ -65,7 +65,7 @@ const actions = {
     })
   },
   getAccessToken: async function({commit}){
-    const data = await api.getAccessToken().then(response => {
+    let data = await api.getAccessToken().then(response => {
       const json=response.data
       if(200 == json.code){
         commit(GET_ACCESS_TOKEN, {
