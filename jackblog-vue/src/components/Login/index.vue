@@ -18,7 +18,7 @@
           <div class="form-group">
             <div class="input-group">
               <div class="input-group-addon"><i class="fa fa-unlock-alt"></i></div>
-              <input type="password" name="password" data-vv-as="密码" v-model="user.password" v-validate="'required'" class="form-control" placeholder="密码"></input>
+              <input type="password" name="password" data-vv-as="密码" v-model="user.password" v-validate="'required'" class="form-control current-password" placeholder="密码" autocomplete></input>
             </div>
             <span class="tip-span">{{ errors.first('password') }}</span>
           </div>

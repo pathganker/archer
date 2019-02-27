@@ -36,7 +36,7 @@ import cn.com.qingqfeng.archer.shiro.token.JwtToken;
  * 
  */
 public class JwtRealm extends AuthorizingRealm{
-	private final static String SECRET_KEY = "*(-=4eklfasdfarerf41585fdasf";
+	private final static String SECRET_KEY = "*(-=4eklfasdfarerf0417fdasf";
 	
     public Class<?> getAuthenticationTokenClass() {
         return JwtToken.class;//此Realm只支持JwtToken

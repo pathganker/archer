@@ -39,4 +39,5 @@ export const FAILURE_GET_APPS = 'FAILURE_GET_APPS'
 export const SHOW_MSG = 'SHOW_MSG'
 export const HIDE_MSG = 'HIDE_MSG'
 
-export const ACCESS_TOKEN = 'ACCESS_TOKEN'
+export const GET_ACCESS_TOKEN = 'GET_ACCESS_TOKEN'
+export const REFRESH_ACCESS_TOKEN = 'REFRESH_ACCESS_TOKEN'

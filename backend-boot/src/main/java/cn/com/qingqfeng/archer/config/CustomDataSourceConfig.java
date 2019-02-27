@@ -18,50 +18,56 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
+
 import com.alibaba.druid.pool.DruidDataSource;
 
-/**   
- * @ClassName:  CustomDataSourceConfig   
+/**
+ * @ClassName: CustomDataSourceConfig
  * @Description: 数据源配置
- * @author: lijunliang 
- * @date:   2019年1月31日 下午1:19:35   
- *     
+ * @author: lijunliang
+ * @date: 2019年1月31日 下午1:19:35
+ * 
  */
 @Configuration
-@MapperScans(value = { 
-		@MapperScan(basePackages="cn.com.qingqfeng.archer.dao",sqlSessionTemplateRef="defSqlSessionTemplate") 
-		})
+@MapperScans(value = { @MapperScan(basePackages = "cn.com.qingqfeng.archer.dao", sqlSessionTemplateRef = "defSqlSessionTemplate") })
 public class CustomDataSourceConfig {
-	//数据源配置
+	// 数据源配置
 	@Bean
-	@ConfigurationProperties(prefix="spring.datasource.def")
+	@ConfigurationProperties(prefix = "spring.datasource.def")
 	public Properties defSourceProperties() {
-		return new Properties()	;
+		return new Properties();
 	}
-	//实例化数据源
+
+	// 实例化数据源
 	@Bean
-	public DataSource defSource(){
-        DruidDataSource dataSource = new DruidDataSource();
-        dataSource.configFromPropety(defSourceProperties());
-        return dataSource;
+	public DataSource defSource() {
+		DruidDataSource dataSource = new DruidDataSource();
+		dataSource.configFromPropety(defSourceProperties());
+		return dataSource;
 	}
-	//sessionFactory
+
+	// sessionFactory
 	@Bean
 	public SqlSessionFactoryBean defSessionFactory() throws IOException {
-		 SqlSessionFactoryBean factoryBean= new SqlSessionFactoryBean();
-		 factoryBean.setDataSource(defSource());
-		 factoryBean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:mapper/**/*.xml"));
-		 return factoryBean;
+		SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
+		factoryBean.setDataSource(defSource());
+		factoryBean
+				.setMapperLocations(new PathMatchingResourcePatternResolver()
+						.getResources("classpath:mapper/**/*.xml"));
+		return factoryBean;
 	}
-	//事务
+
+	// 事务
 	@Bean
 	public PlatformTransactionManager defManager() {
 		return new DataSourceTransactionManager(defSource());
 	}
-	//sql模板
+
+	// sql模板
 	@Bean
-	public SqlSessionTemplate defSqlSessionTemplate() throws IOException, Exception {
-			return new SqlSessionTemplate(defSessionFactory().getObject());
+	public SqlSessionTemplate defSqlSessionTemplate() throws IOException,
+			Exception {
+		return new SqlSessionTemplate(defSessionFactory().getObject());
 	}
-		
+
 }

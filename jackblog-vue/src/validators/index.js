@@ -19,9 +19,7 @@ Validator.extend('username', {
 Validator.extend('captcha', {
   getMessage: field => '验证码错误',
   validate: value => api.checkCaptch(value).then(response => {
-    console.log(response)
     const json=response.data
-    console.log(json)
     if(200 == json.code){
       return true
     }else{

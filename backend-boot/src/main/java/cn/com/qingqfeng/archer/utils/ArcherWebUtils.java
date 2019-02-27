@@ -49,15 +49,25 @@ public class ArcherWebUtils {
 		}
 		return ip;
 	}
-	
-	public static void handlerReturnJSON(ServletResponse response, Result rt) {
+	/**
+	 * 
+	 * <p>方法名:  handlerReturnJSON </p> 
+	 * <p>描述:    TODO </p>
+	 * <p>创建时间:  2019年2月27日上午9:54:22 </p>
+	 * @version 1.0
+	 * @author lijunliang
+	 * @param response
+	 * @param rt  
+	 * void
+	 */
+	public static void handlerReturnJSON(ServletResponse response, Result rs) {
 		response.setContentType("application/json; charset=utf-8");
 		PrintWriter out = null;
 		try {
 			out = response.getWriter();
-			out.append(JSON.toJSONString(rt));
+			out.append(JSON.toJSONString(rs));
 		} catch (IOException e) {
-			LOGGER.info("返回登录验证失败异常:{}", e);		
+			LOGGER.error("返回错误码异常:{}", e);		
 		} finally {
 			if (out != null) {
 				out.close();

@@ -65,15 +65,12 @@
 						首页
 						</router-link>
 						<router-link :to="{ path: '/settings' }" class="navbar-item expanded-avatar" title="设置">
-						设置
+						分类
 						</router-link>
 						<router-link :to="{ path: '/' }" class="navbar-item expanded-avatar" title="设置">
-						设置
+						动态
 						</router-link>
 						<router-link :to="{ path: '/settings' }" class="navbar-item expanded-avatar" title="设置">
-						设置
-						</router-link>
-						<router-link :to="{ path: '/' }" class="navbar-item expanded-avatar" title="设置">
 						设置
 						</router-link>
 					</div>
@@ -105,8 +102,7 @@ export default {
   computed: {
     ...mapState({
       auth: state => state.auth,
-			styleMode: state => state.globalVal.styleMode,
-			accessToken: state => state.globalVal.accessToken
+			styleMode: state => state.globalVal.styleMode
     }),
     defaultAvatar() {
       return defaultAvatar
@@ -114,7 +110,6 @@ export default {
   }, 
   created (){
 		document.body.className = this.styleMode
-		this.getAccessToken()
     if(this.auth.token){
       this.getUserInfo()
     }
@@ -123,8 +118,7 @@ export default {
     ...mapActions([
       'changeStyleMode',
       'logout',
-			'getUserInfo',
-			'getAccessToken'
+			'getUserInfo'
     ]),		
     changeMode(){
       this.changeStyleMode()

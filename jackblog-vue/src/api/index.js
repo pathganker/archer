@@ -1,4 +1,5 @@
 import fetch from '../utils/fetch'
+import store from '../store'
 export default {
   localLogin: function (data) {
     console.log(data)
@@ -94,7 +95,7 @@ export default {
   },
   checkCaptch: function (data) {
     return fetch({
-      url: 'auth/vercode',
+      url: 'auth/vercode/'+ store.state.globalVal.captchaKey,
       method: 'get',
       params: {
         captcha: data

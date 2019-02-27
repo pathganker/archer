@@ -13,7 +13,7 @@ import logins from './modules/logins'
 import tagList from './modules/tag.list'
 import showmsg from './modules/showmsg'
 import * as actions from './actions'
-import * as getters from './getters'
+import getters from './getters'
 
 
 const debug = process.env.NODE_ENV !== 'production'

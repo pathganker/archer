@@ -17,16 +17,14 @@ public enum ApiCodeEnum {
 	/** 服务异常 稍后再试 */
 	SERVICE_WRONG(500),
 	/** 对该接口无权限 请申请使用该接口 */
-	API_AUTHORITY(403),
+	API_AUTHORITY(401),
 	/** 用户名错误  */
 	USER_NAME(101),
 	/** 密码错误 */
 	USER_PASSWORD(102),
-	/** Token失效 请重新登陆 */
-	TOKEN_TIME_OUT(103),
 	/** 缺少签名 请使用正确的签名 */
 	TOKEN_LOST(104),
-	/** 错误参数 请输入正确参数 */
+	/** Token 请输入正确参数 */
 	TOKEN_WRONG(105),
 	/** 错误参数 请输入正确参数 */
 	ARGS_WRONG(106),

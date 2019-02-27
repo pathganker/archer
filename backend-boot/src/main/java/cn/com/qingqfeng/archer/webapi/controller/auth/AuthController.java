@@ -3,22 +3,34 @@ package cn.com.qingqfeng.archer.webapi.controller.auth;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.xml.bind.DatatypeConverter;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+
+
+
+
+
+
+
 
 import cn.com.qingqfeng.archer.enums.ApiCodeEnum;
 import cn.com.qingqfeng.archer.pojo.Result;
@@ -40,8 +52,12 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @RequestMapping("auth")
 public class AuthController {
 	
-	 private final static String SECRET_KEY = "*(-=4eklfasdfarerf41585fdasf";
+	 @Autowired
+	 private StringRedisTemplate redisTemplate; 
+	
+	 private final static String SECRET_KEY = "*(-=4eklfasdfarerf0417fdasf";
 
+	 private final static String CAPTCHA_KEY = "captcha:key_";
 	/**
 	 * 
 	 * <p>方法名:  getCaptcha </p> 
@@ -53,29 +69,23 @@ public class AuthController {
 	 * @param res  
 	 * void
 	 */
-	@RequestMapping(value="captcha", method={RequestMethod.GET})
-	public void getCaptcha(HttpServletRequest req, HttpServletResponse res) {
+	@RequestMapping(value="captcha/{key}", method={RequestMethod.GET})
+	public void getCaptcha(HttpServletRequest req, HttpServletResponse res, @PathVariable String key) {
 		// 生成随机字串
 		String verifyCode = VerifyCodeUtils.generateVerifyCode(4);
-//		Subject user = SecurityUtils.getSubject();
-//		user.getSession().setAttribute("verCode", verifyCode.toLowerCase());
-		// 存入会话session
-		HttpSession session = req.getSession(true);
-		// 删除以前的
-		session.removeAttribute("verCode");
-		session.removeAttribute("codeTime");
-		session.setAttribute("verCode", verifyCode.toLowerCase());
-		session.setAttribute("codeTime", LocalDateTime.now());
+		this.redisTemplate.opsForValue().set(CAPTCHA_KEY + key, verifyCode.toLowerCase(), 180000L, TimeUnit.MILLISECONDS);
 		// 生成图片
 		int w = 200, h = 40;
 		try {
 			OutputStream out = res.getOutputStream();
 			VerifyCodeUtils.outputImage(w, h, out, verifyCode);
+			out.flush();
 			out.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 	}
 	/**
 	 * 
@@ -89,15 +99,14 @@ public class AuthController {
 	 * @return  
 	 * Result
 	 */
-	@RequestMapping(value="vercode", method={RequestMethod.GET})
-	public Result validateCaptcha(HttpServletRequest req, HttpServletResponse res) {
+	@RequestMapping(value="vercode/{key}", method={RequestMethod.GET})
+	public Result validateCaptcha(@RequestParam String captcha, @PathVariable String key) {
 		Result rs = new Result();
-		String captcha = (String) req.getParameter("captcha");
 		//大写转小写
 		if(null != captcha){
 			captcha=captcha.toLowerCase();
 		}
-		String verCode = (String) req.getSession().getAttribute("verCode");
+		String verCode = this.redisTemplate.opsForValue().get(CAPTCHA_KEY+key);
 		if (null != verCode && verCode.equals(captcha)){
 			rs.setCode(ApiCodeEnum.SUCCESS);
 		}else{
@@ -117,9 +126,9 @@ public class AuthController {
 	 * Result
 	 */
 	@RequestMapping(value="jwttoken", method= {RequestMethod.POST})
-    public Result applyToken(HttpServletRequest req, HttpServletResponse res,
-    		@RequestParam(name="clientKey") String clientKey) {
+    public Result applyToken(HttpServletRequest req, HttpServletResponse res) {
 		Result rs = new Result();
+		String clientKey = req.getHeader("Auth-clientKey");
 		Subject user = SecurityUtils.getSubject();
 		if(null != user && user.isAuthenticated()){
 			rs.setCode(ApiCodeEnum.SUCCESS);
@@ -127,12 +136,15 @@ public class AuthController {
 			return rs;
 		}
         // 签发一个Json Web Token
-        // 令牌ID=uuid，用户=clientKey，签发者=clientKey
-        // token有效期=1分钟，用户角色=null,用户权限=create,read,update,delete
+        // 令牌ID=uuid,用户=clientKey,签发者=token-server
+        // token有效期=3分钟,用户角色=ordinary,用户权限=read
         String jwt = issueJwt(UUID.randomUUID().toString(), clientKey, 
-                                    "token-server",60000L, "ordinary", "read", SignatureAlgorithm.HS256);
+                                    "token-server",180000L, "ordinary", "read", SignatureAlgorithm.HS256);
         rs.setCode(ApiCodeEnum.SUCCESS);
-        rs.setData(jwt);
+        Map<String, Object> data = new LinkedHashMap<String, Object>();
+        data.put("jwt", jwt);
+        data.put("expireTime", "180000");
+        rs.setData(data);
         return rs;
     }
 	/**

@@ -5,14 +5,19 @@ import {
   USERINFO_SUCCESS,
   USERINFO_FAILURE,
   LOGOUT_USER,
-  UPDATE_USER_SUCCESS
+  UPDATE_USER_SUCCESS,
+  GET_ACCESS_TOKEN,
+  REFRESH_ACCESS_TOKEN
 } from '../types'
 import { getCookie,saveCookie,signOut } from '../../utils/authService'
 import router from '../../router'
 
 const state = {
   token: getCookie('token') || null,
-  user: null
+  user: null,
+  isRefreshToken: false,
+  accessToken: '',
+  expireTime: ''
 }
 
 const actions = {
@@ -58,6 +63,23 @@ const actions = {
     }, response => {
       showMsg(store,'更新用户资料失败!')
     })
+  },
+  getAccessToken: async function({commit}){
+    const data = await api.getAccessToken().then(response => {
+      const json=response.data
+      if(200 == json.code){
+        commit(GET_ACCESS_TOKEN, {
+          accessToken: json.data.jwt,
+          expireTime: json.data.expireTime
+        })
+        return response
+      }else{
+        console.log(response)
+      }
+    }).catch(error => {
+      console.log(error)
+    })
+    return data
   }
 }
 
@@ -80,6 +102,13 @@ const mutations = {
   },
   [UPDATE_USER_SUCCESS](state,action){
     state.user = action.user
+  },
+  [GET_ACCESS_TOKEN](state, data){
+    state.accessToken = data.accessToken
+    state.expireTime = data.expireTime
+  },
+  [REFRESH_ACCESS_TOKEN](state, data){
+    state.isRefreshToken = data.isRefreshToken
   }
 }
 

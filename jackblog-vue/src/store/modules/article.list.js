@@ -16,10 +16,10 @@ const actions = {
   getArticleList({ commit }, {options, isAdd=false}){
     //commit(REQUEST_ARTICLE_LIST)
     api.getFrontArticleList(options).then(response => {
-      console.log(response)
-      if(response.status!=200){
+      if(response.status!=200 || 200 != response.data.code){
         return commit(GET_ARTICLE_LIST_FAILURE)
       }
+      console.log(response.status)
       const json = response.data
       const isMore = !(json.data.length < options.itemsPerPage)
       isAdd
