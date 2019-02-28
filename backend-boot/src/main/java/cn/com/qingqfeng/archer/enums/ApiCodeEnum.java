@@ -44,10 +44,8 @@ public enum ApiCodeEnum {
 	TIMESTAMP_ERROR(113),
 	/** 验证码错误 */
 	CAPTCHA_WRONG(114),
-	/** 设备id为空 */
-	DEVICE_ID_NULL(115),
-	/** 用户id错误 */
-	USER_ID_ERROR(116);
+	/** 验证码过期 */
+	CAPTCHA_TIMEOUT(115);
 	
 	/** 错误码 */
 	private Integer errorCode;

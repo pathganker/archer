@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.util.WebUtils;
 
+
 /**   
  * <p>类名称: JwtPermFilter </p> 
  * <p>描述: TODO  </p>

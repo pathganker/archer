@@ -17,7 +17,7 @@ const state = {
   user: null,
   isRefreshToken: false,
   accessToken: '',
-  expireTime: ''
+  expireTime: 180000
 }
 
 const actions = {
@@ -33,23 +33,23 @@ const actions = {
         getCaptchaUrl(store)
         return showMsg(store,json.message || '登录失败')
       }
-      const token = json.token
+      const token = json.data.jwt
       saveCookie('token',token)
       store.dispatch('getUserInfo')
       store.commit(LOGIN_SUCCESS, {token: token })
       showMsg(store,'登录成功,欢迎光临!','success')
       router.push({path:'/'})
-    }).catch(error => {
-      console.log(error) 
     })
   },
   getUserInfo({ commit }){
     api.getMe().then(response => {
-      if(!response.ok){
+      const json = response.data
+      if(200!=json.code){
         return commit(USERINFO_FAILURE)
       }
-      commit(USERINFO_SUCCESS, { user: response.data })
-    }, response => {
+      commit(USERINFO_SUCCESS, { user: json.data })
+    }, 
+    error => {
       commit(USERINFO_FAILURE)
     })
   },
@@ -64,8 +64,8 @@ const actions = {
       showMsg(store,'更新用户资料失败!')
     })
   },
-  getAccessToken: async function({commit}){
-    let data = await api.getAccessToken().then(response => {
+  getAccessToken({commit}){
+    api.getAccessToken().then(response => {
       const json=response.data
       if(200 == json.code){
         commit(GET_ACCESS_TOKEN, {
@@ -79,7 +79,6 @@ const actions = {
     }).catch(error => {
       console.log(error)
     })
-    return data
   }
 }
 

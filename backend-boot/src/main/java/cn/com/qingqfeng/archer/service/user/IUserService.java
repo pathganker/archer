@@ -51,5 +51,7 @@ public interface IUserService {
 	 * UserDTO 
 	 */
 	UserDTO requestUserByName(String username);
-
+	
+	void addUser(UserDTO user);
+	
 }

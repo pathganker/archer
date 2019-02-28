@@ -1,7 +1,9 @@
 /**   */
 package cn.com.qingqfeng.archer.service.user.impl;
 
+import java.util.Date;
 import java.util.Set;
+import java.util.UUID;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import cn.com.qingqfeng.archer.dao.user.IUserDao;
 import cn.com.qingqfeng.archer.pojo.user.UserDO;
 import cn.com.qingqfeng.archer.pojo.user.UserDTO;
 import cn.com.qingqfeng.archer.service.user.IUserService;
+import cn.com.qingqfeng.archer.shiro.service.CryptogramService;
 
 /**   
  * <p>类名称: UserServiceImpl </p> 
@@ -25,6 +28,9 @@ public class UserServiceImpl implements IUserService{
 	
 	@Autowired
 	private IUserDao userDao;
+	
+	@Autowired
+	private CryptogramService cryptogramService;
 
 	/** (non-Javadoc)
 	 * @see cn.com.qingqfeng.archer.service.user.IUserService#requestRoleIdByName(java.lang.String)
@@ -56,6 +62,22 @@ public class UserServiceImpl implements IUserService{
 		}
 		BeanUtils.copyProperties(userDO, user);
 		return user;
+	}
+
+	/** (non-Javadoc)
+	 * @see cn.com.qingqfeng.archer.service.user.IUserService#addUser(cn.com.qingqfeng.archer.pojo.user.UserDTO)
+	 */
+	@Override
+	public void addUser(UserDTO user) {
+		user.setCreateTime(new Date());
+		user.setModifyTime(new Date());
+		user.setId(UUID.randomUUID().toString());
+		user.setSalt(UUID.randomUUID().toString());
+		String password = cryptogramService.encryptPassword(user);
+		user.setPassword(password);
+		UserDO comrade = new UserDO();
+		BeanUtils.copyProperties(user, comrade);
+		this.userDao.insert(comrade);
 	}
 
 }

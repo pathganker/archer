@@ -19,7 +19,6 @@ const actions = {
       if(response.status!=200 || 200 != response.data.code){
         return commit(GET_ARTICLE_LIST_FAILURE)
       }
-      console.log(response.status)
       const json = response.data
       const isMore = !(json.data.length < options.itemsPerPage)
       isAdd

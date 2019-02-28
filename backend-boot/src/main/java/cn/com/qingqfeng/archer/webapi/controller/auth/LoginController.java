@@ -1,20 +1,16 @@
 /**   */
 package cn.com.qingqfeng.archer.webapi.controller.auth;
 
+import io.jsonwebtoken.SignatureAlgorithm;
+
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.IncorrectCredentialsException;
-import org.apache.shiro.authc.UnknownAccountException;
-import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.session.SessionException;
-import org.apache.shiro.subject.Subject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,6 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 import cn.com.qingqfeng.archer.enums.ApiCodeEnum;
 import cn.com.qingqfeng.archer.pojo.Result;
 import cn.com.qingqfeng.archer.pojo.user.UserDTO;
+import cn.com.qingqfeng.archer.service.user.IUserService;
+import cn.com.qingqfeng.archer.shiro.service.CryptogramService;
+import cn.com.qingqfeng.archer.utils.JwtUtils;
 
 /**   
  * <p>类名称: LoginController </p> 
@@ -36,72 +35,73 @@ import cn.com.qingqfeng.archer.pojo.user.UserDTO;
 @RequestMapping("login")
 public class LoginController {
 	
-	private final static  Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
+	@Autowired
+	private IUserService userService;
+	@Autowired
+	private CryptogramService cryptogramService;
 	
+	//private final static  Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
+	
+	/**
+	 * 
+	 * <p>方法名:  Siginin </p> 
+	 * <p>描述:    TODO </p>
+	 * <p>创建时间:  2019年2月28日下午3:29:47 </p>
+	 * @version 1.0
+	 * @author lijunliang
+	 * @param user
+	 * @return  
+	 * Result
+	 */
 	@RequestMapping(value="siginin", method={RequestMethod.POST})
-	public Result Siginin(@RequestBody UserDTO user, HttpServletRequest request) {
+	public Result Siginin(@RequestBody UserDTO user) {
 		Result rs = new Result();
-		//String deviceId = req.getHeader(DEVICEID);
-		//HttpSession session = req.getSession(true);
-		//String token = RandomStringUtils.random(32, deviceId + System.currentTimeMillis() + ""); //生成token
-		//if("zankokutenshi@yeah.net".equals(username) && "123456".equals(password)){
-//			session.setAttribute("token", ARCHER_API_TOKEN_KEY_PREFIX+deviceId+token);
-//			rs.setData(token);
-//			rs.setCode(ApiCodeEnum.SUCCESS);
-//		}else{
-//			rs.setCode(ApiCodeEnum.USER_NAME_OR_PWD);
-//		}
-		if(null == user){
+		//简单参数校验
+		if(null == user || StringUtils.isBlank(user.getUsername()) || StringUtils.isBlank(user.getPassword())){
 			rs.setCode(ApiCodeEnum.ARGS_WRONG);
 			return rs;
 		}
-		Subject subject = SecurityUtils.getSubject();
-		AuthenticationToken token = createAuthToken(user.getUsername(), user.getPassword(), subject.getSession().getHost());
-		try {
-			String curUser = (String) subject.getPrincipal();
-			if(null != curUser &&  curUser.equals(user.getUsername())){
-	            rs.setData(token.getPrincipal());
-	            rs.setCode(ApiCodeEnum.API_AUTHORITY);
-	            return rs;
-			}
-            subject.login(token);
-            rs.setCode(ApiCodeEnum.SUCCESS);
-            return rs;
-		}catch (UnknownAccountException e) {
-			LOGGER.info("登陆失败,非法用户,对应的用户名为:{}",user.getUsername());
-			//登录错误，返回失败码
+		UserDTO comrade = this.userService.requestUserByName(user.getUsername());
+		//用户名错误
+		if(null == comrade){
 			rs.setCode(ApiCodeEnum.USER_NAME);
-		}catch(IncorrectCredentialsException e) {
-			LOGGER.info("登陆失败,密码错误,对应的用户名为:{}",user.getUsername());
-			//登录错误，返回失败码
+			return rs;
+		}
+		//校验密码
+		//传递盐值
+		user.setSalt(comrade.getSalt());
+		user.setId(comrade.getId());
+		if(this.cryptogramService.passwordsMatch(user, comrade.getPassword())){
+			rs.setCode(ApiCodeEnum.SUCCESS);
+			String jwt = JwtUtils.issueJwt(UUID.randomUUID().toString(), user.getUsername(), 
+					"token-server", 24*3600*1000L, "ordinary,admin", "create", SignatureAlgorithm.HS256);
+	        Map<String, Object> data = new LinkedHashMap<String, Object>();
+	        data.put("jwt", jwt);
+	        data.put("expireTime", 24*3600*1000L);
+	        rs.setData(data);
+		}else{
+			//密码错误
 			rs.setCode(ApiCodeEnum.USER_PASSWORD);
 		}
 		return rs;
 	}
 	/**
 	 * 
-	 * <p>方法名:  logout </p> 
+	 * <p>方法名:  Siginup </p> 
 	 * <p>描述:    TODO </p>
-	 * <p>创建时间:  2019年2月25日下午8:19:36 </p>
+	 * <p>创建时间:  2019年2月28日下午6:57:50 </p>
 	 * @version 1.0
 	 * @author lijunliang
+	 * @param user
 	 * @return  
 	 * Result
 	 */
-	@RequestMapping(value="/siginout")
-	public Result logout() {
+	@RequestMapping(value="siginup", method={RequestMethod.POST})
+	public Result Siginup(@RequestBody UserDTO user){
 		Result rs = new Result();
-		Subject subject = SecurityUtils.getSubject();
-        try {
-            subject.logout();
-            LOGGER.info("用户{}登出系统",subject.getPrincipal());
-        } catch (SessionException ise) {
-        	LOGGER.debug("登出错误:{}", ise);
-        }
 		rs.setCode(ApiCodeEnum.SUCCESS);
 		return rs;
 	}
-	
 	/**
 	 * 
 	 * <p>方法名:  requestSnsLogins </p> 
@@ -122,21 +122,4 @@ public class LoginController {
 		result.setData(code);
 		return result;
 	}
-	/**
-	 * 
-	 * <p>方法名:  createAuthToken </p> 
-	 * <p>描述:    TODO </p>
-	 * <p>创建时间:  2019年2月25日下午8:14:27 </p>
-	 * @version 1.0
-	 * @author lijunliang
-	 * @param username
-	 * @param password
-	 * @param host
-	 * @return  
-	 * AuthenticationToken
-	 */
-	private AuthenticationToken createAuthToken(String username, String password, String host) {
-		return new UsernamePasswordToken(username, password, true, host);
-	}
-	
 }

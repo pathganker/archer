@@ -21,19 +21,19 @@
     <select id="getAll" resultMap="BaseResultMap"  >
        SELECT 
        <include refid="Base_Column_List" />
-       FROM sur_staff_user
+       FROM qfeng_user
     </select>
 
     <select id="getOne" parameterType="java.lang.String" resultMap="BaseResultMap" >
         SELECT 
        <include refid="Base_Column_List" />
-       FROM sur_staff_user
+       FROM qfeng_user
        WHERE id = #{id}
     </select>
 
     <insert id="insert" parameterType="cn.com.qingqfeng.archer.pojo.user.UserDO" >
        INSERT INTO 
-            sur_staff
+            qfeng_user
             (id, username, password, nickname, salt, telephone, depart, default_url, create_time, modify_time)
         VALUES
             (#{id}, #{username}, #{password}, #{nickname}, #{salt}, #{telephone}, #{depart}, #{defaultUrl}, #{createTime}, #{modifyTime})
@@ -41,7 +41,7 @@
     
     <update id="update" parameterType="cn.com.qingqfeng.archer.pojo.user.UserDO" >
        UPDATE 
-            sur_staff_user 
+            qfeng_user 
        SET 
         <if test="username != null">username = #{username},</if>
         <if test="password != null">password = #{password},</if>
@@ -52,7 +52,7 @@
     
     <delete id="delete" parameterType="java.lang.String" >
        UPDATE 
-             sur_staff_user
+             qfeng_user
        SET
              is_delete=1 
        WHERE 
@@ -63,7 +63,7 @@
         SELECT
         <include refid="Base_Column_List" />
         FROM 
-            sur_staff_user
+            qfeng_user
         WHERE 
             is_delete=0 and username = #{username}
     </select>

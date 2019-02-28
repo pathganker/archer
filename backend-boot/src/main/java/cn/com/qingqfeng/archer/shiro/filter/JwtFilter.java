@@ -66,6 +66,11 @@ public class JwtFilter extends AccessControlFilter {
                 return false;
             } 
         }
+        //不处理OPTIONS
+        HttpServletRequest req = (HttpServletRequest)request;
+        if("OPTIONS".equals(req.getMethod())){
+        	return false;
+        }
         //WebUtils.toHttp(response).sendError(HttpServletResponse.SC_UNAUTHORIZED,"Token丢失");
         rs.setCode(ApiCodeEnum.TOKEN_LOST);
         rs.setMessage("Token丢失");

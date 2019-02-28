@@ -65,7 +65,7 @@ export default {
     return {
       user: {
         username: 'zankokutenshi@yeah.net',
-        password: '123456'
+        password: 'cankutianshi'
       }
     }
   },
@@ -87,7 +87,7 @@ export default {
         }
         else{
           this.getCaptchaUrl()
-          this.showMsg("请填写表单",'error');
+          this.showMsg("请填写用户名/密码/验证码",'error');
         }
       })
     }

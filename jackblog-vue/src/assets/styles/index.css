@@ -5,6 +5,7 @@
 .navbar-box {
   width: 100%;
   height: 61px;
+  min-width: 375px;
 }
 .navbar-skin {
   background:#f0f0f0;
@@ -13,13 +14,17 @@
   height: 100%;
   width: 100%;
   padding: 0px 10% 0px 10%;
-  min-width: 356px;
+  min-width: 300px;
 }
 @media (max-width: 767px) {
+  .day-mode .main-box{
+    margin-top: 20px;
+  }
   .day-mode .navbar-menu{
     float: left;
     height: 100%;
-    padding: 0px 1% 0px 2%;
+    padding: 0px 2px 0px 10px;
+    min-width: 375px;
   }
   .day-mode .navbar-menu .navbar-items {
     margin: 0px 0px 0px 0px;
@@ -34,6 +39,7 @@
     margin-left: 0px;
   }
   .day-mode .navbar-skin {
+    min-width: 375px;
     background-color: #f0f0f0;
     -moz-box-shadow: 0 1px 4px #eee;
     -webkit-box-shadow: 0 1px 4px #eee;
@@ -51,8 +57,27 @@
   .day-mode .navbar-item-expand{
     display: none;
   }
+  .day-mode .main-content{
+    min-width: 375px;
+    margin:0px
+  }
+  .day-mode .navbar-box .navbar-shrink .pull-right{
+    width: 100%
+  }
 }
 @media (max-width: 767px) {
+  .night-mode .main-box{
+    margin-top: 20px;
+  }
+  .night-mode .main-content{
+    min-width: 375px;
+    margin:0px
+  }
+  .night-mode .navbar-menu{
+    float: left;
+    height: 100%;
+    padding: 0px 2px 0px 10px;
+  }
   .night-mode .navbar-menu .navbar-items {
     margin: 0px 0px 0px 0px;
     height: 100%;
@@ -95,7 +120,7 @@
 }
 .navbar-menu a.navbar-item {
   float: left;
-  width: 100px;
+  width: 90px;
   height: 50%;
   background-color: #f0f0f0;
   margin: 25px 0px 0px 0px;
@@ -134,7 +159,7 @@
   margin-top: 61px;
   padding-left: 0px;
   text-align: center;
-  min-width: 356px;
+  min-width: 375px;
 }
 .main-box .row{
   text-align: center;
@@ -143,6 +168,7 @@
 .main-content{
   margin-left:10%;
   margin-right:25%;
+  min-width: 375px;
 }
 footer{
   margin-left: 10%;
@@ -160,7 +186,7 @@ footer{
   margin-bottom: 0;
 }
 .main-content .load-more .ladda-button {
-  background: gray;
+  background: #337ab7;
   width: 300px;
   height: 40px;
   border-radius: 20px;
@@ -189,4 +215,25 @@ footer{
   padding: 10px 0px 0px 0px;
   height: 30px;
   width: 90px;
+}
+.settings-box{
+  margin-top: 61px;
+}
+.navbar-menu a.navbar-item-expand img{
+  height: 52px;
+  width: 55px;
+  border-radius: 50%;
+}
+.navbar-menu .expanded-avatar{
+  width: 57px !important;
+  margin: 4px 20px 0px 20px !important;
+}
+.data-avator{
+  float: left;
+}
+.dropdown-menu.pull-right{
+  margin-right: 5%;
+}
+.dropdown-menu-item{
+  text-align: center;
 }

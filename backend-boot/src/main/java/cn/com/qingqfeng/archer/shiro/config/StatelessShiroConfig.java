@@ -109,6 +109,7 @@ public class StatelessShiroConfig {
 		Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
 		filterChainDefinitionMap.put("/auth/captcha/**", "anon");
 		filterChainDefinitionMap.put("/auth/jwttoken", "anon");
+		filterChainDefinitionMap.put("/user/**", "jwt,role[admin]");
 		filterChainDefinitionMap.put("/**", "jwt,role[ordinary]");
 		shiroFilter.setFilterChainDefinitionMap(filterChainDefinitionMap);
 		return shiroFilter;

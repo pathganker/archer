@@ -26,12 +26,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 
-
-
-
-
-
-
 import cn.com.qingqfeng.archer.enums.ApiCodeEnum;
 import cn.com.qingqfeng.archer.pojo.Result;
 import cn.com.qingqfeng.archer.utils.VerifyCodeUtils;
@@ -109,6 +103,8 @@ public class AuthController {
 		String verCode = this.redisTemplate.opsForValue().get(CAPTCHA_KEY+key);
 		if (null != verCode && verCode.equals(captcha)){
 			rs.setCode(ApiCodeEnum.SUCCESS);
+		}else if(null == verCode){
+			rs.setCode(ApiCodeEnum.CAPTCHA_TIMEOUT);
 		}else{
 			rs.setCode(ApiCodeEnum.CAPTCHA_WRONG);
 		}
@@ -147,6 +143,8 @@ public class AuthController {
         rs.setData(data);
         return rs;
     }
+	
+	
 	/**
 	 * 
 	 * <p>方法名:  issueJwt </p> 

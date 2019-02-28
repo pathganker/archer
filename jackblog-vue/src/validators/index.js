@@ -47,7 +47,7 @@ const config = {
     pristine: 'pristine', // control has not been interacted with
     dirty: 'ng-dirty' // control has been interacted with
   },
-  events: 'input|blur',
+  events: 'change',
   inject: true  
 }
 Vue.use(VeeValidate,config)

@@ -44,12 +44,23 @@
 		        	<i v-if="styleMode === 'day-mode'" class="fa fa-moon-o"></i>
 		        	<i v-else class="fa fa-sun-o"></i>
 		        </a>
-		        <a href="javascript:;" class="navbar-item-expand expanded-logout" @click="logout()" title="登出">
-		            <i class="fa fa-sign-out"></i>
-		        </a>
+						<div class="data-avator" href="javascript:;"  @mouseover="dropmenu()">
 						<router-link :to="{ path: '/settings' }" class="navbar-item-expand expanded-avatar" v-bind:title="auth.user.nickname">
 							<img :src="auth.user.avatar || defaultAvatar"></img>
 						</router-link>
+						</div>
+						<ul class="dropdown-menu pull-right" id="droptestMenu">
+								<li class="dropdown-menu-item">
+									<router-link :to="{ path: '/settings' }">
+										<i class="fa fa-cog"></i>&nbsp;&nbsp;&nbsp;设置
+									</router-link>
+								</li>
+								<li class="dropdown-menu-item">					
+									<a href="javascript:;" class="expanded-logout" @click="logout()">
+											<i class="fa fa-sign-out"></i>&nbsp;&nbsp;&nbsp;登出
+									</a>  
+								</li>
+							</ul>
 		      </div>
 	      	<div v-else class="navbar-items">
 						<a class="navbar-item-expand change-mode" href="javascript:;" @click="changeMode()">
@@ -61,16 +72,16 @@
 						</router-link>   
 	      	</div>
 					<div class="navbar-items">
-						<router-link :to="{ path: '/' }" class="navbar-item expanded-avatar" title="首页">
+						<router-link :to="{ path: '/' }" class="navbar-item" title="首页">
 						首页
 						</router-link>
-						<router-link :to="{ path: '/settings' }" class="navbar-item expanded-avatar" title="设置">
+						<router-link :to="{ path: '/settings' }" class="navbar-item " title="设置">
 						分类
 						</router-link>
-						<router-link :to="{ path: '/' }" class="navbar-item expanded-avatar" title="设置">
+						<router-link :to="{ path: '/' }" class="navbar-item" title="设置">
 						动态
 						</router-link>
-						<router-link :to="{ path: '/settings' }" class="navbar-item expanded-avatar" title="设置">
+						<router-link :to="{ path: '/settings' }" class="navbar-item" title="设置">
 						设置
 						</router-link>
 					</div>
@@ -110,6 +121,7 @@ export default {
   }, 
   created (){
 		document.body.className = this.styleMode
+		this.getAccessToken()
     if(this.auth.token){
       this.getUserInfo()
     }
@@ -118,7 +130,8 @@ export default {
     ...mapActions([
       'changeStyleMode',
       'logout',
-			'getUserInfo'
+			'getUserInfo',
+			'getAccessToken'
     ]),		
     changeMode(){
       this.changeStyleMode()
@@ -126,6 +139,11 @@ export default {
     },
 		dropdown(){
 			const dropdownMenu = document.getElementById('dropdownMenu')
+			const isShow = dropdownMenu.style.display!=='block'?'block':'none'
+			dropdownMenu.style.display = isShow
+		},
+		dropmenu(){
+			const dropdownMenu = document.getElementById('droptestMenu')
 			const isShow = dropdownMenu.style.display!=='block'?'block':'none'
 			dropdownMenu.style.display = isShow
 		}
