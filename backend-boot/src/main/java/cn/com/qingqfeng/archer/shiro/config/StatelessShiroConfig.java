@@ -12,11 +12,9 @@ import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.filter.authc.AnonymousFilter;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import cn.com.qingqfeng.archer.service.user.IUserService;
 import cn.com.qingqfeng.archer.shiro.filter.JwtFilter;
 import cn.com.qingqfeng.archer.shiro.filter.JwtRoleFilter;
 import cn.com.qingqfeng.archer.shiro.realm.JwtRealm;
@@ -59,8 +57,6 @@ public class StatelessShiroConfig {
 	private JwtRealm jwtRealm(){
 		return new JwtRealm();
 	}
-	@Autowired
-	private IUserService userService;
 	
 //	private HmacRealm hmacRealm(){
 //		HmacRealm hmacRealm = new HmacRealm();

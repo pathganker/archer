@@ -78,8 +78,8 @@
 						<router-link :to="{ path: '/settings' }" class="navbar-item " title="设置">
 						分类
 						</router-link>
-						<router-link :to="{ path: '/' }" class="navbar-item" title="设置">
-						动态
+						<router-link :to="{ path: '/creation' }" class="navbar-item" title="编辑器">
+						编辑器
 						</router-link>
 						<router-link :to="{ path: '/settings' }" class="navbar-item" title="设置">
 						设置

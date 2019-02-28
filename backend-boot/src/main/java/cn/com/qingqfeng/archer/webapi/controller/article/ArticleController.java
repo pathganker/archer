@@ -38,7 +38,7 @@ public class ArticleController {
 		article_1.setId(UUID.randomUUID().toString());
 		List<ImageDTO> images = new ArrayList<>();
 		ImageDTO image_1 = new ImageDTO();
-		image_1.setUrl("/image/body_bg_page.jpg");
+		image_1.setUrl("images/body_bg_page.jpg");
 		images.add(image_1);
 		article_1.setImages(images);
 		article_1.setLikeCount(100000);
@@ -81,4 +81,5 @@ public class ArticleController {
 		result.setData(test);
 		return result;
 	}
+	
 }

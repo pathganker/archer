@@ -37,6 +37,7 @@
     "jackblog-sass": "1.0.9",
     "nodemon": "^1.12.1",
     "npm-run-all": "^4.1.1",
+    "mavon-editor": "2.6.17",
     "rimraf": "^2.6.2",
     "style-loader": "0.18.2",
     "uglifyjs-webpack-plugin": "1.0.0-beta.1",
@@ -59,6 +60,7 @@
     "webpack-dev-server": "^2.8.2"
   },
   "dependencies": {
+    "mavon-editor": "^2.6.17",
     "npm": "^6.8.0"
   }
 }

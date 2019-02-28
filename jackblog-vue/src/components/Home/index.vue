@@ -34,12 +34,12 @@ export default {
     })
   },  
   created(){
-    if(this.indexImg === ''){
-      this.getIndexImage()
-    }
-    if(this.tagList.length < 1){
-      this.getTagList()
-    }
+    // if(this.indexImg === ''){
+    //   this.getIndexImage()
+    // }
+    // if(this.tagList.length < 1){
+    //   this.getTagList()
+    // }
     if(this.articleList.length < 1){
       this.getArticleList({options:this.options})
     }
