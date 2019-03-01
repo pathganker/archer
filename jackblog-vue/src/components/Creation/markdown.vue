@@ -5,7 +5,7 @@
     </div>
 <!-- <h3 class="intro-head">超赞的👍  <a href="https://github.com/hinesboy/mavonEditor" target="_blank">mavonEditor</a> </h3> -->
 
-    <mavon-editor  v-model="content"/>
+    <mavon-editor  v-model="backendArticle.origin.backendContent"/>
   </div>
 </template>
 
@@ -24,6 +24,9 @@ export default {
       editionMenu.classList.toggle('edition-min')
       markdownEditor.classList.toggle('markdown-container-max')
     }
+  },
+  created:{
+
   },
   data() {
     return {
