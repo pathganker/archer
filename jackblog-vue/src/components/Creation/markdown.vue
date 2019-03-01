@@ -5,13 +5,13 @@
     </div>
 <!-- <h3 class="intro-head">超赞的👍  <a href="https://github.com/hinesboy/mavonEditor" target="_blank">mavonEditor</a> </h3> -->
 
-    <mavon-editor  v-model="backendArticle.origin.backendContent"/>
+    <mavon-editor  v-model="content"/>
   </div>
 </template>
 
 <script>
 import  { mavonEditor } from 'mavon-editor';
-
+import { mapState,mapActions } from 'vuex'
 import 'mavon-editor/dist/css/index.css';
     
 export default {
@@ -25,12 +25,9 @@ export default {
       markdownEditor.classList.toggle('markdown-container-max')
     }
   },
-  created:{
-
-  },
   data() {
     return {
-      content: (this.$parent.backendArticle.origin.backendContent != null ? this.$parent.backendArticle.origin.backendContent : `Markdown 语法简介
+      content: (this.$parent.backendArticle.origin != null ? this.$parent.backendArticle.origin.backendContent : `Markdown 语法简介
 =============
 > [语法详解](http://commonmark.org/help/)
 

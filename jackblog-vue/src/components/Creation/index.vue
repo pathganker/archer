@@ -14,7 +14,7 @@ export default{
   computed:{
     ...mapState({
       editionList: ({editionList}) => editionList.items,
-      backendArticle: ({backendArticle}) => backendArticle
+      backendArticle: ({backendArticle}) => backendArticle.origin
     })
   },
   created(){
