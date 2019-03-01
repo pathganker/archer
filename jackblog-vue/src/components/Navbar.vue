@@ -79,7 +79,7 @@
 						分类
 						</router-link>
 						<router-link :to="{ path: '/creation' }" class="navbar-item" title="编辑器">
-						编辑器
+						写博客
 						</router-link>
 						<router-link :to="{ path: '/settings' }" class="navbar-item" title="设置">
 						设置

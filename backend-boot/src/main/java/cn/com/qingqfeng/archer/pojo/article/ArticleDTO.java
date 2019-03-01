@@ -28,7 +28,9 @@ public class ArticleDTO implements Serializable{
 	private Integer commentCount;
 	private Integer likeCount;
 	private Date publishTime;
-	
+	private String edition;
+	private String frontContent;
+	private String backendContent;
 	public List<ImageDTO> getImages() {
 		return images;
 	}
@@ -73,6 +75,24 @@ public class ArticleDTO implements Serializable{
 	}
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+	public String getEdition() {
+		return edition;
+	}
+	public void setEdition(String edition) {
+		this.edition = edition;
+	}
+	public String getFrontContent() {
+		return frontContent;
+	}
+	public void setFrontContent(String frontContent) {
+		this.frontContent = frontContent;
+	}
+	public String getBackendContent() {
+		return backendContent;
+	}
+	public void setBackendContent(String backendContent) {
+		this.backendContent = backendContent;
 	}
 	
 	

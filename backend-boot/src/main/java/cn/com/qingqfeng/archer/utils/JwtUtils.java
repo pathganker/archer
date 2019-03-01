@@ -11,6 +11,9 @@ import java.util.Date;
 import javax.xml.bind.DatatypeConverter;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
+
+import cn.com.qingqfeng.archer.shiro.token.JwtPlayload;
 
 /**   
  * <p>类名称: JwtUtils </p> 
@@ -47,4 +50,16 @@ public class JwtUtils {
 		jwt.signWith(algorithm, secretKeyBytes);//加密设置
 		return jwt.compact();
 	}
+    
+    public static String getCurrentUserId(){
+    	try{
+    		JwtPlayload jwtPlayload =(JwtPlayload) SecurityUtils.getSubject().getPrincipals().getPrimaryPrincipal();
+    		if(null != jwtPlayload){
+    			return jwtPlayload.getUserId();
+    		}
+    	}catch(Exception e){
+    		return null;
+    	}
+    	return null;
+    }
 }

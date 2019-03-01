@@ -5,6 +5,8 @@ import apps from './modules/apps'
 import articleList from './modules/article.list'
 import prenextArticle from './modules/article.prenext'
 import articleDetail from './modules/article.detail'
+import editionList from './modules/article.edition'
+import backendArticle from './modules/create.article'
 import auth from './modules/auth'
 import commentList from './modules/comment.list'
 import globalVal from './modules/global.val'
@@ -24,7 +26,9 @@ export default new Vuex.Store({
   getters,
   modules: {
     apps,
+    editionList,
     articleList,
+    backendArticle,
     prenextArticle,
     articleDetail,
     auth,

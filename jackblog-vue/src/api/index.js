@@ -107,5 +107,35 @@ export default {
       url: 'auth/jwttoken',
       method: 'post'
     })
+  },
+  getEditionList: function(){
+    return fetch({
+      url: 'article/edition',
+      method: 'get'
+    })
+  },
+  getBackendArticle: function(data){
+    return fetch({
+      url: 'article/backend',
+      method: 'get',
+      params: {
+        id: data
+      }
+    })
+  },
+  saveBackendArticle: function(data){
+    return fetch({
+      url: 'article/backend/newblog',
+      method: 'post',
+      data: data
+    })
+  },
+  updateBackendArticle: function(data){
+    return fetch({
+      url: 'article/backend/oldblog',
+      method: 'post',
+      data: data
+    })
   }
+
 }
