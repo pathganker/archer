@@ -15,8 +15,14 @@
           </div>
         </div>
         <ul class="nav nav-pills nav-stacked">
-          <li v-for="(edition,index) in editionList" :key="index" @click="editionActive(index)" :class="{active:index==ed_ins}">
-            <a>{{edition.title}}</a>
+          <li v-for="(edition,index) in editionList" :key="index" @click="editionActive(index)" :class="{active:index==cured}">
+            <a>{{edition.title}}  
+              <span class="glyphicon glyphicon-cog " aria-hidden="true" @click="edconfig(index)" style="display:none;float:right;" :class="{active:index==cured}"></span>
+              <ul class="dropdown-menu"  :id="'ed_drop_menu_'+index" style="display:none" v-clickoutside="index">
+                <li><a @click="edModify(edition)">修改</a></li>
+                <li><a @click="edDelete(edition)">删除</a></li>
+              </ul>
+            </a>
           </li>
           <li v-if="editionList.length <1">正在大力回车...</li>
         </ul>
@@ -24,46 +30,52 @@
       <div class="horizon-bar"></div>
       <div class="title-list">
         <ul class="nav nav-pills nav-stacked">
-          <li ><a class="fa fa-plus">&nbsp;&nbsp;&nbsp;新建文章</a></li>
+          <li><a class="fa fa-plus" @click="createblog()">&nbsp;&nbsp;&nbsp;新建文章</a></li>
         </ul>
-        <ul class="nav nav-pills nav-stacked">
-          <li v-for="(article,index) in articles" :key="index" @click="articleActive(index,article.id)" :class="{active:index==ar_ins}">
-            <a>{{article.title}}</a>
+        <ul v-if="editionList[cured]!=null" class="nav nav-pills nav-stacked">
+          <li  v-for="(article,index) in editionList[cured].articles" :key="index" @click="articleActive(index,article.id)" :class="{active:index==curar}">
+            <a>{{article.title}}
+              <span class="glyphicon glyphicon-cog" aria-hidden="true" style="display:none;float:right" @click="arconfig(index)" :class="{active:index==curar}"></span>
+                <ul class="dropdown-menu"  :id="'ar_drop_menu_'+index" style="display:none" v-clickoutside="index">
+                <li><a @click="arPublish(article)">发布文章</a></li>
+                <li><a @click="arModifyTitle(article)">修改标题</a></li>
+                <li><a @click="arMove(article)">移动</a></li>
+                <li><a @click="arDelete(article)">删除</a></li>
+              </ul>
+            </a>
           </li>
         </ul>
-      </div>          
       </div>
     </div>
   </div>
 </template>
 <script>
 import { mapState,mapActions } from 'vuex'
+import store from '../../store'
+import {
+  CURRENT_ARTICLE,
+  CURRENT_EDITION,
+  ADD_ARTICLE,
+  SAVE_ARTICLE_DRAFT
+} from '../../store/types'
+import {formatDate, uuid} from '../../utils/stringUtils'
 export default {
-  props:['editionList'],
-  data(){
-    return {
-      ed_ins:0,
-      ar_ins:0,
-      articles: ''
-    }
-  },
-  created(){
-    if(this.$parent.editionList[0]){
-      this.articles=this.$parent.editionList[0].articles
-    }
-    
-  },
+  props:['editionList','cured','curar'],
   methods:{
     ...mapActions([
-      'getBackendArticle'
+      'getBackendArticle',
+      'saveBackendArticle'
     ]),
     editionActive(num){
-      this.ed_ins=num
-      this.articles=this.$parent.editionList[num].articles
+      store.commit(CURRENT_EDITION,{cured:num})
+      store.commit(CURRENT_ARTICLE,{curar:0})
     },
     articleActive(num, id){
-      this.ar_ins=num
-      this.getBackendArticle(id)
+      store.commit(CURRENT_ARTICLE,{curar:num})
+
+    },
+    newActive(num){
+      store.commit(CURRENT_ARTICLE,{curar:num})
     },
     edition(){
       document.getElementById('editioninput').style.display="block"
@@ -73,8 +85,70 @@ export default {
     },
     cancle(){
       document.getElementById('editioninput').style.display="none"
+    },
+    createblog(){
+      let blog ={
+        id: uuid(),
+        title: formatDate(new Date()),
+        backendContent: null,
+        frontContent: null,
+        edition: this.editionList[this.cured].id
+      }
+      store.commit(ADD_ARTICLE, {article:blog})
+      store.commit(CURRENT_ARTICLE, {curar:0})
+      this.saveBackendArticle(blog)
+    },
+    edconfig(num){
+      const dropmenu = document.getElementById('ed_drop_menu_'+num)
+      const isshow = (dropmenu.style == null || dropmenu.style.display=="none") ? "block":"none"
+      dropmenu.style.display=isshow 
+    },
+    arconfig(num){
+      const dropmenu = document.getElementById('ar_drop_menu_'+num)
+      const isshow = (dropmenu.style == null || dropmenu.style.display=="none") ? "block":"none"
+      dropmenu.style.display=isshow 
+    },
+    edModify(){
+
+    },
+    edDelete(){
+
+    },
+    arModifyTitle(){
+
+    },
+    arPublish(){
+
+    },
+    arMove(){
+
+    },
+    arDelete(){
+
+    }
+  },
+  directives:{
+    //菜单外点击事件
+    clickoutside:{
+      bind:function(el,binding,vnode){
+        function  hidemenu(el){
+          el.style.display="none" 
+        }
+        function documentHandler(e){
+          if(el.contains(e.target) || el.contains(e.target.nextElementSibling)){
+            return true
+          }else if (el.style.display!='none'){
+            hidemenu(el)
+          }
+        }
+        el._vueClickOutside_ = documentHandler
+        document.addEventListener('click',documentHandler);
+      },
+      unbind:function(el,binding){
+          document.removeEventListener('click',el._vueClickOutside_);
+          delete el._vueClickOutside_;
+      }
     }
   }
-  
 }
 </script>

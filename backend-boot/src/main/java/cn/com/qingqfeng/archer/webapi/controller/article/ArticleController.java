@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -105,17 +106,21 @@ public class ArticleController {
 		ArticleDTO article = new ArticleDTO();
 		article.setTitle("我是一个恶人，我莫得感情");
 		article.setId("1234");
+		article.setBackendContent("我是一个恶人，我莫得感情");
 		articles.add(article);
 		article = new ArticleDTO();
 		article.setTitle("我是一个杀手，我莫得感情");
 		article.setId("1324");
+		article.setBackendContent("我是一个杀手，我莫得感情");
 		articles.add(article);
 		article = new ArticleDTO();
 		article.setTitle("我是一个莫得感情的青团子");
 		article.setId("3245");
+		article.setBackendContent("我是一个莫得感情的青团子");
 		articles.add(article);
 		for(int i =0; i< 3;i++){
 			EditionDTO edition = new EditionDTO();
+			edition.setId("12345678");
 			edition.setUserId(JwtUtils.getCurrentUserId());
 			edition.setTitle("残酷天使的行动纲领");
 			edition.setArticles(articles);
@@ -140,6 +145,7 @@ public class ArticleController {
 		Result rs = new Result();
 		ArticleDTO article = new ArticleDTO();
 		article.setBackendContent("这是一个无情的人");
+		article.setTitle("这是一个无情的人");
 		article.setId(id);
 		rs.setData(article);
 		rs.setCode(ApiCodeEnum.SUCCESS);
@@ -157,7 +163,7 @@ public class ArticleController {
 	 * Result
 	 */
 	@RequestMapping(value="backend/newblog", method={RequestMethod.POST})
-	public Result addNewArticle(ArticleDTO article){
+	public Result addNewArticle(@RequestBody ArticleDTO article){
 		Result rs = new Result();
 		rs.setCode(ApiCodeEnum.SUCCESS);
 		return rs;
@@ -174,7 +180,7 @@ public class ArticleController {
 	 * Result
 	 */
 	@RequestMapping(value="backend/oldblog", method={RequestMethod.POST})
-	public Result updateArticle(ArticleDTO article){
+	public Result updateArticle(@RequestBody ArticleDTO article){
 		Result rs = new Result();
 		rs.setCode(ApiCodeEnum.SUCCESS);
 		return rs;

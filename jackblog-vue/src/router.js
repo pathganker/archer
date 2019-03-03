@@ -7,7 +7,7 @@ const Article = () => import('components/Article/index')
 const Apps = () => import('components/Apps/index')
 const NotFound = () => import('components/NotFound')
 const Creation = () => import('components/Creation/index')
-import {isLogin} from './utils/authService'
+import {isLogin} from './utils/cookies'
 
 Vue.use(Router)
 

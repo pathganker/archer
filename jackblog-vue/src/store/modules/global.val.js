@@ -4,7 +4,7 @@ import {
   GET_INDEX_IMG,
   GET_CAPTCHAURL
 } from '../types'
-import { getCookie,saveCookie } from '../../utils/authService'
+import { getCookie,saveCookie } from '../../utils/cookies'
 
 const state = {
   indexImg: '',

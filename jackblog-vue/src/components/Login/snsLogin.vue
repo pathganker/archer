@@ -10,7 +10,7 @@
 
 <script>
 import {API_ROOT} from '../../config'
-import {getCookie,isLogin} from '../../utils/authService'
+import {getCookie,isLogin} from '../../utils/cookies'
 
 export default {
   props: {

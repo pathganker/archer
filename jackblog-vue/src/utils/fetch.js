@@ -4,7 +4,7 @@ import {API_ROOT} from '../config'
 import {
   REFRESH_ACCESS_TOKEN
 } from '../store/types'
-import { getCookie} from './authService'
+import { getCookie} from './cookies'
 // 创建axios实例
 const service = axios.create({
   baseURL: API_ROOT, // api的base_url
@@ -45,7 +45,7 @@ service.interceptors.response.use(
       return service(config)
     }
     if(104 == response.data.code){
-      config.headers['Auth-jwt']=store.getters.accessToken
+      config.headers['Auth-jwt']='store.getters.accessToken'
       return service(config)
     }
     return response

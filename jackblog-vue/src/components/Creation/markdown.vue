@@ -1,230 +1,122 @@
 <template>
-
-  <div class="markdown-container" id="markdownContent" >
+  <div class="markdown-container" id="markdownContent" @click="editActive()">
     <div class="border-bar" @click="hidebar()">
     </div>
-<!-- <h3 class="intro-head">超赞的👍  <a href="https://github.com/hinesboy/mavonEditor" target="_blank">mavonEditor</a> </h3> -->
-
-    <mavon-editor  v-model="content"/>
+    <div class="edit-body" v-if="editionList!=null && editionList[cured]!=null && editionList[cured].articles!=null && editionList[cured].articles[curar]!=null">
+      <input class="intro-head " name="title" type="text" :value="editionList[cured].articles[curar].title" @input="title = $event.target.value" autocomplete="false"/>
+      <mavon-editor  ref="md" :value="editionList[cured].articles[curar].backendContent == null ? '': editionList[cured].articles[curar].backendContent" @input="e => content = e" @save="save()" 
+        :toolbars="toolbars" :externalLink="externalLink" />
+    </div>
+    <div v-else>
+            <mavon-editor  ref="md" :value="''" @input="e => content = e" @save="save()" 
+        :toolbars="toolbars" :externalLink="externalLink"/>
+    </div>
   </div>
 </template>
 
 <script>
-import  { mavonEditor } from 'mavon-editor';
+import  { mavonEditor } from 'mavon-editor'
 import { mapState,mapActions } from 'vuex'
-import 'mavon-editor/dist/css/index.css';
-    
+import 'mavon-editor/dist/css/index.css'
+import store from '../../store'
+
 export default {
-  props: ['backendArticle'],
+  props:['editionList','cured','curar'],
   components: { mavonEditor },
-  methods:{
+  methods: {
+    ...mapActions([
+      'updateBackendArticle',
+      'getEditionList'
+    ]),
     hidebar(){
       const editionMenu = document.getElementById('editionNav')
       const markdownEditor = document.getElementById('markdownContent')
       editionMenu.classList.toggle('edition-min')
       markdownEditor.classList.toggle('markdown-container-max')
+    },
+    save(){
+      let frontContent = this.$refs.md.d_render
+      let backendContent = this.content
+      this.updateBackendArticle({
+        id: this.editionList[this.cured].articles[this.curar].id,
+        title: this.title == null ? this.editionList[this.cured].articles[this.curar].title : this.title,
+        backendContent: backendContent,
+        frontContent: frontContent,
+      })
+      this.getEditionList()
+    },
+    editActive(){
+      if(!this.isedit){
+        this.isedit = true
+      }
+    }
+  },
+  watch: {
+    curar(val){
+      if(this.isedit){
+        this.save()
+        this.isedit=false
+      }
+    },
+    $route(to,from){
+      console.log("------------")
     }
   },
   data() {
     return {
-      content: (this.$parent.backendArticle.origin != null ? this.$parent.backendArticle.origin.backendContent : `Markdown 语法简介
-=============
-> [语法详解](http://commonmark.org/help/)
-
-## **粗体**
-\`\`\`
-**粗体**
-__粗体__
-\`\`\`
-## *斜体*
-\`\`\`
-*斜体*
-_斜体_
-\`\`\`
-## 标题
-\`\`\`
-# 一级标题 #
-一级标题
-====
-## 二级标题 ##
-二级标题
-----
-### 三级标题 ###
-#### 四级标题 ####
-##### 五级标题 #####
-###### 六级标题 ######
-\`\`\`
-## 分割线
-\`\`\`
-***
----
-\`\`\`
-****
-## ^上^角~下~标
-\`\`\`
-上角标 x^2^
-下角标 H~2~0
-\`\`\`
-## ++下划线++ ~~中划线~~
-\`\`\`
-++下划线++
-~~中划线~~
-\`\`\`
-## ==标记==
-\`\`\`
-==标记==
-\`\`\`
-## 段落引用
-\`\`\`
-> 一级
->> 二级
->>> 三级
-...
-\`\`\`
-
-## 列表
-\`\`\`
-有序列表
-1.
-2.
-3.
-...
-无序列表
--
--
-...
-\`\`\`
-## 链接
-\`\`\`
-[链接](www.baidu.com)
-![图片描述](http://www.image.com)
-\`\`\`
-## 代码段落
-\`\`\` type
-
-代码段落
-
-\`\`\`
-
-\` 代码块 \`
-
-\`\`\`c++
-int main()
-{
-    printf("hello world!");
-}
-\`\`\`
-\`code\`
-## 表格(table)
-\`\`\`
-| 标题1 | 标题2 | 标题3 |
-| :--  | :--: | ----: |
-| 左对齐 | 居中 | 右对齐 |
-| ---------------------- | ------------- | ----------------- |
-\`\`\`
-| 标题1 | 标题2 | 标题3 |
-| :--  | :--: | ----: |
-| 左对齐 | 居中 | 右对齐 |
-| ---------------------- | ------------- | ----------------- |
-## 脚注(footnote)
-\`\`\`
-hello[^hello]
-\`\`\`
-
-见底部脚注[^hello]
-
-[^hello]: 一个注脚
-
-## 表情(emoji)
-[参考网站: https://www.webpagefx.com/tools/emoji-cheat-sheet/](https://www.webpagefx.com/tools/emoji-cheat-sheet/)
-\`\`\`
-:laughing:
-:blush:
-:smiley:
-:)
-...
-\`\`\`
-:laughing::blush::smiley::)
-
-## $\KaTeX$公式
-
-我们可以渲染公式例如：$x_i + y_i = z_i$和$\sum_{i=1}^n a_i=0$
-我们也可以单行渲染
-$$\sum_{i=1}^n a_i=0$$
-具体可参照[katex文档](http://www.intmath.com/cg5/katex-mathjax-comparison.php)和[katex支持的函数](https://github.com/Khan/KaTeX/wiki/Function-Support-in-KaTeX)以及[latex文档](https://math.meta.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference)
-
-## 布局
-
-::: hljs-left
-\`::: hljs-left\`
-\`居左\`
-\`:::\`
-:::
-
-::: hljs-center
-\`::: hljs-center\`
-\`居中\`
-\`:::\`
-:::
-
-::: hljs-right
-\`::: hljs-right\`
-\`居右\`
-\`:::\`
-:::
-
-## 定义
-
-术语一
-
-:   定义一
-
-包含有*行内标记*的术语二
-
-:   定义二
-
-        {一些定义二的文字或代码}
-
-    定义二的第三段
-
-\`\`\`
-术语一
-
-:   定义一
-
-包含有*行内标记*的术语二
-
-:   定义二
-
-        {一些定义二的文字或代码}
-
-    定义二的第三段
-
-\`\`\`
-
-## abbr
-*[HTML]: Hyper Text Markup Language
-*[W3C]:  World Wide Web Consortium
-HTML 规范由 W3C 维护
-\`\`\`
-*[HTML]: Hyper Text Markup Language
-*[W3C]:  World Wide Web Consortium
-HTML 规范由 W3C 维护
-\`\`\`
-
-
-`)
+      externalLink: false,
+      toolbars: {
+        bold: true, // 粗体
+        italic: true, // 斜体
+        header: true, // 标题
+        underline: true, // 下划线
+        strikethrough: true, // 中划线
+        mark: true, // 标记
+        superscript: true, // 上角标
+        subscript: true, // 下角标
+        quote: true, // 引用
+        ol: true, // 有序列表
+        ul: true, // 无序列表
+        link: true, // 链接
+        imagelink: true, // 图片链接
+        code: true, // code
+        table: true, // 表格
+        fullscreen: false, // 全屏编辑
+        readmodel: true, // 沉浸式阅读
+        htmlcode: true, // 展示html源码
+        help: true, // 帮助
+        /* 1.3.5 */
+        undo: true, // 上一步
+        redo: true, // 下一步
+        trash: true, // 清空
+        save: true, // 保存（触发events中的save事件）
+        /* 1.4.2 */
+        navigation: false, // 导航目录
+        /* 2.1.8 */
+        alignleft: true, // 左对齐
+        aligncenter: true, // 居中
+        alignright: true, // 右对齐
+        /* 2.2.1 */
+        subfield: false, // 单双栏模式
+        preview: true, // 预览
+      },
+      content:'',
+      title: null,
+      isedit: false
     }
   }
 }
 </script>
 
 <style scoped>
-.editor-content{
-}
-  .intro-head{
-    text-align: center;
-    margin: 10px;
+.intro-head{
+  text-align: left;
+  font-size: 20px;
+  height: 40px;
+  width: 80%;
+  border: none;
+  outline: none;
+  padding: 5px 10px 5px 20px;
   }
 .v-note-wrapper{
   z-index:1 !important;

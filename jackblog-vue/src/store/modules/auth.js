@@ -9,7 +9,7 @@ import {
   GET_ACCESS_TOKEN,
   REFRESH_ACCESS_TOKEN
 } from '../types'
-import { getCookie,saveCookie,signOut } from '../../utils/authService'
+import { getCookie,saveCookie,signOut } from '../../utils/cookies'
 import router from '../../router'
 
 const state = {

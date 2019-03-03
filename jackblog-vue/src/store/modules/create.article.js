@@ -5,12 +5,12 @@ import {
   FAILURE_GET_ARTICLE_ORIGIN,
   UPDATE_ARTICLE,
   SAVE_ARTICLE_DRAFT,
-  GET_ARTICLE_ORIGIN_LOCAL
+  GET_ARTICLE_ORIGIN_LOCAL,
+  ARTICLE_SUCCESS
 } from '../types'
 import localstorage from '../../utils/localstorage'
 const state = {
-  origin:{},
-  draft:{}
+  draft: {},
 }
 // actions
 const actions = {
@@ -30,30 +30,31 @@ const actions = {
       commit(FAILURE_GET_ARTICLE_ORIGIN)
     })
   },
-  saveBackendArticle ({commit},data){
-    commit(SAVE_ARTICLE_DRAFT,{data})
+  saveBackendArticle (store,data){
+    store.commit(SAVE_ARTICLE_DRAFT,{article: data})
     api.saveBackendArticle(data).then(response => {
       const json = response.data
       if(200==json.code){
-        commit(SAVE_ARTICLE_DRAFT,{article: data})
+        store.commit(ARTICLE_SUCCESS)
       }else{
-        return showMsg(json.message || '保存失败')
+        return showMsg(store, json.message || '保存失败')
       }
     }, error =>{
-      showMsg('保存失败')
+      showMsg(store, error)
     })
   },
-  updateBackendArticle ({commit}, data){
-    commit(SAVE_ARTICLE_DRAFT,{data})
-    api.commit(SAVE_ARTICLE_DRAFT,{data}).then(response => {
+  updateBackendArticle (store, data){
+    store.commit(UPDATE_ARTICLE,{article: data})
+    api.updateBackendArticle(data).then(response => {
       const json = response.data
       if(200==json.code){
-        commit(SAVE_ARTICLE_DRAFT,{article: data})
+        store.commit(ARTICLE_SUCCESS)
+        return showMsg(store, '保存成功','success')
       }else{
-        return showMsg(json.message || '更新失败')
+        return showMsg(store, json.message || '保存失败')
       }
     }, error =>{
-      showMsg('更新失败')
+      showMsg(store, error)
     })
   }
 
@@ -61,25 +62,24 @@ const actions = {
 
 const mutations = {
   [GET_ARTICLE_ORIGIN](state, data){
-    state.origin = data.article
     state.draft = data.article
-    localstorage.save(data.article.id, data.article)
   },
   [UPDATE_ARTICLE](state, data){
     state.draft=data.article
     localstorage.save(data.article.id, data.article)
   },
   [SAVE_ARTICLE_DRAFT](state, data){
-    state.draft=data.article
-    localstorage.save(data.article.id, data.article)
+    state.draft = data.article
+    localstorage.save(state.draft.id, data.article)
   },
   [FAILURE_GET_ARTICLE_ORIGIN](state){
-    state.orgin={}
     state.draft={}
   },
   [GET_ARTICLE_ORIGIN_LOCAL](state,data){
-    state.origin = data.article
     state.draft = data.article
+  },
+  [ARTICLE_SUCCESS](state){
+
   }
 }
 

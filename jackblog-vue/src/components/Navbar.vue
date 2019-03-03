@@ -40,16 +40,16 @@
 						<i class="fa fa-mobile"></i>
 					</router-link> -->
 					<div v-if="auth.token && auth.user" class="navbar-items">
-						<a class="navbar-item-expand change-mode" href="javascript:;" @click="changeMode()">
+						<a class="navbar-item-expand change-mode"  @click="changeMode()">
 		        	<i v-if="styleMode === 'day-mode'" class="fa fa-moon-o"></i>
 		        	<i v-else class="fa fa-sun-o"></i>
 		        </a>
-						<div class="data-avator" href="javascript:;"  @mouseover="dropmenu()">
-						<router-link :to="{ path: '/settings' }" class="navbar-item-expand expanded-avatar" v-bind:title="auth.user.nickname">
-							<img :src="auth.user.avatar || defaultAvatar"></img>
-						</router-link>
+						<div class="data-avator" @click="dropmenu()">
+							<a class="navbar-item-expand expanded-avatar" v-bind:title="auth.user.nickname">
+								<img :src="auth.user.avatar || defaultAvatar"/>
+							</a>
 						</div>
-						<ul class="dropdown-menu pull-right" id="droptestMenu">
+						<ul class="dropdown-menu pull-right" id="droptestMenu" v-clickoutside="'random'">
 								<li class="dropdown-menu-item">
 									<router-link :to="{ path: '/settings' }">
 										<i class="fa fa-cog"></i>&nbsp;&nbsp;&nbsp;设置
@@ -75,14 +75,11 @@
 						<router-link :to="{ path: '/' }" class="navbar-item" title="首页">
 						首页
 						</router-link>
-						<router-link :to="{ path: '/settings' }" class="navbar-item " title="设置">
+						<router-link :to="{ path: '/edition' }" class="navbar-item " title="设置">
 						分类
 						</router-link>
-						<router-link :to="{ path: '/creation' }" class="navbar-item" title="编辑器">
-						写博客
-						</router-link>
-						<router-link :to="{ path: '/settings' }" class="navbar-item" title="设置">
-						设置
+						<router-link  v-if="auth.token && auth.user" :to="{ path: '/creation' }" class="navbar-item" title="创作">
+						创作
 						</router-link>
 					</div>
 		  </div> 
@@ -121,10 +118,9 @@ export default {
   }, 
   created (){
 		document.body.className = this.styleMode
-		this.getAccessToken()
     if(this.auth.token){
       this.getUserInfo()
-    }
+		}
   },
   methods: {
     ...mapActions([
@@ -144,9 +140,32 @@ export default {
 		},
 		dropmenu(){
 			const dropdownMenu = document.getElementById('droptestMenu')
-			const isShow = dropdownMenu.style.display!=='block'?'block':'none'
-			dropdownMenu.style.display = isShow
+			dropdownMenu.style.display = 'block'
 		}
-  }
+	},
+	directives:{
+		//菜单外点击事件
+		clickoutside:{
+			bind:function(el,binding,vnode){
+				function  hidemenu(el){
+					el.style.display="none" 
+				}
+				function documentHandler(e){
+					console.log(e)
+					if(el.contains(e.target) || el.contains(e.target.parentElement.parentElement.nextElementSibling)){
+						return true
+					}else if (el.style.display!='none'){
+						hidemenu(el)
+					}
+				}
+				el._vueClickOutside_ = documentHandler
+				document.addEventListener('click',documentHandler);
+			},
+			unbind:function(el,binding){
+				document.removeEventListener('click',el._vueClickOutside_);
+				delete el._vueClickOutside_;
+			}
+		}
+	}
 }
 </script>
