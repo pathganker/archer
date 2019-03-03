@@ -136,6 +136,20 @@ export default {
       method: 'post',
       data: data
     })
+  },
+  addEdition: function(data){
+    return fetch({
+      url: '',
+      method: 'post',
+      data: data
+    })
+  },
+  saveEdition: function(data){
+    return fetch({
+      url: '',
+      method: 'post',
+      data: data
+    })
   }
 
 }

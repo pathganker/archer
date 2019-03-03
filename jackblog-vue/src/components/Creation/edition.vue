@@ -6,7 +6,7 @@
           <li ><a class="fa fa-plus">&nbsp;&nbsp;&nbsp;新建文集</a></li>
         </ul>
         <div id="editioninput" class="input-group medium" style="display:none" >
-          <input type="text" class="form-control" placeholder="新建文集" aria-describedby="basic-addon1">
+          <input type="text" name="newEdition" v-model="newEdition" class="form-control" placeholder="新建文集" aria-describedby="basic-addon1">
           <div class="btn-group">
             <button type="button" class="btn btn-success" @click="confirm()">确认</button>
           </div>
@@ -56,7 +56,8 @@ import {
   CURRENT_ARTICLE,
   CURRENT_EDITION,
   ADD_ARTICLE,
-  SAVE_ARTICLE_DRAFT
+  SAVE_ARTICLE_DRAFT,
+  ADD_EDITION
 } from '../../store/types'
 import {formatDate, uuid} from '../../utils/stringUtils'
 export default {
@@ -64,7 +65,9 @@ export default {
   methods:{
     ...mapActions([
       'getBackendArticle',
-      'saveBackendArticle'
+      'saveBackendArticle',
+      'addEdition',
+      'saveEdition'
     ]),
     editionActive(num){
       store.commit(CURRENT_EDITION,{cured:num})
@@ -81,6 +84,13 @@ export default {
       document.getElementById('editioninput').style.display="block"
     },
     confirm(){
+      this.addEdition({
+        edition:{
+          id: uuid(),
+          title: this.newEdition,
+          articles: []
+        }
+      })
       document.getElementById('editioninput').style.display="none"
     },
     cancle(){
@@ -148,6 +158,11 @@ export default {
           document.removeEventListener('click',el._vueClickOutside_);
           delete el._vueClickOutside_;
       }
+    }
+  },
+  data(){
+    return {
+      newEdition:''
     }
   }
 }

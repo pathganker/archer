@@ -151,7 +151,6 @@ export default {
 					el.style.display="none" 
 				}
 				function documentHandler(e){
-					console.log(e)
 					if(el.contains(e.target) || el.contains(e.target.parentElement.parentElement.nextElementSibling)){
 						return true
 					}else if (el.style.display!='none'){
