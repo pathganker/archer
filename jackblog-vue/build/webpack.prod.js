@@ -1,7 +1,6 @@
-const webpack = require('webpack');
-const merge = require('webpack-merge');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
-const common = require('./webpack.common.js');
+const merge = require('webpack-merge')
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
+const common = require('./webpack.common.js')
 
 module.exports = merge(common, {
   devtoll: 'source-map',
@@ -9,8 +8,6 @@ module.exports = merge(common, {
     new UglifyJSPlugin({
       sourceMap: true
     }),
-    new webpack({
-      'process.env.NODE_ENV': JSON.stringify('production')
-    })
+
   ]
 });

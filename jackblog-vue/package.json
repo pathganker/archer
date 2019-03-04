@@ -4,7 +4,7 @@
   "description": "QingBlog",
   "scripts": {
     "start": "npm-run-all --sequential build start:dist",
-    "dev": "webpack-dev-server --open --progress --profile --watch",
+    "dev": "webpack-dev-server --open --progress --profile --watch ",
     "build": "npm-run-all clean --parallel compile",
     "compile": "cross-env NODE_ENV=production webpack --progress --profile --bail",
     "start:dist": "cross-env NODE_ENV=production nodemon ./server.js",
