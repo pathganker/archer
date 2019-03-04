@@ -23,7 +23,7 @@
     "babel-runtime": "6.26.0",
     "babylon": "6.18.0",
     "bootstrap": "3.3.7",
-    "copy-webpack-plugin": "^4.1.1",
+    "clean-webpack-plugin": "^1.0.1",
     "cross-env": "5.0.5",
     "css-loader": "^0.28.7",
     "eslint": "^4.7.0",
@@ -55,7 +55,8 @@
     "vuex": "^2.4.0",
     "vuex-router-sync": "^4.3.1",
     "webpack": "^3.6.0",
-    "webpack-dev-server": "^2.8.2"
+    "webpack-dev-server": "^2.8.2",
+    "webpack-merge": "^4.2.1"
   },
   "dependencies": {
     "mavon-editor": "^2.6.17",

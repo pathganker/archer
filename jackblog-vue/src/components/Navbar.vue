@@ -75,9 +75,9 @@
 						<router-link :to="{ path: '/' }" class="navbar-item" title="首页">
 						首页
 						</router-link>
-						<router-link :to="{ path: '/edition' }" class="navbar-item " title="设置">
+						<!-- <router-link :to="{ path: '/edition' }" class="navbar-item " title="设置">
 						分类
-						</router-link>
+						</router-link> -->
 						<router-link  v-if="auth.token && auth.user" :to="{ path: '/creation' }" class="navbar-item" title="创作">
 						创作
 						</router-link>

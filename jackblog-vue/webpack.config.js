@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin')
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
+const CleanWebpackPlugin = require('clean-webpack-plugin')
 
 const env = process.env.NODE_ENV || 'development'
 const debug = env !== 'production'
@@ -17,8 +17,8 @@ const config = {
   },
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: debug? '[name].js':'[hash:8].[name].js',
-    chunkFilename: debug? '[name].js':'[name].[chunkhash].js',
+    filename: debug? '[name].js':'js/[hash:8].[name].js',
+    chunkFilename: debug? '[name].js':'js/[name].[chunkhash].js',
     publicPath: '/'
   },
   plugins: [
@@ -32,7 +32,7 @@ const config = {
       minChunks: Infinity //Infinity
     }),
     new ExtractTextPlugin({ 
-      filename: debug?'[name].style.css':'[hash:8].style.css', 
+      filename: debug?'[name].style.css':'css/[hash:8].style.css', 
       disable: false, allChunks: true 
     }),
     new HtmlWebpackPlugin({
@@ -46,9 +46,7 @@ const config = {
         collapseWhitespace:true    //删除空白符与换行符
       }
     }),
-    new CopyWebpackPlugin([{
-      from: path.join(__dirname, 'src/CNAME'), to: path.join(__dirname, 'dist')
-    }])
+    new CleanWebpackPlugin(['dist'])
   ],
   module: {
     rules: [

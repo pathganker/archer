@@ -245,19 +245,20 @@ span.active{
   text-align: center;
 }
 .creation-content{
-  padding: 61px 0px 5px 0px;
+  padding: 61px 0px 0px 0px;
   position: fixed;
   height: 100%;
   width: 100%;
 }
 .markdown-container{
-  padding: 0px 6px 5px 0px;
+  padding: 0px 6px 0px 0px;
   float: left;
   width: 80%;
   height: 100%;
 }
 .markdown-body{
   height: 100%;
+  padding: 0px 0px 40px 0px;
 }
 .markdown-container-max{
   padding: 0px 6px 5px 2px;
@@ -314,6 +315,23 @@ span.active{
   cursor: pointer;
 }
 .markdown-container .edit-body{
-  height: 92%;
-  padding: 0px 0px 2px 2px;
+  height: 100%;
+  padding: 0px 0px 4px 2px;
 }
+.setting-nav{
+  float: left;
+  width: 200px;
+}
+.settings-container{
+  float: left;
+  min-width: 450px;
+  width: 50%;
+}
+.settings-box{
+  height: 100%;
+  width: 70%;
+  min-width: 760px;
+  padding: 20px 45px 10px 45px;
+  margin: 61px 0% 10px 8%;
+}
+
