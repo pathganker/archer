@@ -334,4 +334,16 @@ span.active{
   padding: 20px 45px 10px 45px;
   margin: 61px 0% 10px 8%;
 }
+.settings-content{
+  opacity: 0;
+  transition: opacity 1s;
+  visibility: hidden;
+  height: 0;
+}
+.settings-content.active{
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 1s;
+  -webkit-transition: opacity 1s;
+}
 

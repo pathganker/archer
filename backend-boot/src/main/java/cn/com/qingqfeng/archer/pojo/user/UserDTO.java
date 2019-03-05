@@ -40,6 +40,10 @@ public class UserDTO implements Serializable{
 	private Date createTime;
 	/** 修改时间 */
 	private Date modifyTime;
+	/** 头像base64*/
+	private String avatar;
+	/** 邮件 */
+	private String email;
 	public String getId() {
 		return id;
 	}
@@ -111,6 +115,18 @@ public class UserDTO implements Serializable{
 	 */
 	public String getCredentialsSalt() {
 		return this.id+this.salt;
+	}
+	public String getavatar() {
+		return avatar;
+	}
+	public void setavatar(String avatar) {
+		this.avatar = avatar;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
 }

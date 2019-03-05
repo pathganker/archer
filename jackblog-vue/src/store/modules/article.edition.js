@@ -43,8 +43,8 @@ const actions = {
       showMsg(store, error.message || '创建失败', 'error')
     })
   },
-  saveEdition(store,data){
-    api.saveEdition(data).then(response => {
+  updateEdition(store,data){
+    api.updateEdition(data).then(response => {
       const  json = response.data
       if(200==json.code){
         showMsg(store, '保存成功', 'success')

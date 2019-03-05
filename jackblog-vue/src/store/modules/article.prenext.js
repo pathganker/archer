@@ -9,8 +9,9 @@ const state = {
 const actions = {
   getPrenext({ commit,rootState }, id){
     return api.getPrenext(id,rootState.options.item).then(response => {
-      if(response.ok){
-        commit(PRENEXT_ARTICLE, { prenextArticle: response.data.data })
+      const json = response.data
+      if(200 == json.code){
+        commit(PRENEXT_ARTICLE, { prenextArticle: json.data })
       }
     })
   }

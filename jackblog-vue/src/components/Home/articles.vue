@@ -2,7 +2,7 @@
 	<ul class="article-list list-unstyled clearfix">
 		<li class="article-item" v-for="(article,index) in articleList"  :key="index" :class="article.images.length > 0 ? 'have-img' : ''">
 			<router-link v-if="article.images.length > 0" :to="{ name: 'article', params: {aid: article.id } }" class="wrap-img">
-				<img :src="article.images[0].url"></img>
+				<img :src="article.images[0].url"/>
 			</router-link>
 			<div>
 				<p class="list-top">               

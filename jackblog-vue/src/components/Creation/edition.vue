@@ -65,9 +65,9 @@ export default {
   methods:{
     ...mapActions([
       'getBackendArticle',
-      'saveBackendArticle',
+      'addBackendArticle',
       'addEdition',
-      'saveEdition'
+      'updateEdition'
     ]),
     editionActive(num){
       store.commit(CURRENT_EDITION,{cured:num})
@@ -106,7 +106,7 @@ export default {
       }
       store.commit(ADD_ARTICLE, {article:blog})
       store.commit(CURRENT_ARTICLE, {curar:0})
-      this.saveBackendArticle(blog)
+      this.addBackendArticle(blog)
     },
     edconfig(num){
       const dropmenu = document.getElementById('ed_drop_menu_'+num)

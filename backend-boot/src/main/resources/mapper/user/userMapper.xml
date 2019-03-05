@@ -8,8 +8,8 @@
         <result column="nickname" property="nickname" jdbcType="VARCHAR"/>
         <result column="salt" property="salt" jdbcType="VARCHAR" />
         <result column="telephone" property="telephone" jdbcType="VARCHAR" />
-        <result column="depart" property="depart" jdbcType="VARCHAR" />
-        <result column="default_url" property="defaultUrl" jdbcType="VARCHAR" />
+        <result column="email" property="email" jdbcType="VARCHAR" />
+        <result column="avatar" property="avatar" jdbcType="VARCHAR" />
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
         <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
     </resultMap>

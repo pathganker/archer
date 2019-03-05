@@ -1,27 +1,19 @@
-/**
- * 
- */
+/**   */
 package cn.com.qingqfeng.archer.pojo.article;
 
-import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 /**   
- * <p> 类名：  articleDTO   </p>
- * <p> 描述：	TODO  </p>
- * <p> 创建时间： 2019年2月17日 下午4:57:59   </p>
- * @author lijunliang 
- * @version 1.0   
+ * <p>类名称: ArticleDO </p> 
+ * <p>描述: TODO  </p>
+ * <p>创建时间 : 2019年3月5日 下午5:43:22 </p>
+ * @author lijunliang
+ * @version 1.0
+ * 
  */
-public class ArticleDTO implements Serializable{
-
-	/**
-	 * @FieldsserialVersionUID
-	 */
-	private static final long serialVersionUID = 1879598723154109228L;
+public class ArticleDO {
 	/** 图片 */
-	private List<String> images;
+	private String image;
 	/** 主键 */
 	private String id;
 	/** 标题 */
@@ -40,13 +32,16 @@ public class ArticleDTO implements Serializable{
 	private String frontContent;
 	/** 展示内容 */
 	private String backendContent;
-	
-	public List<String> getImages() {
-		return images;
-	}
-	public void setImages(List<String> images) {
-		this.images = images;
-	}
+	/** 关联用户 */
+	private String userId;
+	/** 创建时间 */
+	private Date createTime;
+	/** 修改时间 */
+	private Date modifyTime;
+	/** 发布状态 */
+	private Boolean publish;
+	/** 概览 */
+	private String profile;
 	public String getId() {
 		return id;
 	}
@@ -83,9 +78,6 @@ public class ArticleDTO implements Serializable{
 	public void setPublishTime(Date publishTime) {
 		this.publishTime = publishTime;
 	}
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
 	public String getEdition() {
 		return edition;
 	}
@@ -104,4 +96,41 @@ public class ArticleDTO implements Serializable{
 	public void setBackendContent(String backendContent) {
 		this.backendContent = backendContent;
 	}
+	public String getImage() {
+		return image;
+	}
+	public void setImage(String image) {
+		this.image = image;
+	}
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+	public Date getCreateTime() {
+		return createTime;
+	}
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+	public Date getModifyTime() {
+		return modifyTime;
+	}
+	public void setModifyTime(Date modifyTime) {
+		this.modifyTime = modifyTime;
+	}
+	public Boolean getPublish() {
+		return publish;
+	}
+	public void setPublish(Boolean publish) {
+		this.publish = publish;
+	}
+	public String getProfile() {
+		return profile;
+	}
+	public void setProfile(String profile) {
+		this.profile = profile;
+	}
+	
 }

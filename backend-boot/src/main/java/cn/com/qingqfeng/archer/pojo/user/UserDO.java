@@ -32,14 +32,14 @@ public class UserDO implements Serializable{
 	private String salt;
 	/** 联系电话 */
 	private String telephone;
-	/** 部门 */
-	private String depart;
-	/** 主页 */
-	private String defaultUrl;
 	/** 创建时间 */
 	private Date createTime;
 	/** 修改时间 */
 	private Date modifyTime;
+	/** 头像base64*/
+	private String avatar;
+	/** 邮件 */
+	private String email;
 	public String getId() {
 		return id;
 	}
@@ -76,18 +76,6 @@ public class UserDO implements Serializable{
 	public void setTelephone(String telephone) {
 		this.telephone = telephone;
 	}
-	public String getDepart() {
-		return depart;
-	}
-	public void setDepart(String depart) {
-		this.depart = depart;
-	}
-	public String getDefaultUrl() {
-		return defaultUrl;
-	}
-	public void setDefaultUrl(String defaultUrl) {
-		this.defaultUrl = defaultUrl;
-	}
 	public Date getCreateTime() {
 		return createTime;
 	}
@@ -111,6 +99,18 @@ public class UserDO implements Serializable{
 	 */
 	public String getCredentialsSalt() {
 		return this.id+this.salt;
+	}
+	public String getavatar() {
+		return avatar;
+	}
+	public void setavatar(String avatar) {
+		this.avatar = avatar;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
 }

@@ -30,9 +30,9 @@ const actions = {
       commit(FAILURE_GET_ARTICLE_ORIGIN)
     })
   },
-  saveBackendArticle (store,data){
+  addBackendArticle (store,data){
     store.commit(SAVE_ARTICLE_DRAFT,{article: data})
-    api.saveBackendArticle(data).then(response => {
+    api.addBackendArticle(data).then(response => {
       const json = response.data
       if(200==json.code){
         store.commit(ARTICLE_SUCCESS)

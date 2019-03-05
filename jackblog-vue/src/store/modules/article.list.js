@@ -14,12 +14,12 @@ const state = {
 
 const actions = {
   getArticleList({ commit }, {options, isAdd=false}){
-    //commit(REQUEST_ARTICLE_LIST)
+    commit(REQUEST_ARTICLE_LIST)
     api.getFrontArticleList(options).then(response => {
-      if(response.status!=200 || 200 != response.data.code){
+      const json = response.data
+      if(200 != json.code){
         return commit(GET_ARTICLE_LIST_FAILURE)
       }
-      const json = response.data
       const isMore = !(json.data.length < options.itemsPerPage)
       isAdd
         ? commit(ADD_ARTICLE_LIST,{
@@ -30,7 +30,8 @@ const actions = {
           articleList: json.data,
           isMore:isMore
         })
-    }, response => {
+    }, 
+    error => {
       commit(GET_ARTICLE_LIST_FAILURE)
     })
   }

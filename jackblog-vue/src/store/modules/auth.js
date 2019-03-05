@@ -53,14 +53,16 @@ const actions = {
       commit(USERINFO_FAILURE)
     })
   },
-  updateUser(store,userInfo){
-    api.mdUser(userInfo).then(response => {
-      if(!response.ok){
-        return showMsg(store,'更新用户资料失败!')
+  updateUser(store,user){
+    api.mdUser(user).then(response => {
+      const json =response.data
+      if(200!=response.data){
+        return showMsg(store,json.message || '更新用户资料失败!')
       }
-      store.commit(UPDATE_USER_SUCCESS, { user: response.data.data })
+      store.commit(UPDATE_USER_SUCCESS, { user: json.data })
       showMsg(store,'更新资料成功!','success')
-    }, response => {
+    }, 
+    error => {
       showMsg(store,'更新用户资料失败!')
     })
   },

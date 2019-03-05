@@ -11,11 +11,13 @@ const state = {
 const actions = {
   getTagList({ commit }){
     api.getTagList().then(response => {
-      if(!response.ok){
+      const json= response.data
+      if(200 != json.data){
         return commit(GET_TAG_LIST_FAILURE)
       }
-      commit(GET_TAG_LIST_SUCCESS, { tagList: response.data.data })
-    }, response => {
+      commit(GET_TAG_LIST_SUCCESS, { tagList: json.data })
+    }, 
+    error => {
       commit(GET_TAG_LIST_FAILURE)
     })
   }

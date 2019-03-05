@@ -15,34 +15,40 @@ const state = {
 const actions = {
   getCommentList({ commit },id){
     api.getFrontCommentList(id).then(response => {
-      if(!response.ok){
+      const json = response.data
+      if(200 != json.data){
         return commit(GET_COMMENT_LIST_FAILURE)
       }
-      commit(COMMENT_LIST, { commentList: response.data.data })
-    }, response => {
+      commit(COMMENT_LIST, { commentList: json.data })
+    }, 
+    error => {
       commit(GET_COMMENT_LIST_FAILURE)
     })
   },
   addComment(store,data){
     api.addNewComment(data).then(response => {
-      if(!response.ok){
-        return showMsg(store,response.data.error_msg || '添加评论失败!')
+      const json = response.data
+      if(200!=json.code){
+        return showMsg(store,json.message || '添加评论失败!')
       }
       showMsg(store,'添加评论成功!','success')
-      store.commit(SUCCESS_ADD_COMMENT, { comment: response.data.data })
-    }, response => {
-      showMsg(store,response.data.error_msg || '添加评论失败!')
+      store.commit(SUCCESS_ADD_COMMENT, { comment: json.data })
+    }, 
+    error => {
+      showMsg(store, '添加评论失败!')
     })
   },
   addReply(store,{cid,data}){
     api.addNewReply(cid,data).then(response => {
-      if(!response.ok){
-        return showMsg(store,response.data.error_msg || '添加回复失败!')
+      const json = response.data
+      if(200!=json.code){
+        return showMsg(store,json.message || '添加回复失败!')
       }
       showMsg(store,'添加回复成功!','success')
-      store.commit(SUCCESS_ADD_REPLY, { cid:cid,replys: response.data.data })
-    }, response => {
-      showMsg(store,response.data.error_msg || '添加回复失败!')
+      store.commit(SUCCESS_ADD_REPLY, { cid:cid,replys: json.data })
+    }, 
+    error => {
+      showMsg(store, '添加回复失败!')
     })
   }
 }

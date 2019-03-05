@@ -21,12 +21,15 @@ export default {
   },
   mdUser: function (data) {
     return fetch({
-      
+      url: 'users/info/new',
+      method: 'post',
+      data: data
     })
   },
   getTagList:function () {
     return fetch({
-      
+      url: 'article/tag',
+      method: 'get'
     })
   },
   getApps:function () {
@@ -42,55 +45,79 @@ export default {
   },
   getFrontArticleList:function (options) {
     return fetch({
-      url: 'article/getFrontArticleList',
+      url: 'article/front/list',
       method: 'get',
       params: options
     })
   },
   getFrontArticleCount:function () {
     return fetch({
-      
+      url: 'article/front/count',
+      method: 'get'
     })
   },
   getFrontArticle:function (id) {
     return fetch({
+      url: 'article/front/detail',
+      method: 'get',
+      params: {
+        id: id
+      }
       
     })
   },
   toggleLike:function (id) {
     return fetch({
-      
+      url: 'article/front/togglelike',
+      method: 'get',
+      params: {
+        id:id
+      }
     })
   },
   getPrenext:function (id,options) {
     return fetch({
-      
+      url: 'article/front/next/'+ id,
+      method: 'get',
+      params: options
     })
   },
   //comment
   getFrontCommentList:function (id) {
     return fetch({
-      
+      url: 'comment',
+      method: 'get',
+      params: {
+        id : id
+      }
     })
   },
   addNewComment:function (data) {
     return fetch({
-      
+      url: 'comment/new',
+      method: 'post',
+      params: data
     })
   },
-  addNewReply: function (id,data) {
+  addNewReply: function (data) {
     return fetch({
-      
+      url: 'comment/reply',
+      method: 'post',
+      params: data
     })
   },
   delComment:function (id) {
     return fetch({
-      
+      url: 'comment/less',
+      method: 'delete',
+      params: {id:id}
     })
   },
-  delReply: function (id,data) {
+  delReply: function (data) {
     return fetch({
-      
+      url: 'comment/reply/less',
+      mehtod: 'delete',
+      parmas: data
     })
   },
   checkCaptch: function (data) {
@@ -123,7 +150,7 @@ export default {
       }
     })
   },
-  saveBackendArticle: function(data){
+  addBackendArticle: function(data){
     return fetch({
       url: 'article/backend/newblog',
       method: 'post',
@@ -139,14 +166,14 @@ export default {
   },
   addEdition: function(data){
     return fetch({
-      url: '',
+      url: 'article/backend/newedition',
       method: 'post',
       data: data
     })
   },
-  saveEdition: function(data){
+  updateEdition: function(data){
     return fetch({
-      url: '',
+      url: 'article/backend/oldedition',
       method: 'post',
       data: data
     })
