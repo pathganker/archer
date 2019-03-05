@@ -14,6 +14,8 @@ import java.util.Date;
 public class CommentDTO {
 	/** 自增主键 */
 	private Integer id;
+	/** 业务主键 **/
+	private String uid;
 	/** 内容 */
 	private String content;
 	/** 关联文章 */
@@ -60,5 +62,11 @@ public class CommentDTO {
 	}
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
+	}
+	public String getUid() {
+		return uid;
+	}
+	public void setUid(String uid) {
+		this.uid = uid;
 	}
 }
