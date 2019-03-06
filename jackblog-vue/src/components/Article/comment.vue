@@ -9,16 +9,16 @@
           <div class="content">
             <div class="meta-top">
               <a class="avatar">
-                <img :src="comment.user_id.avatar || defaultAvatar" alt="comment.user_id.nickname"></img>
+                <img :src="defaultAvatar" alt="comment.nickname" />
               </a>
-              <a class="author-name link-light">{{comment.user_id.nickname}}</a>
+              <a class="author-name link-light">{{comment.nickname}}</a>
               <span class="reply-time">
-                {{comment.created | formatDate}}
+                {{comment.createTime | formatDate}}
               </span>
             </div>
             <p class="comment-content">{{comment.content}}</p>
             <div class="comment-footer text-right">
-              <a class="reply" href="javascript:;" @click.prevent="showReply(i, comment.user_id.nickname )">回复</a>
+              <a class="reply" href="javascript:;" @click.prevent="showReply(i, comment.nickname )">回复</a>
             </div>
 
             <Reply v-show="comment.replys.length > 0" :replys="comment.replys" :k="i"></Reply>
@@ -31,7 +31,7 @@
                       placeholder="写下你的回复…">
                   </textarea> 
                   <div> 
-                    <input type="submit" value="发 表" class="btn btn-sm btn-info"></input>
+                    <input type="submit" value="发 表" class="btn btn-sm btn-info" />
                   </div> 
                </div>
              </form>

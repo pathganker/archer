@@ -24,6 +24,10 @@ public class ReplyDTO {
 	private String userId;
 	/** 用户昵称 */
 	private String nickname;
+	/** 目标id */
+	private String targetId;
+	/** 目标昵称 */
+	private String targetName;
 	public Integer getId() {
 		return id;
 	}
@@ -59,5 +63,17 @@ public class ReplyDTO {
 	}
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
+	}
+	public String getTargetId() {
+		return targetId;
+	}
+	public void setTargetId(String targetId) {
+		this.targetId = targetId;
+	}
+	public String getTargetName() {
+		return targetName;
+	}
+	public void setTargetName(String targetName) {
+		this.targetName = targetName;
 	}
 }

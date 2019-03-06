@@ -54,4 +54,6 @@ public interface IUserService {
 	
 	void addUser(UserDTO user);
 	
+	void updateUser(UserDTO user);
+	
 }

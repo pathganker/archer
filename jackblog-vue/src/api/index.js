@@ -50,10 +50,11 @@ export default {
       params: options
     })
   },
-  getFrontArticleCount:function () {
+  getFrontArticleCount:function (options) {
     return fetch({
       url: 'article/front/count',
-      method: 'get'
+      method: 'get',
+      params: options
     })
   },
   getFrontArticle:function (id) {

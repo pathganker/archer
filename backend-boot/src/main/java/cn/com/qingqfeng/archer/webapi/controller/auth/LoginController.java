@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,7 +72,7 @@ public class LoginController {
 		user.setId(comrade.getId());
 		if(this.cryptogramService.passwordsMatch(user, comrade.getPassword())){
 			rs.setCode(ApiCodeEnum.SUCCESS);
-			String jwt = JwtUtils.issueJwt(UUID.randomUUID().toString(), user.getUsername(), 
+			String jwt = JwtUtils.issueJwt(comrade.getId(), user.getUsername(), 
 					"token-server", 24*3600*1000L, "ordinary,admin", "create", SignatureAlgorithm.HS256);
 	        Map<String, Object> data = new LinkedHashMap<String, Object>();
 	        data.put("jwt", jwt);

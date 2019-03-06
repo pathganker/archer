@@ -5,7 +5,6 @@ package cn.com.qingqfeng.archer.pojo.article;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 /**   
  * <p> 类名：  articleDTO   </p>
@@ -21,7 +20,7 @@ public class ArticleDTO implements Serializable{
 	 */
 	private static final long serialVersionUID = 1879598723154109228L;
 	/** 图片 */
-	private List<String> images;
+	private String image;
 	/** 主键 */
 	private String id;
 	/** 标题 */
@@ -40,12 +39,20 @@ public class ArticleDTO implements Serializable{
 	private String frontContent;
 	/** 展示内容 */
 	private String backendContent;
+	/** 概览 */
+	private String profile;
 	
-	public List<String> getImages() {
-		return images;
+	public String getImage() {
+		return image;
 	}
-	public void setImages(List<String> images) {
-		this.images = images;
+	public void setImage(String image) {
+		this.image = image;
+	}
+	public String getProfile() {
+		return profile;
+	}
+	public void setProfile(String profile) {
+		this.profile = profile;
 	}
 	public String getId() {
 		return id;

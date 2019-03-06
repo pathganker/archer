@@ -2,6 +2,9 @@
 package cn.com.qingqfeng.archer.pojo.comment;
 
 import java.util.Date;
+import java.util.List;
+
+import cn.com.qingqfeng.archer.pojo.reply.ReplyDTO;
 
 /**   
  * <p>类名称: CommentDTO </p> 
@@ -27,6 +30,7 @@ public class CommentDTO {
 	/** 用户昵称 */
 	private String nickname;
 	
+	private List<ReplyDTO> replys;
 	public Integer getId() {
 		return id;
 	}
@@ -68,5 +72,11 @@ public class CommentDTO {
 	}
 	public void setUid(String uid) {
 		this.uid = uid;
+	}
+	public List<ReplyDTO> getReplys() {
+		return replys;
+	}
+	public void setReplys(List<ReplyDTO> replys) {
+		this.replys = replys;
 	}
 }

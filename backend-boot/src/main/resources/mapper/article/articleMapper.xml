@@ -1,31 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "../../../dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.com.qingqfeng.archer.dao.article.IArticleDao" >
-    <resultMap id="CountResultMap" type="cn.com.qingqfeng.archer.pojo.article.ArticleDO" >
+    <resultMap id="BaseResultMap" type="cn.com.qingqfeng.archer.pojo.article.ArticleDO" >
         <id column="id" property="id" jdbcType="VARCHAR" />
         <result column="title" property="title" jdbcType="VARCHAR" />
         <result column="publish_time" property="publishTime" jdbcType="TIMESTAMP" />
         <result column="image" property="image" jdbcType="VARCHAR" />
-        <result column="user" property="userId" jdbcType="VARCHAR" />
         <result column="profile" property="profile" jdbcType="VARCHAR" />
+        <result column="user" property="userId" jdbcType="VARCHAR" />
+        <result column="front_content" property="frontContent" jdbcType="LONGVARCHAR" />
+        <result column="backend_content" property="backendContent" jdbcType="LONGVARCHAR" />
         <result column="visit_count" property="visitCount" jdbcType="INTEGER" />
         <result column="comme_count" property="commentCount" jdbcType="INTEGER" />
         <result column="like_count" property="likeCount" jdbcType="INTEGER" />
-    </resultMap>
-    <resultMap id="DetailResultMap" type="cn.com.qingqfeng.archer.pojo.article.ArticleDO" >
-        <id column="id" property="id" jdbcType="VARCHAR" />
-        <result column="title" property="title" jdbcType="VARCHAR" />
-        <result column="publish_time" property="publishTime" jdbcType="TIMESTAMP" />
-        <result column="front_content" property="frontContent" jdbcType="LONGTEXT" />
-        <result column="backend_content" property="backendContent" jdbcType="LONGTEXT" />
-        <result column="image" property="image" jdbcType="VARCHAR" />
-        <result column="user" property="userId" jdbcType="VARCHAR" />
-        <result column="edition" property="edition" jdbcType="VARCHAR"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-        <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
-    </resultMap>    
-    
-    <select id="queryArticleByOptions" parameterType="cn.com.qingqfeng.archer.pojo.article.ArticleQuery" resultMap="CountResultMap"  >
+        <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />        
+    </resultMap>
+<!-- 分页查询 -->
+    <select id="queryArticleByOptions" parameterType="cn.com.qingqfeng.archer.pojo.article.ArticleQuery" resultMap="BaseResultMap"  >
        SELECT 
             a.id, a.title, a.publish_time, a.image, a.profile, b.nickname as user, c.visit_count, d.comme_count, e.like_count 
        FROM 
@@ -33,26 +25,116 @@
        LEFT JOIN 
             qfeng_user b ON a.user=b.id
        LEFT JOIN
-            (select article_id, count(1) as visit_count from qfeng_visit_cord group by article_id) c ON a.id=c.article_id
+            (select article_id, count(1) as visit_count from qfeng_visit_record group by article_id) c ON a.id=c.article_id
        LEFT JOIN
-            (select article_id, count(1) as comme_count from qfeng_comment group by article_id) d ON a.id = d.article_id
+            (select article_id, count(1) as comme_count from qfeng_comment where is_delete = 0 group by article_id) d ON a.id = d.article_id
        LEFT JOIN
-            (select article_id, count(1) as like_count from qfeng_like group by article_id) e ON a.id = e.article_id
+            (select article_id, count(1) as like_count from qfeng_like where is_delete = 0 group by article_id) e ON a.id = e.article_id
        <choose>
-            <when test="tagId!=null and tagId!=''">
-            RIGHT JOIN (select article_id from qfeng_tag where tag_id = #{tagId}) f on a.id = f.article_id
+            <when test="tag!=null and tag!=''">
+            RIGHT JOIN (select article_id from qfeng_ref_article_tag where tag = #{tag} where is_delete = 0) f on a.id = f.article_id
             </when>
        </choose>
-       WHERE a.publish = 1 limit #{pageSize} offset #{pageSize}*(#{page}-1)
+       WHERE a.is_publish = 1 and a.is_delete =0 
+       ORDER BY
+            publish_time DESC
+       limit #{pageSize} offset #{page}
     </select>
-
-    <select id="queryArticleById" parameterType="java.lang.String" resultMap="DetailResultMap" >
-        SELECT 
+    <select id="queryArticelTotal" parameterType="cn.com.qingqfeng.archer.pojo.article.ArticleQuery" resultType="java.lang.Long">
+        SELECT
+             count(1)
+        from
+            qfeng_article a
+       <choose>
+            <when test="tag!=null and tag!=''">
+            RIGHT JOIN (select article_id from qfeng_ref_article_tag where tag = #{tag} where is_delete = 0) b on a.id = b.article_id
+            </when>
+       </choose>
+        where
+            a.is_delete =0 and a.is_publish =1
+    </select>
+<!-- 详情查询 -->
+    <select id="queryArticleById" parameterType="java.lang.String" resultMap="BaseResultMap" >
+       SELECT 
             a.id, a.title, a.publish_time, a.front_content, a.backend_content, a.image, b.nickname as user, a.edition, a.create_time, a.modify_time
+       FROM 
+            qfeng_article a
+       LEFT JOIN 
+            qfeng_user b ON a.user=b.id
+       WHERE a.is_delete =0 and a.id = #{id}
+    </select>
+<!-- 统计数据 -->
+    <select id="queryCountDataById" parameterType="java.lang.String" resultMap="BaseResultMap"  >
+       SELECT 
+            a.id, a.title, a.publish_time, b.nickname as user, c.visit_count, d.comme_count, e.like_count 
        FROM 
             qfeng_article a 
        LEFT JOIN 
             qfeng_user b ON a.user=b.id
-       WHERE id = #{id}
+       LEFT JOIN
+            (select article_id, count(1) as visit_count from qfeng_visit_record group by article_id) c ON a.id=c.article_id
+       LEFT JOIN
+            (select article_id, count(1) as comme_count from qfeng_comment where is_delete = 0 group by article_id) d ON a.id = d.article_id
+       LEFT JOIN
+            (select article_id, count(1) as like_count from qfeng_like where is_delete = 0 group by article_id) e ON a.id = e.article_id
+       WHERE a.is_publish = 1 and a.is_delete =0 and a.id = #{id}
     </select>
+<!-- 排序名次     -->
+    <select id="querySortNum" parameterType="cn.com.qingqfeng.archer.pojo.article.ArticleQuery" resultType="java.lang.Integer">
+	   SELECT e.rank 
+	   FROM
+	       (SELECT
+	            id, (@rownum:=@rownum+1) AS rank
+	       from
+                <if test="tag!=null and tag!=''">
+               (select a.id, a.publish_time,a.is_delete, a.is_publish from qfeng_article a RIGHT JOIN (select article_id from qfeng_ref_article_tag where tag = #{tag} where is_delete = 0) b on a.id = b.article_id
+               ) c
+               </if>
+	           <if test="tag==null or tag==''">
+	           (select a.id, a.publish_time,a.is_delete, a.is_publish from qfeng_article a) c
+	           </if>
+	           ,(select (@rownum:=0) )d 
+	       where
+	           c.is_delete =0 and c.is_publish =1
+	       ORDER BY
+	            c.publish_time DESC  ) e
+	   WHERE e.id = #{id}
+    </select>
+<!-- 添加     -->
+    <insert id="addArticle" parameterType="cn.com.qingqfeng.archer.pojo.article.ArticleDO" >
+       INSERT INTO 
+            qfeng_article
+            (id, title, publish_time, edition, front_content, backend_content, user, create_time, modify_time, is_publish, profile)
+        VALUES
+            (#{id}, #{title}, #{publishTime}, #{edition}, #{frontContent}, #{backendContent}, #{userId}, #{createTime}, #{modifyTime}, #{publish}, #{profile})
+    </insert>
+<!-- 更新     -->
+    <update id="updateArticle" parameterType="cn.com.qingqfeng.archer.pojo.article.ArticleDO" >
+       UPDATE 
+            qfeng_article
+       <trim prefix="set" suffixOverrides=",">
+           <if test="title != null">title = #{title},</if>
+           <if test="publishTime != null">publish_time = #{publishTime},</if>
+           <if test="edition != null ">edition = #{edition},</if>
+           <if test="front_content != null">front_content = #{frontContent},</if>
+           <if test="backend_content != null">backend_content = #{backendContent},</if>
+           <if test="userId != null">user = #{userId},</if>
+           <if test="createTime != null">create_time = #{createTime},</if>
+           <if test="modifyTime != null">modify_time = #{modifyTime},</if>
+           <if test="publish != null">is_publish = #{publish},</if>
+           <if test="profile != null ">profile = #{profile},</if>
+       </trim>
+       WHERE 
+            id = #{id}
+    </update>
+<!-- 删除     -->
+    <delete id="deleteArticle" parameterType="java.lang.String" >
+       UPDATE 
+             qfeng_article
+       SET
+             is_delete=1 
+       WHERE 
+             id =#{id}
+    </delete>
+    
 </mapper>

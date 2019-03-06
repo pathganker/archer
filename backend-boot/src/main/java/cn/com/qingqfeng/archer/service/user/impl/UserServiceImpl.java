@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.Set;
 import java.util.UUID;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -69,6 +70,9 @@ public class UserServiceImpl implements IUserService{
 	 */
 	@Override
 	public void addUser(UserDTO user) {
+		if(null == user){
+			return;
+		}
 		user.setCreateTime(new Date());
 		user.setModifyTime(new Date());
 		user.setId(UUID.randomUUID().toString());
@@ -78,6 +82,25 @@ public class UserServiceImpl implements IUserService{
 		UserDO comrade = new UserDO();
 		BeanUtils.copyProperties(user, comrade);
 		this.userDao.insert(comrade);
+	}
+
+	/** (non-Javadoc)
+	 * @see cn.com.qingqfeng.archer.service.user.IUserService#updateUser(cn.com.qingqfeng.archer.pojo.user.UserDTO)
+	 */
+	@Override
+	public void updateUser(UserDTO user) {
+		if(null == user || StringUtils.isBlank(user.getId())){
+			return;
+		}
+		//更改密码
+		if(StringUtils.isNotBlank(user.getPassword())){
+			user.setSalt(UUID.randomUUID().toString());
+			String password = cryptogramService.encryptPassword(user);
+			user.setPassword(password);
+		}
+		UserDO comrade = new UserDO();
+		BeanUtils.copyProperties(user, comrade);
+		this.userDao.update(comrade);
 	}
 
 }

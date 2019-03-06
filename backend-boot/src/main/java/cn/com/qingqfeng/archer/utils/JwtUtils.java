@@ -55,7 +55,7 @@ public class JwtUtils {
     	try{
     		JwtPlayload jwtPlayload =(JwtPlayload) SecurityUtils.getSubject().getPrincipals().getPrimaryPrincipal();
     		if(null != jwtPlayload){
-    			return jwtPlayload.getUserId();
+    			return jwtPlayload.getId();
     		}
     	}catch(Exception e){
     		return null;

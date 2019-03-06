@@ -3,7 +3,6 @@ package cn.com.qingqfeng.archer.webapi.controller.auth;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -11,9 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.bind.DatatypeConverter;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +23,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 
+
 import cn.com.qingqfeng.archer.enums.ApiCodeEnum;
 import cn.com.qingqfeng.archer.pojo.Result;
+import cn.com.qingqfeng.archer.utils.JwtUtils;
 import cn.com.qingqfeng.archer.utils.VerifyCodeUtils;
-import io.jsonwebtoken.CompressionCodecs;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 /**   
@@ -49,7 +45,6 @@ public class AuthController {
 	 @Autowired
 	 private StringRedisTemplate redisTemplate; 
 	
-	 private final static String SECRET_KEY = "*(-=4eklfasdfarerf0417fdasf";
 
 	 private final static String CAPTCHA_KEY = "captcha:key_";
 	/**
@@ -134,7 +129,7 @@ public class AuthController {
         // 签发一个Json Web Token
         // 令牌ID=uuid,用户=clientKey,签发者=token-server
         // token有效期=3分钟,用户角色=ordinary,用户权限=read
-        String jwt = issueJwt(UUID.randomUUID().toString(), clientKey, 
+        String jwt = JwtUtils.issueJwt(UUID.randomUUID().toString(), clientKey, 
                                     "token-server",180000L, "ordinary", "read", SignatureAlgorithm.HS256);
         rs.setCode(ApiCodeEnum.SUCCESS);
         Map<String, Object> data = new LinkedHashMap<String, Object>();
@@ -145,44 +140,4 @@ public class AuthController {
     }
 	
 	
-	/**
-	 * 
-	 * <p>方法名:  issueJwt </p> 
-	 * <p>描述:    TODO </p>
-	 * <p>创建时间:  2019年2月26日上午10:41:35 </p>
-	 * @version 1.0
-	 * @author lijunliang
-	 * @param id
-	 * @param subject
-	 * @param issuer
-	 * @param period
-	 * @param roles
-	 * @param permissions
-	 * @param algorithm
-	 * @return  
-	 * String
-	 */
-    private String issueJwt(String id, String subject, String issuer, Long period,
-    		String roles, String permissions, SignatureAlgorithm algorithm) {
-		long currentTimeMillis = System.currentTimeMillis();// 当前时间戳
-		byte[] secretKeyBytes = DatatypeConverter.parseBase64Binary(SECRET_KEY);// 秘钥
-		JwtBuilder jwt  =  Jwts.builder();
-		if(StringUtils.isNotBlank(id)) 
-			jwt.setId(id);
-		jwt.setSubject(subject);// 用户名主题
-		if(StringUtils.isNotBlank(issuer)) 
-			jwt.setIssuer(issuer);//签发者
-		jwt.setIssuedAt(new Date(currentTimeMillis));//签发时间
-		if(null != period){
-			Date expiration = new Date(currentTimeMillis+period);
-			jwt.setExpiration(expiration);//有效时间
-		}
-		if(StringUtils.isNotBlank(roles)) 
-			jwt.claim("roles", roles);//角色
-		if(StringUtils.isNotBlank(permissions)) 
-			jwt.claim("perms", permissions);//权限
-		jwt.compressWith(CompressionCodecs.DEFLATE);//压缩，可选GZIP
-		jwt.signWith(algorithm, secretKeyBytes);//加密设置
-		return jwt.compact();
-	}
 }

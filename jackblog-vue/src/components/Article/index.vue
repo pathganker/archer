@@ -1,6 +1,12 @@
 <template>
   <div class="article-box">
     <ArtickeContent :article-detail="articleDetail"></ArtickeContent>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
     <Like :like-count="articleDetail.like_count" :is-like="articleDetail.isLike"></Like>
     <Prenext :prev-article="prevArticle" :next-article="nextArticle"></Prenext>
     <Comment :comment-list="commentList" :user="user"></Comment>

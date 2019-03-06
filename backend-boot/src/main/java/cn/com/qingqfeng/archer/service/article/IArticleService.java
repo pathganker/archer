@@ -31,6 +31,18 @@ public interface IArticleService {
 	List<ArticleDTO> requestArticleByOptions(ArticleQuery query);
 	/**
 	 * 
+	 * <p>方法名:  requestArticleTotal </p> 
+	 * <p>描述:    TODO </p>
+	 * <p>创建时间:  2019年3月6日下午1:02:44 </p>
+	 * @version 1.0
+	 * @author lijunliang
+	 * @param query
+	 * @return  
+	 * Long
+	 */
+	Long requestArticleTotal(ArticleQuery query);
+	/**
+	 * 
 	 * <p>方法名:  requestArticleById </p> 
 	 * <p>描述:    TODO </p>
 	 * <p>创建时间:  2019年3月5日下午6:27:51 </p>
@@ -41,5 +53,24 @@ public interface IArticleService {
 	 * ArticleDTO
 	 */
 	ArticleDTO requestArticleById(String id);
+	/**
+	 * 
+	 * <p>方法名:  requestPreNext </p> 
+	 * <p>描述:    TODO </p>
+	 * <p>创建时间:  2019年3月6日下午2:01:31 </p>
+	 * @version 1.0
+	 * @author lijunliang
+	 * @param id
+	 * @param query
+	 * @return  
+	 * List<ArticleDTO>
+	 */
+	List<ArticleDTO> requestPreNext(String id, ArticleQuery query);
+	
+	void addArticle(ArticleDTO article);
+	
+	void updateArticle(ArticleDTO article);
+	
+	void deleteArticle(String id);
 	
 }

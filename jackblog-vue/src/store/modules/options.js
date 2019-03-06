@@ -2,7 +2,7 @@ import {
   CHANGE_OPTIONS
 } from '../types'
 
-const state = {item: {currentPage: 1, itemsPerPage: 10, tagId: ''}}
+const state = {item: {page: 1, pageSize: 10, tag: ''}}
 
 const actions = {
   changeOptions({ commit },options){

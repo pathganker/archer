@@ -71,7 +71,7 @@ export default {
   },
   created() {
     this.getCaptchaUrl()
-    this.getSnsLogins()
+  //  this.getSnsLogins()
   },
   methods: {
     ...mapActions([

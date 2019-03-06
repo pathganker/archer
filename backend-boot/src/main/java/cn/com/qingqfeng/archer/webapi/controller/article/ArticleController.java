@@ -3,8 +3,14 @@
  */
 package cn.com.qingqfeng.archer.webapi.controller.article;
 
-import java.util.ArrayList;
 import java.util.List;
+
+
+
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,7 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 import cn.com.qingqfeng.archer.enums.ApiCodeEnum;
 import cn.com.qingqfeng.archer.pojo.Result;
 import cn.com.qingqfeng.archer.pojo.article.ArticleDTO;
+import cn.com.qingqfeng.archer.pojo.article.ArticleQuery;
 import cn.com.qingqfeng.archer.pojo.edition.EditionDTO;
+import cn.com.qingqfeng.archer.service.article.IArticleService;
+import cn.com.qingqfeng.archer.service.edition.IEditionService;
 import cn.com.qingqfeng.archer.utils.JwtUtils;
 
 /**   
@@ -29,12 +38,107 @@ import cn.com.qingqfeng.archer.utils.JwtUtils;
 @RequestMapping("article")
 public class ArticleController {
 	
-	@RequestMapping("front/list")
-	public Result getFrontArticleList(Integer curretPage, Integer currentPage, String sortName, String tagId) {
+	@Autowired
+	private IArticleService articleService;
+	
+	@Autowired
+	private IEditionService editionService;
+	/**
+	 * 
+	 * <p>方法名:  getFrontArticleList </p> 
+	 * <p>描述:    TODO </p>
+	 * <p>创建时间:  2019年3月6日下午1:40:29 </p>
+	 * @version 1.0
+	 * @author lijunliang
+	 * @param page
+	 * @param pageSize
+	 * @param tag
+	 * @return  
+	 * Result
+	 */
+	@RequestMapping(value="front/list", method={RequestMethod.GET})
+	public Result getFrontArticleList(Integer page, Integer pageSize, String tag) {
 		Result result = new Result();
+		ArticleQuery query = new ArticleQuery(page, pageSize);
+		query.setTag(tag);
+		List<ArticleDTO> articles = this.articleService.requestArticleByOptions(query);
+		if(null == articles || articles.isEmpty()){
+			result.setCode(ApiCodeEnum.NO_RESULT);
+			return result;
+		}
+		result.setData(articles);
 		result.setCode(ApiCodeEnum.SUCCESS);
 		return result;
 	}
+	/**
+	 * 
+	 * <p>方法名:  getFrontArticleCount </p> 
+	 * <p>描述:    TODO </p>
+	 * <p>创建时间:  2019年3月6日下午1:44:10 </p>
+	 * @version 1.0
+	 * @author lijunliang
+	 * @param tag
+	 * @return  
+	 * Result
+	 */
+	@RequestMapping(value="front/count",method={RequestMethod.GET})
+	public Result getFrontArticleCount(String tag){
+		Result result = new Result();
+		ArticleQuery query = new ArticleQuery();
+		query.setTag(tag);
+		Long total = this.articleService.requestArticleTotal(query);
+		result.setData(total);
+		result.setCode(ApiCodeEnum.SUCCESS);
+		return result;
+	}
+	/**
+	 * 
+	 * <p>方法名:  getFrontArticle </p> 
+	 * <p>描述:    TODO </p>
+	 * <p>创建时间:  2019年3月6日下午1:47:53 </p>
+	 * @version 1.0
+	 * @author lijunliang
+	 * @param id
+	 * @return  
+	 * Result
+	 */
+	@RequestMapping(value="front/detail",method={RequestMethod.GET})
+	public Result getFrontArticle(@RequestParam String id){
+		Result rs = new Result();
+		ArticleDTO article = this.articleService.requestArticleById(id);
+		rs.setCode(ApiCodeEnum.SUCCESS);
+		rs.setData(article);
+		return rs;
+	}
+	/**
+	 * 
+	 * <p>方法名:  getPreNext </p> 
+	 * <p>描述:    TODO </p>
+	 * <p>创建时间:  2019年3月6日下午3:00:33 </p>
+	 * @version 1.0
+	 * @author lijunliang
+	 * @param id
+	 * @param page
+	 * @param pageSize
+	 * @param tag
+	 * @return  
+	 * Result
+	 */
+	@RequestMapping(value="front/next/{id}",method={RequestMethod.GET})
+	public Result getPreNext(@PathVariable String id, Integer page, Integer pageSize, String tag){
+		Result rs = new Result();
+		ArticleQuery query = new ArticleQuery(page, pageSize);
+		query.setTag(tag);
+		List<ArticleDTO> articles = this.articleService.requestPreNext(id, query);
+		if(null == articles || articles.isEmpty()){
+			rs.setCode(ApiCodeEnum.NO_RESULT);
+			return rs;
+		}
+		rs.setCode(ApiCodeEnum.SUCCESS);
+		rs.setData(articles);
+		return rs;
+	}
+	
 	
 	/**
 	 * 
@@ -49,32 +153,13 @@ public class ArticleController {
 	@RequestMapping(value="edition", method={RequestMethod.GET})
 	public Result getEditionList(){
 		Result rs = new Result();
-		rs.setCode(ApiCodeEnum.SUCCESS);
-		List<EditionDTO> editions = new ArrayList<EditionDTO>();
-		List<ArticleDTO> articles = new ArrayList<ArticleDTO>();
-		ArticleDTO article = new ArticleDTO();
-		article.setTitle("我是一个恶人，我莫得感情");
-		article.setId("1234");
-		article.setBackendContent("我是一个恶人，我莫得感情");
-		articles.add(article);
-		article = new ArticleDTO();
-		article.setTitle("我是一个杀手，我莫得感情");
-		article.setId("1324");
-		article.setBackendContent("我是一个杀手，我莫得感情");
-		articles.add(article);
-		article = new ArticleDTO();
-		article.setTitle("我是一个莫得感情的青团子");
-		article.setId("3245");
-		article.setBackendContent("我是一个莫得感情的青团子");
-		articles.add(article);
-		for(int i =0; i< 3;i++){
-			EditionDTO edition = new EditionDTO();
-			edition.setId("12345678");
-			edition.setUserId(JwtUtils.getCurrentUserId());
-			edition.setTitle("残酷天使的行动纲领");
-			edition.setArticles(articles);
-			editions.add(edition);
+		String userId = JwtUtils.getCurrentUserId();
+		if(StringUtils.isBlank(userId)){
+			rs.setCode(ApiCodeEnum.API_AUTHORITY);
+			return rs;
 		}
+		List<EditionDTO> editions = this.editionService.requestEditionsByUserId(userId);
+		rs.setCode(ApiCodeEnum.SUCCESS);
 		rs.setData(editions);
 		return rs;
 	}
@@ -114,6 +199,11 @@ public class ArticleController {
 	@RequestMapping(value="backend/newblog", method={RequestMethod.POST})
 	public Result addNewArticle(@RequestBody ArticleDTO article){
 		Result rs = new Result();
+		if(null == article || StringUtils.isBlank(article.getEdition())){
+			rs.setCode(ApiCodeEnum.ARGS_WRONG);
+			return rs;
+		}
+		this.articleService.addArticle(article);
 		rs.setCode(ApiCodeEnum.SUCCESS);
 		return rs;
 	}
@@ -131,6 +221,11 @@ public class ArticleController {
 	@RequestMapping(value="backend/oldblog", method={RequestMethod.POST})
 	public Result updateArticle(@RequestBody ArticleDTO article){
 		Result rs = new Result();
+		if(null == article || StringUtils.isBlank(article.getEdition()) || StringUtils.isBlank(article.getId())){
+			rs.setCode(ApiCodeEnum.ARGS_WRONG);
+			return rs;
+		}
+		this.articleService.updateArticle(article);
 		rs.setCode(ApiCodeEnum.SUCCESS);
 		return rs;
 	}
@@ -148,6 +243,7 @@ public class ArticleController {
 	@RequestMapping(value="backend/blogless", method={RequestMethod.DELETE})
 	public Result deleteArticle(@RequestParam String id){
 		Result rs = new Result();
+		this.articleService.deleteArticle(id);
 		rs.setCode(ApiCodeEnum.SUCCESS);
 		return rs;		
 	}

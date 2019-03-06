@@ -1,6 +1,8 @@
 /**   */
 package cn.com.qingqfeng.archer.pojo.article;
 
+
+import cn.com.qingqfeng.archer.enums.SortType;
 import cn.com.qingqfeng.archer.pojo.Query;
 
 /**   
@@ -13,21 +15,38 @@ import cn.com.qingqfeng.archer.pojo.Query;
  */
 public class ArticleQuery extends Query{
 
+	/**
+	 * @param page
+	 * @param pageSize
+	 * @param sortName
+	 * @param sortType
+	 */
+	public ArticleQuery(Integer page, Integer pageSize, String sortName,
+			SortType sortType) {
+		super(page, pageSize, sortName, sortType);
+	}
+	public ArticleQuery(){
+		super();
+	}
+	public ArticleQuery(Integer page, Integer pageSize){
+		super(page, pageSize);
+	}
 	/** */
 	private static final long serialVersionUID = 1L;
 	
-	private String sortName;
-	private String tagId;
-	public String getSortName() {
-		return sortName;
+	private String tag;
+	private String id;
+	public String getTag() {
+		return tag;
 	}
-	public void setSortName(String sortName) {
-		this.sortName = sortName;
+	public void setTag(String tag) {
+		this.tag = tag;
 	}
-	public String getTagId() {
-		return tagId;
+	public String getId() {
+		return id;
 	}
-	public void setTagId(String tagId) {
-		this.tagId = tagId;
+	public void setId(String id) {
+		this.id = id;
 	}
+
 }

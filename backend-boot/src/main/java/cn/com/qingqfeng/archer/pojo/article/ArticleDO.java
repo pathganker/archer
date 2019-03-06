@@ -28,9 +28,9 @@ public class ArticleDO {
 	private Date publishTime;
 	/** 文集 */
 	private String edition;
-	/** 编辑内容 */
-	private String frontContent;
 	/** 展示内容 */
+	private String frontContent;
+	/** 编辑内容 */
 	private String backendContent;
 	/** 关联用户 */
 	private String userId;

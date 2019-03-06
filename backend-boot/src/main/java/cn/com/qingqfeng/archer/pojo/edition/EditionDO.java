@@ -2,6 +2,9 @@
 package cn.com.qingqfeng.archer.pojo.edition;
 
 import java.util.Date;
+import java.util.List;
+
+import cn.com.qingqfeng.archer.pojo.article.ArticleDO;
 
 /**   
  * <p>类名称: EditionDO </p> 
@@ -22,6 +25,8 @@ public class EditionDO {
 	private Date createTime;
 	/** 修改时间 */
 	private Date modifyTime;
+	/** 文章列表 */
+	private List<ArticleDO> articles;
 	public String getId() {
 		return id;
 	}
@@ -52,4 +57,11 @@ public class EditionDO {
 	public void setModifyTime(Date modifyTime) {
 		this.modifyTime = modifyTime;
 	}
+	public List<ArticleDO> getArticles() {
+		return articles;
+	}
+	public void setArticles(List<ArticleDO> articles) {
+		this.articles = articles;
+	}
+	
 }

@@ -16,7 +16,7 @@ const actions = {
   getCommentList({ commit },id){
     api.getFrontCommentList(id).then(response => {
       const json = response.data
-      if(200 != json.data){
+      if(200 != json.code){
         return commit(GET_COMMENT_LIST_FAILURE)
       }
       commit(COMMENT_LIST, { commentList: json.data })

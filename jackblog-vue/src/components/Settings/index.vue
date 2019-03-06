@@ -27,7 +27,7 @@
           <div class="form-group">
             <label class="col-sm-4 control-label">昵称</label>
             <div class="col-sm-8">
-              <input type="text" name="nickname" v-model="user.nickname" v-validate="'required|nickname|min:4|max:30'" class="form-control" placeholder="2-15字符，中英文、数字和下划线" />
+              <input type="text" name="nickname" v-model="user.nickname"  class="form-control" placeholder="2-15字符，中英文、数字和下划线" />
             </div>
           </div>
           <hr />
@@ -62,11 +62,6 @@ import defaultAvatar from '../../assets/images/avatar.png'
 export default {
   data() {
     return {
-      user : {
-        nickname: this.nickname,
-        avator: this.avator == null ? defaultAvatar : this.avator,
-        email: this.email
-      },
       navIndex: 0,
       settings:[
         {title: '基本设置'},
@@ -81,13 +76,28 @@ export default {
   },
   computed: {
     ...mapState({
-      nickname: ({auth}) => auth.user && auth.user.username,
-      avator: ({auth}) => auth.user && auth.user.avator,
+      nickname: ({auth}) => auth.user &&auth.user.nickname,
+      avatar: ({auth}) => auth.user && auth.user.avatar,
       email: ({auth}) => auth.user && auth.user.email
     }),
+    user: {
+      get(){
+        return {
+          nickname: this.nickname,
+          avatar: this.avatar,
+          email: this.email
+        }
+      },
+      set(){
+        return {
+          nickname: value,
+          email: value
+        }  
+      }
+    }
   },
   created(){
-  //  this.getUserInfo()
+    this.getUserInfo()
   },
   methods: {
     ...mapActions([
@@ -98,6 +108,7 @@ export default {
     mdUser() {
       this.$validator.validateAll().then(valid =>{
         if(valid){
+          console.log(this.user)
           this.updateUser(this.user)
         }else{
           this.showMsg("请正确填写内容",'info')
@@ -129,7 +140,7 @@ export default {
               height = (imageHeight - imageWidth)/(-2)
             }
             this.cutCtx.drawImage(cutImg,width,height,imageWidth,imageHeight)
-            this.user.avator = this.cutCanvas.toDataURL('image/png')
+            this.user.avatar = this.cutCanvas.toDataURL('image/jpeg',0.92)
           }
         })
       }
@@ -150,7 +161,7 @@ export default {
     cutCanvas.height = 120
     if(cutCanvas.getContext){
       let cutImg = new Image()
-      cutImg.src = this.user.avator
+      cutImg.src = this.user.avatar
       cutImg.onload =()=>{
         this.cutCtx.drawImage(cutImg,0,0,120,120)
       }      

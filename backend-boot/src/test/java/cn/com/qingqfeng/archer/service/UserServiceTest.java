@@ -33,6 +33,14 @@ public class UserServiceTest {
 		user.setPassword("cankutianshi");
 		this.userService.addUser(user);
 	}
+	@Test
+	public void updateTest(){
+		UserDTO user = this.userService.requestUserByName("zankokutenshi@yeah.net");
+		UserDTO newuser = new UserDTO();
+		newuser.setId(user.getId());
+		newuser.setNickname("青青子");
+		this.userService.updateUser(newuser);
+	}
 
 }
 

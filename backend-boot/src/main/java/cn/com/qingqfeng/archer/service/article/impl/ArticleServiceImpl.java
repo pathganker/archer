@@ -4,6 +4,7 @@ package cn.com.qingqfeng.archer.service.article.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,10 @@ public class ArticleServiceImpl implements IArticleService{
 	 */
 	@Override
 	public List<ArticleDTO> requestArticleByOptions(ArticleQuery query) {
+		if(query.getPage()<0){
+			return null;
+		}
+		query.setPage((query.getPage()> 0?query.getPage()-1:query.getPage())*query.getPageSize());
 		List<ArticleDTO> ars = new ArrayList<ArticleDTO>();
 		List<ArticleDO> dos = this.articleDao.queryArticleByOptions(query);
 		if(null == dos || dos.isEmpty()){
@@ -57,6 +62,70 @@ public class ArticleServiceImpl implements IArticleService{
 			BeanUtils.copyProperties(ar, article);
 		}
 		return article;
+	}
+
+	/** (non-Javadoc)
+	 * @see cn.com.qingqfeng.archer.service.article.IArticleService#requestArticleTotal(cn.com.qingqfeng.archer.pojo.article.ArticleQuery)
+	 */
+	@Override
+	public Long requestArticleTotal(ArticleQuery query) {
+		return this.articleDao.queryArticelTotal(query);
+	}
+
+	/** (non-Javadoc)
+	 * @see cn.com.qingqfeng.archer.service.article.IArticleService#requestPreNext(java.lang.String, cn.com.qingqfeng.archer.pojo.article.ArticleQuery)
+	 */
+	@Override
+	public List<ArticleDTO> requestPreNext(String id, ArticleQuery query) {
+		List<ArticleDTO> articles = new ArrayList<ArticleDTO>();
+		if(StringUtils.isBlank(id)){
+			return articles;
+		}
+		query.setId(id);
+		Integer sortNum = this.articleDao.querySortNum(query);
+		query.setPage(sortNum);
+		List<ArticleDO> ados = this.articleDao.queryArticleByOptions(query);
+		if(null == ados || ados.isEmpty()){
+			return articles;
+		}
+		for(ArticleDO ado : ados){
+			ArticleDTO article = new ArticleDTO();
+			BeanUtils.copyProperties(ado, article);
+			articles.add(article);
+		}
+		return articles;
+	}
+
+	/** (non-Javadoc)
+	 * @see cn.com.qingqfeng.archer.service.article.IArticleService#addArticle(cn.com.qingqfeng.archer.pojo.article.ArticleDTO)
+	 */
+	@Override
+	public void addArticle(ArticleDTO article) {
+		ArticleDO ado = new ArticleDO();
+		BeanUtils.copyProperties(article, ado);
+		this.articleDao.addArticle(ado);
+	}
+
+	/** (non-Javadoc)
+	 * @see cn.com.qingqfeng.archer.service.article.IArticleService#updateArticle(cn.com.qingqfeng.archer.pojo.article.ArticleDTO)
+	 */
+	@Override
+	public void updateArticle(ArticleDTO article) {
+		if(null == article || StringUtils.isBlank(article.getId())){
+			return;
+		}
+		ArticleDO ado = new ArticleDO();
+		BeanUtils.copyProperties(article, ado);
+		this.articleDao.updateArticle(ado);
+	}
+
+	/**
+	 * (non-Javadoc)
+	 * @see cn.com.qingqfeng.archer.service.article.IArticleService#deleteArticle(java.lang.String)
+	 */
+	@Override
+	public void deleteArticle(String id) {
+		this.articleDao.deleteArticle(id);
 	}
 
 }

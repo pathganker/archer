@@ -39,4 +39,73 @@ public interface IArticleDao {
 	 * ArticleDO
 	 */
 	ArticleDO queryArticleById(String id);
+	/**
+	 * 
+	 * <p>方法名:  queryCountDataById </p> 
+	 * <p>描述:    TODO </p>
+	 * <p>创建时间:  2019年3月6日上午11:18:13 </p>
+	 * @version 1.0
+	 * @author lijunliang
+	 * @param id
+	 * @return  
+	 * ArticleDO
+	 */
+	ArticleDO queryCountDataById(String id);
+	/**
+	 * 
+	 * <p>方法名:  queryArticelTotal </p> 
+	 * <p>描述:    TODO </p>
+	 * <p>创建时间:  2019年3月6日上午11:41:34 </p>
+	 * @version 1.0
+	 * @author lijunliang
+	 * @param query
+	 * @return  
+	 * Long
+	 */
+	Long queryArticelTotal(ArticleQuery query);
+	/**
+	 * 
+	 * <p>方法名:  querySortNum </p> 
+	 * <p>描述:    TODO </p>
+	 * <p>创建时间:  2019年3月6日下午2:05:29 </p>
+	 * @version 1.0
+	 * @author lijunliang
+	 * @param query
+	 * @return  
+	 * Integer
+	 */
+	Integer querySortNum(ArticleQuery query);
+	/**
+	 * 
+	 * <p>方法名:  addArticle </p> 
+	 * <p>描述:    TODO </p>
+	 * <p>创建时间:  2019年3月6日下午3:14:55 </p>
+	 * @version 1.0
+	 * @author lijunliang
+	 * @param article  
+	 * void
+	 */
+	void addArticle(ArticleDO article);
+	/**
+	 * 
+	 * <p>方法名:  updateArticle </p> 
+	 * <p>描述:    TODO </p>
+	 * <p>创建时间:  2019年3月6日下午3:14:57 </p>
+	 * @version 1.0
+	 * @author lijunliang
+	 * @param article  
+	 * void
+	 */
+	void updateArticle(ArticleDO article);
+	/**
+	 * 
+	 * <p>方法名:  deleteArticle </p> 
+	 * <p>描述:    TODO </p>
+	 * <p>创建时间:  2019年3月6日下午3:15:00 </p>
+	 * @version 1.0
+	 * @author lijunliang
+	 * @param id  
+	 * void
+	 */
+	void deleteArticle(String id);
 }
