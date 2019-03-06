@@ -8,6 +8,12 @@ import java.util.List;
 
 
 
+
+
+
+
+
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -105,6 +111,8 @@ public class ArticleController {
 	@RequestMapping(value="front/detail",method={RequestMethod.GET})
 	public Result getFrontArticle(@RequestParam String id){
 		Result rs = new Result();
+//		DelegatingSubject test=  (DelegatingSubject) SecurityUtils.getSubject();
+//		String ip = test.getHost();
 		ArticleDTO article = this.articleService.requestArticleById(id);
 		rs.setCode(ApiCodeEnum.SUCCESS);
 		rs.setData(article);
