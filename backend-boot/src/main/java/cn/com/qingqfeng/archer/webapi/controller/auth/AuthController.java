@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletRequest;

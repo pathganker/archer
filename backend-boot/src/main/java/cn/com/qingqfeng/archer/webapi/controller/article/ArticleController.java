@@ -15,6 +15,8 @@ import java.util.List;
 
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.support.DelegatingSubject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,8 +30,10 @@ import cn.com.qingqfeng.archer.pojo.Result;
 import cn.com.qingqfeng.archer.pojo.article.ArticleDTO;
 import cn.com.qingqfeng.archer.pojo.article.ArticleQuery;
 import cn.com.qingqfeng.archer.pojo.edition.EditionDTO;
+import cn.com.qingqfeng.archer.pojo.record.ArticleVisitDTO;
 import cn.com.qingqfeng.archer.service.article.IArticleService;
 import cn.com.qingqfeng.archer.service.edition.IEditionService;
+import cn.com.qingqfeng.archer.service.record.IVisitRecordService;
 import cn.com.qingqfeng.archer.utils.JwtUtils;
 
 /**   
@@ -49,6 +53,9 @@ public class ArticleController {
 	
 	@Autowired
 	private IEditionService editionService;
+	
+	@Autowired
+	private IVisitRecordService visitRecordService;
 	/**
 	 * 
 	 * <p>方法名:  getFrontArticleList </p> 
@@ -111,9 +118,19 @@ public class ArticleController {
 	@RequestMapping(value="front/detail",method={RequestMethod.GET})
 	public Result getFrontArticle(@RequestParam String id){
 		Result rs = new Result();
-//		DelegatingSubject test=  (DelegatingSubject) SecurityUtils.getSubject();
-//		String ip = test.getHost();
 		ArticleDTO article = this.articleService.requestArticleById(id);
+		if(null == article) {
+			rs.setCode(ApiCodeEnum.NO_RESULT);
+			return rs;
+		}
+		DelegatingSubject test=  (DelegatingSubject) SecurityUtils.getSubject();
+		String ip = test.getHost();
+		String userId = JwtUtils.getCurrentUserId();
+		ArticleVisitDTO record = new ArticleVisitDTO();
+		record.setArticleId(id);
+		record.setHost(ip);
+		record.setUserId(userId);
+		this.visitRecordService.addArticleVisitRecord(record);
 		rs.setCode(ApiCodeEnum.SUCCESS);
 		rs.setData(article);
 		return rs;
