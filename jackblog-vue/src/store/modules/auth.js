@@ -26,7 +26,7 @@ const actions = {
     commit(LOGOUT_USER)
     window.location.pathname = '/'
   },
-  localLogin(store, userInfo){
+  pageLogin(store, userInfo){
     api.localLogin(userInfo).then(response => {
       const json=response.data
       if(200!=json.code){
@@ -39,6 +39,20 @@ const actions = {
       store.commit(LOGIN_SUCCESS, {token: token })
       showMsg(store,'登录成功,欢迎光临!','success')
       router.push({path:'/'})
+    })
+  },
+  localLogin(store, userInfo){
+    api.localLogin(userInfo).then(response => {
+      const json=response.data
+      if(200!=json.code){
+        getCaptchaUrl(store)
+        return showMsg(store,json.message || '登录失败')
+      }
+      const token = json.data.jwt
+      saveCookie('token',token)
+      store.dispatch('getUserInfo')
+      store.commit(LOGIN_SUCCESS, {token: token })
+      showMsg(store,'登录成功,欢迎光临!','success')
     })
   },
   getUserInfo({ commit }){

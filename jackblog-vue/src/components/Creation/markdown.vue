@@ -3,7 +3,7 @@
     <div class="border-bar" @click="hidebar()">
     </div>
     <div class="edit-body" v-if="editionList!=null && editionList[cured]!=null && editionList[cured].articles!=null && editionList[cured].articles[curar]!=null">
-      <input class="intro-head " name="title" type="text" :value="editionList[cured].articles[curar].title" @input="title = $event.target.value" autocomplete="false"/>
+      <input id="title-input" class="intro-head " name="title" type="text" :value="editionList[cured].articles[curar].title" @input="title = $event.target.value" autocomplete="false"/>
       <mavon-editor  ref="md" :value="editionList[cured].articles[curar].backendContent == null ? '': editionList[cured].articles[curar].backendContent" @input="e => content = e" @save="save()" 
         :toolbars="toolbars" :externalLink="externalLink" />
     </div>
@@ -37,13 +37,14 @@ export default {
     save(){
       let frontContent = this.$refs.md.d_render
       let backendContent = this.content
-      this.updateBackendArticle({
+      let blog ={
         id: this.editionList[this.cured].articles[this.curar].id,
         title: this.title == null ? this.editionList[this.cured].articles[this.curar].title : this.title,
+        edition: this.editionList[this.cured].id,
         backendContent: backendContent,
         frontContent: frontContent,
-      })
-      this.getEditionList()
+      }
+      this.$parent.handleUpdateBlog(blog)
     },
     editActive(){
       if(!this.isedit){
@@ -54,13 +55,10 @@ export default {
   watch: {
     curar(val){
       if(this.isedit){
-        this.save()
+      //  this.save()
         this.isedit=false
       }
     },
-    $route(to,from){
-      console.log("------------")
-    }
   },
   data() {
     return {

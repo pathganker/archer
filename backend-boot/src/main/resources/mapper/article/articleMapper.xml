@@ -8,6 +8,7 @@
         <result column="image" property="image" jdbcType="VARCHAR" />
         <result column="profile" property="profile" jdbcType="VARCHAR" />
         <result column="user" property="userId" jdbcType="VARCHAR" />
+        <result column="nickname" property="nickname" jdbcType="VARCHAR" />
         <result column="front_content" property="frontContent" jdbcType="LONGVARCHAR" />
         <result column="backend_content" property="backendContent" jdbcType="LONGVARCHAR" />
         <result column="visit_count" property="visitCount" jdbcType="INTEGER" />
@@ -19,7 +20,7 @@
 <!-- 分页查询 -->
     <select id="queryArticleByOptions" parameterType="cn.com.qingqfeng.archer.pojo.article.ArticleQuery" resultMap="BaseResultMap"  >
        SELECT 
-            a.id, a.title, a.publish_time, a.image, a.profile, b.nickname as user, c.visit_count, d.comme_count, e.like_count 
+            a.id, a.title, a.publish_time, a.image, a.profile, b.nickname, a.user, c.visit_count, (d.comme_count+i.reply) as comme_count, e.like_count 
        FROM 
             qfeng_article a 
        LEFT JOIN 
@@ -30,6 +31,8 @@
             (select article_id, count(1) as comme_count from qfeng_comment where is_delete = 0 group by article_id) d ON a.id = d.article_id
        LEFT JOIN
             (select article_id, count(1) as like_count from qfeng_like where is_delete = 0 group by article_id) e ON a.id = e.article_id
+       LEFT JOIN
+            (select g.article_id, count(h.id) as reply from qfeng_comment g left join qfeng_reply h on g.uid = h.comment_id where g.is_delete =0 and h.is_delete=0 group by g.article_id) i ON a.id = i.article_id
        <choose>
             <when test="tag!=null and tag!=''">
             RIGHT JOIN (select article_id from qfeng_ref_article_tag where tag = #{tag} where is_delete = 0) f on a.id = f.article_id
@@ -37,6 +40,9 @@
        </choose>
        WHERE a.is_publish = 1 and a.is_delete =0 
        ORDER BY
+            <if test="sortName!=null and sortName!='publish_time'">
+            ${sortName} ${sortType},
+            </if>
             publish_time DESC
        limit #{pageSize} offset #{page}
     </select>
@@ -56,7 +62,7 @@
 <!-- 详情查询 -->
     <select id="queryArticleById" parameterType="java.lang.String" resultMap="BaseResultMap" >
        SELECT 
-            a.id, a.title, a.publish_time, a.front_content, a.backend_content, a.image, b.nickname as user, a.edition, a.create_time, a.modify_time
+            a.id, a.title, a.publish_time, a.front_content, a.backend_content, a.image, b.nickname, a.user, a.edition, a.create_time, a.modify_time
        FROM 
             qfeng_article a
        LEFT JOIN 
@@ -66,7 +72,7 @@
 <!-- 统计数据 -->
     <select id="queryCountDataById" parameterType="java.lang.String" resultMap="BaseResultMap"  >
        SELECT 
-            a.id, a.title, a.publish_time, b.nickname as user, c.visit_count, d.comme_count, e.like_count 
+            a.id, a.title, a.publish_time, b.nickname, a.user, c.visit_count, (d.comme_count+i.reply) as comme_count, e.like_count 
        FROM 
             qfeng_article a 
        LEFT JOIN 
@@ -77,6 +83,8 @@
             (select article_id, count(1) as comme_count from qfeng_comment where is_delete = 0 group by article_id) d ON a.id = d.article_id
        LEFT JOIN
             (select article_id, count(1) as like_count from qfeng_like where is_delete = 0 group by article_id) e ON a.id = e.article_id
+       LEFT JOIN
+            (select g.article_id, count(h.id) as reply from qfeng_comment g left join qfeng_reply h on g.uid = h.comment_id where g.is_delete =0 and h.is_delete=0 group by g.article_id) i ON a.id = i.article_id
        WHERE a.is_publish = 1 and a.is_delete =0 and a.id = #{id}
     </select>
 <!-- 排序名次     -->
@@ -116,8 +124,8 @@
            <if test="title != null">title = #{title},</if>
            <if test="publishTime != null">publish_time = #{publishTime},</if>
            <if test="edition != null ">edition = #{edition},</if>
-           <if test="front_content != null">front_content = #{frontContent},</if>
-           <if test="backend_content != null">backend_content = #{backendContent},</if>
+           <if test="frontContent != null">front_content = #{frontContent},</if>
+           <if test="backendContent != null">backend_content = #{backendContent},</if>
            <if test="userId != null">user = #{userId},</if>
            <if test="createTime != null">create_time = #{createTime},</if>
            <if test="modifyTime != null">modify_time = #{modifyTime},</if>
@@ -128,13 +136,13 @@
             id = #{id}
     </update>
 <!-- 删除     -->
-    <delete id="deleteArticle" parameterType="java.lang.String" >
+    <update id="deleteArticle" parameterType="java.lang.String" >
        UPDATE 
              qfeng_article
        SET
              is_delete=1 
        WHERE 
              id =#{id}
-    </delete>
+    </update>
     
 </mapper>

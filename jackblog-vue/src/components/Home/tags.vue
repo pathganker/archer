@@ -1,10 +1,10 @@
 <template>
 	<ul class="sort-tags list-unstyled clearfix">
 	    <li>
-	      <a :class="{'active':(options.sortName == 'publish_time')}" @click.prevent="changeSort('publish_time')" href="javascript:;">最新</a>
+	      <a :class="{'active':(options.sortName == 'publishTime')}" @click.prevent="changeSort('publishTime')" href="javascript:;">最新</a>
 	    </li>
 	    <li>
-	      <a :class="{'active':(options.sortName == 'visit_count')}" @click.prevent="changeSort('visit_count')" href="javascript:;">热门</a>
+	      <a :class="{'active':(options.sortName == 'visitCount')}" @click.prevent="changeSort('visitCount')" href="javascript:;">热门</a>
 	    </li>
       <li v-for="tag in tagList" :key="tag._id">
         <a :class="{'active':(options.tagId == tag._id)}" @click.prevent="changeTag(tag._id)" href="javascript:;">{{tag.name}}</a>

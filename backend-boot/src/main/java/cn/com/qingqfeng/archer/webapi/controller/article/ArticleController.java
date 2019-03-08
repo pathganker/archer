@@ -3,6 +3,8 @@
  */
 package cn.com.qingqfeng.archer.webapi.controller.article;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -13,6 +15,9 @@ import java.util.List;
 
 
 
+
+
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -70,9 +75,9 @@ public class ArticleController {
 	 * Result
 	 */
 	@RequestMapping(value="front/list", method={RequestMethod.GET})
-	public Result getFrontArticleList(Integer page, Integer pageSize, String tag) {
+	public Result getFrontArticleList(Integer page, Integer pageSize, String tag, String sortName, String sortType) {
 		Result result = new Result();
-		ArticleQuery query = new ArticleQuery(page, pageSize);
+		ArticleQuery query = new ArticleQuery(page, pageSize, sortName, sortType);
 		query.setTag(tag);
 		List<ArticleDTO> articles = this.articleService.requestArticleByOptions(query);
 		if(null == articles || articles.isEmpty()){
@@ -106,6 +111,39 @@ public class ArticleController {
 	}
 	/**
 	 * 
+	 * <p>方法名:  getToggleLike </p> 
+	 * <p>描述:    TODO </p>
+	 * <p>创建时间:  2019年3月7日下午1:23:50 </p>
+	 * @version 1.0
+	 * @author lijunliang
+	 * @param id
+	 * @return  
+	 * Result
+	 */
+	@RequestMapping(value="front/togglelike")
+	public Result getToggleLike(@RequestParam String id){
+		Result rs = new Result();
+		String userId = JwtUtils.getCurrentUserId();
+		boolean isLike = this.articleService.isUserLike(userId, id);
+		if(isLike){
+			this.articleService.cancleUserLike(userId, id);
+			isLike=false;
+		}else{
+			this.articleService.addUserLike(userId, id);
+			isLike=true;
+		}
+		Long likeCount = this.articleService.requestLikeCount(id);
+		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("likeCount", likeCount);
+		data.put("isLike", isLike);
+		rs.setCode(ApiCodeEnum.SUCCESS);
+		rs.setData(data);
+		return rs;
+		
+	}
+	
+	/**
+	 * 
 	 * <p>方法名:  getFrontArticle </p> 
 	 * <p>描述:    TODO </p>
 	 * <p>创建时间:  2019年3月6日下午1:47:53 </p>
@@ -119,10 +157,14 @@ public class ArticleController {
 	public Result getFrontArticle(@RequestParam String id){
 		Result rs = new Result();
 		ArticleDTO article = this.articleService.requestArticleById(id);
+		ArticleDTO count = this.articleService.requestCountDataById(id);
 		if(null == article) {
 			rs.setCode(ApiCodeEnum.NO_RESULT);
 			return rs;
 		}
+		article.setCommentCount(count.getCommentCount());
+		article.setVisitCount(count.getVisitCount());
+		article.setLikeCount(count.getLikeCount());
 		DelegatingSubject test=  (DelegatingSubject) SecurityUtils.getSubject();
 		String ip = test.getHost();
 		String userId = JwtUtils.getCurrentUserId();
@@ -130,9 +172,14 @@ public class ArticleController {
 		record.setArticleId(id);
 		record.setHost(ip);
 		record.setUserId(userId);
+		record.setCreateTime(new Date());
 		this.visitRecordService.addArticleVisitRecord(record);
+		boolean isLike = this.articleService.isUserLike(userId, id);
+		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("article", article);
+		data.put("isLike", isLike);
 		rs.setCode(ApiCodeEnum.SUCCESS);
-		rs.setData(article);
+		rs.setData(data);
 		return rs;
 	}
 	/**
@@ -224,10 +271,11 @@ public class ArticleController {
 	@RequestMapping(value="backend/newblog", method={RequestMethod.POST})
 	public Result addNewArticle(@RequestBody ArticleDTO article){
 		Result rs = new Result();
-		if(null == article || StringUtils.isBlank(article.getEdition())){
+		if(null == article || StringUtils.isBlank(article.getEdition()) || StringUtils.isBlank(article.getId())){
 			rs.setCode(ApiCodeEnum.ARGS_WRONG);
 			return rs;
 		}
+
 		this.articleService.addArticle(article);
 		rs.setCode(ApiCodeEnum.SUCCESS);
 		return rs;
@@ -246,7 +294,7 @@ public class ArticleController {
 	@RequestMapping(value="backend/oldblog", method={RequestMethod.POST})
 	public Result updateArticle(@RequestBody ArticleDTO article){
 		Result rs = new Result();
-		if(null == article || StringUtils.isBlank(article.getEdition()) || StringUtils.isBlank(article.getId())){
+		if(null == article || StringUtils.isBlank(article.getId())){
 			rs.setCode(ApiCodeEnum.ARGS_WRONG);
 			return rs;
 		}

@@ -41,6 +41,12 @@ public class ArticleDTO implements Serializable{
 	private String backendContent;
 	/** 概览 */
 	private String profile;
+	/** 用户id */
+	private String userId;
+	/** 用户昵称 */
+	private String nickname;
+	/** 发布状态 */
+	private Boolean publish;
 	
 	public String getImage() {
 		return image;
@@ -110,5 +116,23 @@ public class ArticleDTO implements Serializable{
 	}
 	public void setBackendContent(String backendContent) {
 		this.backendContent = backendContent;
+	}
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+	public String getNickname() {
+		return nickname;
+	}
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+	public Boolean getPublish() {
+		return publish;
+	}
+	public void setPublish(Boolean publish) {
+		this.publish = publish;
 	}
 }

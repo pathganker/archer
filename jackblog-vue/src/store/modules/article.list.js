@@ -3,13 +3,15 @@ import {
   ARTICLE_LIST,
   ADD_ARTICLE_LIST,
   REQUEST_ARTICLE_LIST,
-  GET_ARTICLE_LIST_FAILURE
+  GET_ARTICLE_LIST_FAILURE,
+  ARTICLE_TOTAL
 } from '../types'
 
 const state = {
   isFetching: false,
   isMore: true,
-  items: []
+  items: [],
+  totalCount: 0
 }
 
 const actions = {
@@ -20,7 +22,7 @@ const actions = {
       if(200 != json.code){
         return commit(GET_ARTICLE_LIST_FAILURE)
       }
-      const isMore = !(json.data.length < options.itemsPerPage)
+      const isMore = !(json.data.length < options.pageSize)
       isAdd
         ? commit(ADD_ARTICLE_LIST,{
           articleList: json.data,
@@ -31,6 +33,18 @@ const actions = {
           isMore:isMore
         })
     }, 
+    error => {
+      commit(GET_ARTICLE_LIST_FAILURE)
+    })
+  },
+  getArticleTotal({commit},{options}) {
+    api.getFrontArticleCount(options).then(response => {
+      const json =response.data
+      if(200!=json.code){
+        return commit(GET_ARTICLE_LIST_FAILURE)
+      }
+      commit(ARTICLE_TOTAL,{totalCount: json.data})
+    },
     error => {
       commit(GET_ARTICLE_LIST_FAILURE)
     })
@@ -53,6 +67,9 @@ const mutations = {
     state.isFetching = false
     state.isMore = action.isMore
     state.items = [...state.items, ...action.articleList]
+  },
+  [ARTICLE_TOTAL](state, data){
+    state.totalCount= data.totalCount
   }
 }
 

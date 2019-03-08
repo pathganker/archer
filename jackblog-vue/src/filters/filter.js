@@ -38,7 +38,7 @@ exports.formatDate =  time => {
   let year = tmpDate.getFullYear()
   let mathon = tmpDate.getMonth() + 1
   let day = tmpDate.getDate()
-  let hours = tmpDate.getHours()
-  let minutes = tmpDate.getMinutes()
+  let hours = tmpDate.getHours()<10?'0'+tmpDate.getHours():tmpDate.getHours()
+  let minutes = tmpDate.getMinutes()<10?'0'+tmpDate.getMinutes():tmpDate.getMinutes()
   return year + '.' + mathon + '.' + day + ' ' + hours + ':' + minutes
 }

@@ -3,7 +3,7 @@ package cn.com.qingqfeng.archer.pojo;
 
 import java.io.Serializable;
 
-import cn.com.qingqfeng.archer.enums.SortType;
+import cn.com.qingqfeng.archer.enums.SortEnum;
 
 
 /**   
@@ -19,17 +19,8 @@ public class Query implements Serializable{
 	private static final long serialVersionUID = 1L;
 	public Integer page = 1;
 	public Integer pageSize = 10;
-	public String sortName;
-	public String sortType=SortType.ASC.getSort();
+	public String sortType=SortEnum.DESC.getSort();
 	
-	public Query(Integer page, Integer pageSize, String sortName, SortType sortType){
-		this.page=page;
-		this.pageSize=pageSize;
-		this.sortName=sortName;
-		if(null!=sortType){
-			this.sortType=sortType.getSort();
-		}
-	}
 	public Query(Integer page, Integer pageSize){
 		this.page=page;
 		this.pageSize=pageSize;
@@ -49,16 +40,7 @@ public class Query implements Serializable{
 	public void setPageSize(Integer pageSize) {
 		this.pageSize = pageSize;
 	}
-	public String getSortName() {
-		return sortName;
-	}
-	public void setSortName(String sortName) {
-		this.sortName = sortName;
-	}
 	public String getSortType() {
 		return sortType;
-	}
-	public void setSortType(String sortType) {
-		this.sortType = sortType;
 	}
 }

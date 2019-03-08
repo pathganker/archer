@@ -25,7 +25,8 @@ const router = new Router({
       name: 'login',
       component: Login,
       meta:{
-        requiresNotAuth: true
+        requiresNotAuth: true,
+        goTop: true
       }      
     },
     {
@@ -56,8 +57,16 @@ const router = new Router({
     {
       path: '/creation',
       name: 'creation',
-      component: Creation
-    }
+      component: Creation,
+      meta:{
+        requiresAuth: true
+      } 
+    },
+    // {
+    //   path: '/about',
+    //   name: 'about',
+    //   component: About,
+    // }
   ]
 })
 
@@ -72,9 +81,9 @@ router.beforeEach((to, from, next) => {
     }
   }
   if (to.matched.some(record => record.meta.requiresNotAuth)) {
-    if (isLogin()) {
-      return next({path: '/'})
-    }
+    // if (isLogin()) {
+    //   return next({path: '/'})
+    // }
   }
   next()
 })

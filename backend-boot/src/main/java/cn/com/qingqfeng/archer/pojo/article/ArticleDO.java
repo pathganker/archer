@@ -34,6 +34,8 @@ public class ArticleDO {
 	private String backendContent;
 	/** 关联用户 */
 	private String userId;
+	/** 用户昵称 */
+	private String nickname;
 	/** 创建时间 */
 	private Date createTime;
 	/** 修改时间 */
@@ -131,6 +133,12 @@ public class ArticleDO {
 	}
 	public void setProfile(String profile) {
 		this.profile = profile;
+	}
+	public String getNickname() {
+		return nickname;
+	}
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
 	
 }

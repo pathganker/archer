@@ -97,14 +97,14 @@ export default {
     return fetch({
       url: 'comment/new',
       method: 'post',
-      params: data
+      data: data
     })
   },
   addNewReply: function (data) {
     return fetch({
       url: 'comment/reply',
       method: 'post',
-      params: data
+      data: data
     })
   },
   delComment:function (id) {
@@ -114,13 +114,7 @@ export default {
       params: {id:id}
     })
   },
-  delReply: function (data) {
-    return fetch({
-      url: 'comment/reply/less',
-      mehtod: 'delete',
-      parmas: data
-    })
-  },
+
   checkCaptch: function (data) {
     return fetch({
       url: 'auth/vercode/'+ store.getters.captchaKey,

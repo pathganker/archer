@@ -1,30 +1,28 @@
 /**   */
-package cn.com.qingqfeng.archer.pojo.record;
+package cn.com.qingqfeng.archer.pojo.like;
 
 import java.util.Date;
 
 /**   
- * <p>类名称: ArticleVisit </p> 
+ * <p>类名称: LikeDO </p> 
  * <p>描述: TODO  </p>
- * <p>创建时间 : 2019年3月6日 下午9:54:35 </p>
+ * <p>创建时间 : 2019年3月7日 下午12:48:25 </p>
  * @author lijunliang
  * @version 1.0
  * 
  */
-public class ArticleVisitDTO {
-	/** host */
-	private String host;
+public class LikeDO {
+	/** 用户id */
+	private String userId;
 	/** 文章id */
 	private String articleId;
 	/** 创建时间 */
 	private Date createTime;
-	/** 用户id */
-	private String userId;
-	public String getHost() {
-		return host;
+	public String getUserId() {
+		return userId;
 	}
-	public void setHost(String host) {
-		this.host = host;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 	public String getArticleId() {
 		return articleId;
@@ -37,11 +35,5 @@ public class ArticleVisitDTO {
 	}
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
-	}
-	public String getUserId() {
-		return userId;
-	}
-	public void setUserId(String userId) {
-		this.userId = userId;
 	}
 }

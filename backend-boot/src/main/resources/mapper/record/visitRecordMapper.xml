@@ -5,8 +5,8 @@
 <!-- 添加 回复   -->
     <insert id="addArticleVisitRecord" parameterType="cn.com.qingqfeng.archer.pojo.record.ArticleVisitDO" >
        INSERT INTO 
-            qfeng_comment
-            (ip, article_id, user_id, create_time)
+            qfeng_visit_record
+            (host, article_id, user_id, create_time)
         VALUES
             (#{host}, #{articleId}, #{userId}, #{createTime})
     </insert>

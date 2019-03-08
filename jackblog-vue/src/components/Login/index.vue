@@ -28,7 +28,7 @@
             </div>
             <div class="col-xs-6 captcha-img">
               <a href="javascript:;" @click.prevent="getCaptchaUrl()">
-                <img :src="captchaUrl"></img>
+                <img :src="captchaUrl"/>
               </a>
             </div>
           <span class="tip-span-captcha">{{ errors.first('captcha') }}</span>
@@ -38,10 +38,10 @@
           </div>
         </form>
       </div>
-      <div class="login-sns">
+      <!-- <div class="login-sns">
         <p>您还可以通过以下方式直接登录</p>
         <snsloginbtns :logins="logins"></snsloginbtns>
-      </div>
+      </div> -->
     </div>
   </div>
 </div>
@@ -58,7 +58,6 @@ export default {
     ...mapState({
       captchaUrl: ({ globalVal }) => globalVal.captchaUrl,
       logins: ({ logins }) => logins.items,
-      token: ({ auth }) => auth.token
     })
   },
   data() {
@@ -77,13 +76,13 @@ export default {
     ...mapActions([
       'getSnsLogins',
       'getCaptchaUrl',
-      'localLogin',
+      'pageLogin',
       'showMsg'
     ]),
     login() {
       this.$validator.validateAll().then(valid => {
         if(valid){
-          this.localLogin(this.user)
+          this.pageLogin(this.user)
         }
         else{
           this.getCaptchaUrl()

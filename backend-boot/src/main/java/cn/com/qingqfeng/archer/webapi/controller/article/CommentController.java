@@ -64,7 +64,7 @@ public class CommentController {
 	 * @return  
 	 * Result
 	 */
-	@RequestMapping(value="new",method={RequestMethod.GET})
+	@RequestMapping(value="new",method={RequestMethod.POST})
 	public Result addNewComment(@RequestBody CommentDTO comment){
 		Result rs = new Result();
 		this.commentService.addComment(comment);

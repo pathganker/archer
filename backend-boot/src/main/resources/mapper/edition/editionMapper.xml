@@ -48,13 +48,13 @@
             id = #{id}
     </update>
 <!-- 删除     -->
-    <delete id="deleteArticle" parameterType="java.lang.String" >
+    <update id="deleteArticle" parameterType="java.lang.String" >
        UPDATE 
              qfeng_edition
        SET
              is_delete=1 
        WHERE 
              id =#{id}
-    </delete>
+    </update>
     
 </mapper>

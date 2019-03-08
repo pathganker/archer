@@ -7,6 +7,7 @@
         <result column="content" property="content" jdbcType="VARCHAR" />
         <result column="article_id" property="articleId" jdbcType="VARCHAR" />
         <result column="user_id" property="userId" jdbcType="VARCHAR" />
+        <result column="avatar" property="avatar" jdbcType="LONGVARCHAR" />
         <result column="nickname" property="nickname" jdbcType="VARCHAR" />
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
         <collection property="replys" ofType="cn.com.qingqfeng.archer.pojo.reply.ReplyDO">
@@ -23,7 +24,7 @@
 <!-- 根据用户id -->
     <select id="queryCommentByArticleId" parameterType="java.lang.String" resultMap="BaseResultMap"  >
        SELECT 
-            a.id,a.uid, a.content, a.article_id, a.user_id, b.nickname, a.create_time, 
+            a.id,a.uid, a.content, a.article_id, a.user_id, b.nickname,b.avatar, a.create_time, c.comment_id, 
             c.id as re_id, c.content as re_content, c.user_id as re_user_id, d.nickname as re_nickname, c.create_time as re_create_time,
             c.target_id as re_target_id, e.nickname as re_target_name
        FROM 
@@ -52,28 +53,28 @@
 <!-- 添加 回复   -->
     <insert id="addReply" parameterType="cn.com.qingqfeng.archer.pojo.reply.ReplyDO" >
        INSERT INTO 
-            qfeng_comment
+            qfeng_reply
             (content, user_id, comment_id, create_time, target_id)
         VALUES
-            (#{content}, #{userId}, #{commentId}, #{createTime},#{tagetId})
+            (#{content}, #{userId}, #{commentId}, #{createTime},#{targetId})
     </insert>
 <!-- 删除评论    -->
-    <delete id="deleteCommment" parameterType="java.lang.String" >
+    <update id="deleteCommment" parameterType="java.lang.String" >
        UPDATE 
              qfeng_comment
        SET
              is_delete=1 
        WHERE 
              id =#{id}
-    </delete>
+    </update>
 <!--  删除所有回复 -->
-    <delete id="deleteReplyByCommentId" parameterType="java.lang.String" >
+    <update id="deleteReplyByCommentId" parameterType="java.lang.String" >
        UPDATE 
              qfeng_reply
        SET
              is_delete=1 
        WHERE 
              comment_id =#{id}
-    </delete>
+    </update>
     
 </mapper>

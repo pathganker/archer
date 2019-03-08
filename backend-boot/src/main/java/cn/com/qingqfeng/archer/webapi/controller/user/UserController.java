@@ -3,6 +3,8 @@
  */
 package cn.com.qingqfeng.archer.webapi.controller.user;
 
+import java.util.List;
+
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,9 +52,13 @@ public class UserController {
 			rs.setCode(ApiCodeEnum.NO_RESULT);
 			return rs;
 		}
-		UserDTO user = this.userService.requestUserByName(jwtPlayload.getUserId());
+		String username = jwtPlayload.getUserId();
+		String userId = jwtPlayload.getId();
+		UserDTO user = this.userService.requestUserByName(username);
 		UserVO userVO = new UserVO();
 		BeanUtils.copyProperties(user, userVO);
+		List<String> likes = this.userService.requestUserLikeByUserId(userId);
+		userVO.setLikes(likes);
 		rs.setCode(ApiCodeEnum.SUCCESS);
 		rs.setData(userVO);
 		return rs;

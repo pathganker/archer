@@ -2,6 +2,7 @@
 package cn.com.qingqfeng.archer.pojo.user;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**   
  * <p>类名称: UserVO </p> 
@@ -28,6 +29,8 @@ public class UserVO implements Serializable{
 	private String avatar;
 	/** 邮件 */
 	private String email;
+	/** 喜欢 */
+	private List<String> likes;
 	public String getId() {
 		return id;
 	}
@@ -63,6 +66,12 @@ public class UserVO implements Serializable{
 	}
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	public List<String> getLikes() {
+		return likes;
+	}
+	public void setLikes(List<String> likes) {
+		this.likes = likes;
 	}
 	
 	

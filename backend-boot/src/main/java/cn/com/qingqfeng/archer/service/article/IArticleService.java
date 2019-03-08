@@ -66,11 +66,99 @@ public interface IArticleService {
 	 * List<ArticleDTO>
 	 */
 	List<ArticleDTO> requestPreNext(String id, ArticleQuery query);
-	
+	/**
+	 * 
+	 * <p>方法名:  requestCountDataById </p> 
+	 * <p>描述:    TODO </p>
+	 * <p>创建时间:  2019年3月7日上午9:52:36 </p>
+	 * @version 1.0
+	 * @author lijunliang
+	 * @param id
+	 * @return  
+	 * ArticleDTO
+	 */
+	ArticleDTO requestCountDataById(String id);
+	/**
+	 * 
+	 * <p>方法名:  addArticle </p> 
+	 * <p>描述:    TODO </p>
+	 * <p>创建时间:  2019年3月7日上午10:22:41 </p>
+	 * @version 1.0
+	 * @author lijunliang
+	 * @param article  
+	 * void
+	 */
 	void addArticle(ArticleDTO article);
-	
+	/**
+	 * 
+	 * <p>方法名:  updateArticle </p> 
+	 * <p>描述:    TODO </p>
+	 * <p>创建时间:  2019年3月7日上午10:22:44 </p>
+	 * @version 1.0
+	 * @author lijunliang
+	 * @param article  
+	 * void
+	 */
 	void updateArticle(ArticleDTO article);
-	
+	/**
+	 * 
+	 * <p>方法名:  deleteArticle </p> 
+	 * <p>描述:    TODO </p>
+	 * <p>创建时间:  2019年3月7日上午10:22:47 </p>
+	 * @version 1.0
+	 * @author lijunliang
+	 * @param id  
+	 * void
+	 */
 	void deleteArticle(String id);
+	/**
+	 * 
+	 * <p>方法名:  isUserLike </p> 
+	 * <p>描述:    TODO </p>
+	 * <p>创建时间:  2019年3月7日下午12:01:16 </p>
+	 * @version 1.0
+	 * @author lijunliang
+	 * @param userId
+	 * @param articleId
+	 * @return  
+	 * Boolean
+	 */
+	Boolean isUserLike(String userId, String articleId);
+	/**
+	 * 
+	 * <p>方法名:  addUserLike </p> 
+	 * <p>描述:    TODO </p>
+	 * <p>创建时间:  2019年3月7日下午1:18:35 </p>
+	 * @version 1.0
+	 * @author lijunliang
+	 * @param userId
+	 * @param articleId  
+	 * void
+	 */
+	void addUserLike(String userId, String articleId);
+	/**
+	 * 
+	 * <p>方法名:  cancleUserLike </p> 
+	 * <p>描述:    TODO </p>
+	 * <p>创建时间:  2019年3月7日下午1:18:37 </p>
+	 * @version 1.0
+	 * @author lijunliang
+	 * @param userId
+	 * @param articleId  
+	 * void
+	 */
+	void cancleUserLike(String userId, String articleId);
+	/**
+	 * 
+	 * <p>方法名:  requestLikeCount </p> 
+	 * <p>描述:    TODO </p>
+	 * <p>创建时间:  2019年3月7日下午1:31:56 </p>
+	 * @version 1.0
+	 * @author lijunliang
+	 * @param articleId
+	 * @return  
+	 * Long
+	 */
+	Long requestLikeCount(String articleId);
 	
 }

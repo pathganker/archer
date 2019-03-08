@@ -3,6 +3,8 @@
  */
 package cn.com.qingqfeng.archer.pojo.record;
 
+import java.util.Date;
+
 /**   
  * <p> 类名：  ArticleVisitDO   </p>
  * <p> 描述：	TODO  </p>
@@ -16,7 +18,7 @@ public class ArticleVisitDO {
 	/** 文章id */
 	private String articleId;
 	/** 创建时间 */
-	private String createTime;
+	private Date createTime;
 	/** 用户id */
 	private String userId;
 	public String getHost() {
@@ -31,10 +33,10 @@ public class ArticleVisitDO {
 	public void setArticleId(String articleId) {
 		this.articleId = articleId;
 	}
-	public String getCreateTime() {
+	public Date getCreateTime() {
 		return createTime;
 	}
-	public void setCreateTime(String createTime) {
+	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
 	public String getUserId() {

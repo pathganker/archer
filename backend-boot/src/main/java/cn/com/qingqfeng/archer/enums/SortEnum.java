@@ -9,15 +9,26 @@ package cn.com.qingqfeng.archer.enums;
  * @version 1.0
  * 
  */
-public enum SortType {
+public enum SortEnum {
 	ASC("ASC"),
 	DESC("DESC");
 	
 	private String sort;
-	private SortType(String sort){
+	private SortEnum(String sort){
 		this.sort = sort;
 	}
 	public String getSort() {
 		return sort;
+	}
+	public static SortEnum requestTypeBySort(String sort){
+		if(null == sort){
+			return null;
+		}
+		for (SortEnum type : SortEnum.values()){
+			if(type.sort.equals(sort)){
+				return type;
+			}
+		}
+		return null;
 	}
 }

@@ -29,7 +29,8 @@ public class CommentDTO {
 	private String userId;
 	/** 用户昵称 */
 	private String nickname;
-	
+	/** 用户头像 */
+	private String avatar;
 	private List<ReplyDTO> replys;
 	public Integer getId() {
 		return id;
@@ -78,5 +79,11 @@ public class CommentDTO {
 	}
 	public void setReplys(List<ReplyDTO> replys) {
 		this.replys = replys;
+	}
+	public String getAvatar() {
+		return avatar;
+	}
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
 	}
 }

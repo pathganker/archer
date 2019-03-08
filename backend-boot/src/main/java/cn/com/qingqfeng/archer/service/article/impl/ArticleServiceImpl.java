@@ -2,6 +2,7 @@
 package cn.com.qingqfeng.archer.service.article.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -10,9 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.com.qingqfeng.archer.dao.article.IArticleDao;
+import cn.com.qingqfeng.archer.dao.like.ILikeDao;
 import cn.com.qingqfeng.archer.pojo.article.ArticleDO;
 import cn.com.qingqfeng.archer.pojo.article.ArticleDTO;
 import cn.com.qingqfeng.archer.pojo.article.ArticleQuery;
+import cn.com.qingqfeng.archer.pojo.like.LikeDO;
 import cn.com.qingqfeng.archer.service.article.IArticleService;
 
 /**   
@@ -28,7 +31,10 @@ public class ArticleServiceImpl implements IArticleService{
 	
 	@Autowired
 	private IArticleDao articleDao;
-
+	
+	@Autowired
+	private ILikeDao likeDao;
+	
 	/** (non-Javadoc)
 	 * @see cn.com.qingqfeng.archer.service.article.IArticleService#requestArticleByOptions(java.lang.String, java.lang.Integer, java.lang.Integer)
 	 */
@@ -46,6 +52,15 @@ public class ArticleServiceImpl implements IArticleService{
 		for(ArticleDO ado : dos){
 			ArticleDTO article = new ArticleDTO();
 			BeanUtils.copyProperties(ado, article);
+			if(null == article.getCommentCount()){
+				article.setCommentCount(0);
+			}
+			if(null == article.getVisitCount()){
+				article.setVisitCount(0);
+			}
+			if(null == article.getLikeCount()){
+				article.setLikeCount(0);
+			}
 			ars.add(article);
 		}
 		return ars;
@@ -63,13 +78,13 @@ public class ArticleServiceImpl implements IArticleService{
 		}
 		return article;
 	}
-
-	/** (non-Javadoc)
+	/**
+	 * (non-Javadoc)
 	 * @see cn.com.qingqfeng.archer.service.article.IArticleService#requestArticleTotal(cn.com.qingqfeng.archer.pojo.article.ArticleQuery)
 	 */
 	@Override
 	public Long requestArticleTotal(ArticleQuery query) {
-		return this.articleDao.queryArticelTotal(query);
+		return  this.articleDao.queryArticelTotal(query);
 	}
 
 	/** (non-Javadoc)
@@ -126,6 +141,79 @@ public class ArticleServiceImpl implements IArticleService{
 	@Override
 	public void deleteArticle(String id) {
 		this.articleDao.deleteArticle(id);
+	}
+
+	/** (non-Javadoc)
+	 * @see cn.com.qingqfeng.archer.service.article.IArticleService#requestCountDataById(java.lang.String)
+	 */
+	@Override
+	public ArticleDTO requestCountDataById(String id) {
+		ArticleDTO count = new ArticleDTO();
+		ArticleDO data = this.articleDao.queryCountDataById(id);
+		if(null == data){
+			count.setVisitCount(0);
+			count.setCommentCount(0);
+			count.setLikeCount(0);
+			return count;
+		}
+		if(null!=data.getCommentCount()){
+			count.setCommentCount(data.getCommentCount());
+		}else{
+			count.setCommentCount(0);
+		}
+		if(null != data.getLikeCount()){
+			count.setLikeCount(data.getLikeCount());
+		}else{
+			count.setLikeCount(0);
+		}
+		if(null != data.getVisitCount()){
+			count.setVisitCount(data.getVisitCount());
+		}else{
+			count.setVisitCount(0);
+		}
+		return count;
+	}
+
+	/** (non-Javadoc)
+	 * @see cn.com.qingqfeng.archer.service.article.IArticleService#isUserLike(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public Boolean isUserLike(String userId, String articleId) {
+		LikeDO like = this.likeDao.queryLike(userId, articleId);
+		if(null == like){
+			return false;
+		}
+		return true;
+	}
+
+	/** (non-Javadoc)
+	 * @see cn.com.qingqfeng.archer.service.article.IArticleService#addUserLike(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public void addUserLike(String userId, String articleId) {
+		LikeDO like = new LikeDO();
+		like.setUserId(userId);
+		like.setArticleId(articleId);
+		like.setCreateTime(new Date());
+		this.likeDao.addLike(like);
+		
+	}
+
+	/** (non-Javadoc)
+	 * @see cn.com.qingqfeng.archer.service.article.IArticleService#cancleUserLike(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public void cancleUserLike(String userId, String articleId) {
+		this.likeDao.deleteLike(userId, articleId);
+	}
+
+	/**
+	 * (non-Javadoc)
+	 * @see cn.com.qingqfeng.archer.service.article.IArticleService#requestLikeCount(java.lang.String)
+	 */
+	@Override
+	public Long requestLikeCount(String articleId) {
+		return this.likeDao.queryLikeCount(articleId);
 	}
 
 }

@@ -32,20 +32,20 @@ const actions = {
         return showMsg(store,json.message || '添加评论失败!')
       }
       showMsg(store,'添加评论成功!','success')
-      store.commit(SUCCESS_ADD_COMMENT, { comment: json.data })
+      store.commit(SUCCESS_ADD_COMMENT, { comment: data })
     }, 
     error => {
       showMsg(store, '添加评论失败!')
     })
   },
-  addReply(store,{cid,data}){
-    api.addNewReply(cid,data).then(response => {
+  addReply(store,data){
+    api.addNewReply(data).then(response => {
       const json = response.data
       if(200!=json.code){
         return showMsg(store,json.message || '添加回复失败!')
       }
       showMsg(store,'添加回复成功!','success')
-      store.commit(SUCCESS_ADD_REPLY, { cid:cid,replys: json.data })
+      store.commit(SUCCESS_ADD_REPLY, { reply: data })
     }, 
     error => {
       showMsg(store, '添加回复失败!')
@@ -63,8 +63,8 @@ const mutations = {
   },
   [SUCCESS_ADD_REPLY](state,action){
     state.items = state.items.map(item=>{
-      if(item._id === action.cid){
-        item.replys = action.replys
+      if(item.uid === action.reply.commentId){
+        item.replys.push(action.reply)
       }
       return item
     })

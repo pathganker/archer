@@ -15,10 +15,10 @@
           </div>
         </div>
         <ul class="nav nav-pills nav-stacked">
-          <li v-for="(edition,index) in editionList" :key="index" @click="editionActive(index)" :class="{active:index==cured}">
+          <li v-for="(edition,index) in editionList" :key="index" @click="editionActive(index)" :class="{active:index==cured}" @dblclick="edconfig(index)">
             <a>{{edition.title}}  
               <span class="glyphicon glyphicon-cog " aria-hidden="true" @click="edconfig(index)" style="display:none;float:right;" :class="{active:index==cured}"></span>
-              <ul class="dropdown-menu"  :id="'ed_drop_menu_'+index" style="display:none" v-clickoutside="index">
+              <ul class="dropdown-menu"  :id="'ed_drop_menu_'+index" style="display:none;user-select:none;" v-clickoutside="index">
                 <li><a @click="edModify(edition)">修改</a></li>
                 <li><a @click="edDelete(edition)">删除</a></li>
               </ul>
@@ -33,12 +33,12 @@
           <li><a class="fa fa-plus" @click="createblog()">&nbsp;&nbsp;&nbsp;新建文章</a></li>
         </ul>
         <ul v-if="editionList[cured]!=null" class="nav nav-pills nav-stacked">
-          <li  v-for="(article,index) in editionList[cured].articles" :key="index" @click="articleActive(index,article.id)" :class="{active:index==curar}">
+          <li  v-for="(article,index) in editionList[cured].articles" :key="index" @click="articleActive(index,article.id)" :class="{active:index==curar}" @dblclick="arconfig(index)">
             <a>{{article.title}}
               <span class="glyphicon glyphicon-cog" aria-hidden="true" style="display:none;float:right" @click="arconfig(index)" :class="{active:index==curar}"></span>
-                <ul class="dropdown-menu"  :id="'ar_drop_menu_'+index" style="display:none" v-clickoutside="index">
-                <li><a @click="arPublish(article)">发布文章</a></li>
-                <li><a @click="arModifyTitle(article)">修改标题</a></li>
+                <ul class="dropdown-menu"  :id="'ar_drop_menu_'+index" style="display:none;user-select:none;" v-clickoutside="index">
+                <li><a @click="arPublish(article.id)">发布文章</a></li>
+                <li><a @click="arModifyTitle()">修改标题</a></li>
                 <li><a @click="arMove(article)">移动</a></li>
                 <li><a @click="arDelete(article)">删除</a></li>
               </ul>
@@ -67,7 +67,8 @@ export default {
       'getBackendArticle',
       'addBackendArticle',
       'addEdition',
-      'updateEdition'
+      'updateEdition',
+      'updateBackendArticle'
     ]),
     editionActive(num){
       store.commit(CURRENT_EDITION,{cured:num})
@@ -84,34 +85,20 @@ export default {
       document.getElementById('editioninput').style.display="block"
     },
     confirm(){
-      this.addEdition({
-        edition:{
-          id: uuid(),
-          title: this.newEdition,
-          articles: []
-        }
-      })
+      this.$parent.handleAddEdition(this.newEdition)
       document.getElementById('editioninput').style.display="none"
     },
     cancle(){
       document.getElementById('editioninput').style.display="none"
     },
     createblog(){
-      let blog ={
-        id: uuid(),
-        title: formatDate(new Date()),
-        backendContent: null,
-        frontContent: null,
-        edition: this.editionList[this.cured].id
-      }
-      store.commit(ADD_ARTICLE, {article:blog})
       store.commit(CURRENT_ARTICLE, {curar:0})
-      this.addBackendArticle(blog)
+      this.$parent.handleCreateBlog(this.articleList[this.cured].id)
     },
     edconfig(num){
       const dropmenu = document.getElementById('ed_drop_menu_'+num)
       const isshow = (dropmenu.style == null || dropmenu.style.display=="none") ? "block":"none"
-      dropmenu.style.display=isshow 
+      dropmenu.style.display=isshow
     },
     arconfig(num){
       const dropmenu = document.getElementById('ar_drop_menu_'+num)
@@ -125,10 +112,18 @@ export default {
 
     },
     arModifyTitle(){
-
+      const titleinput = document.getElementById('title-input')
+      titleinput.focus()
+      titleinput.click()
+      titleinput.select()
     },
-    arPublish(){
-
+    arPublish(id){
+      this.$parent.openConfirmModal()
+      this.$parent.newblog={
+        id: id,
+        publish: true,
+        publishTime: new Date()
+      }
     },
     arMove(){
 
@@ -162,7 +157,7 @@ export default {
   },
   data(){
     return {
-      newEdition:''
+      newEdition:'',
     }
   }
 }

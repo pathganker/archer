@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 
 
 
@@ -128,7 +130,7 @@ public class AuthController {
         // 签发一个Json Web Token
         // 令牌ID=uuid,用户=clientKey,签发者=token-server
         // token有效期=3分钟,用户角色=ordinary,用户权限=read
-        String jwt = JwtUtils.issueJwt("4cb4f24f-ec20-4687-936d-b253f32a1b86", clientKey, 
+        String jwt = JwtUtils.issueJwt(UUID.randomUUID().toString(), clientKey, 
                                     "token-server",180000L, "ordinary", "read", SignatureAlgorithm.HS256);
         rs.setCode(ApiCodeEnum.SUCCESS);
         Map<String, Object> data = new LinkedHashMap<String, Object>();

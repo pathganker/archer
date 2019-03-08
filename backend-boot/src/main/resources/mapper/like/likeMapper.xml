@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.qingqfeng.archer.dao.like.ILikeDao" >
+    <resultMap id="BaseResultMap" type="cn.com.qingqfeng.archer.pojo.like.LikeDO" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="user_id" property="userId" jdbcType="VARCHAR" />
+        <result column="article_id" property="articleId" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+<!-- 喜欢   -->
+    <insert id="addLike" parameterType="cn.com.qingqfeng.archer.pojo.like.LikeDO" >
+       INSERT INTO 
+            qfeng_like
+            (user_id, article_id, create_time)
+        VALUES
+            (#{userId}, #{articleId}, #{createTime})
+    </insert>
+<!-- 取消喜欢 -->
+    <update id="deleteLike">
+        UPDATE
+            qfeng_like
+        SET
+            is_delete = 1
+        WHERE
+            user_id =#{param1} and article_id = #{param2}
+    </update>
+<!-- 查询喜欢     -->
+    <select id="queryLike" resultMap="BaseResultMap">
+        SELECT
+            user_id, article_id, create_time
+        FROM
+            qfeng_like
+        WHERE
+            is_delete =0 and user_id = #{param1} and article_id =#{param2}
+    </select>
+<!-- 统计喜欢 -->
+    <select id="queryLikeCount" parameterType="java.lang.String" resultType="java.lang.Long">
+        SELECT
+            count(1)
+        FROM
+            qfeng_like
+        WHERE
+            is_delete =0 and article_id = #{articled}
+    </select>
+<!-- 根据用户查询 -->
+    <select id="queryLikeByUserId" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT
+            article_id
+        FROM
+            qfeng_like
+        WHERE
+            is_delete =0 and user_id = #{id}
+    </select>
+</mapper>

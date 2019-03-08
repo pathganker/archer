@@ -9,19 +9,12 @@ const state = {
 }
 // actions
 const actions = {
-  getArticleDetail ({ commit },id,user){
+  getArticleDetail ({ commit },id){
     api.getFrontArticle(id).then(response => {
       const json = response.data
       if(200 == json.code){
-        let isLike = false
-        const article = response.data.data
-        if(user){
-          user.likes.map(item=>{
-            if(item.toString() === article._id){
-              isLike = true
-            }
-          })
-        }
+        let isLike = json.data.isLike
+        const article = json.data.article
         commit(ARTICLE_DETAIL, {
           articleDetail: {...article,isLike:isLike}
         })
@@ -33,7 +26,7 @@ const actions = {
       const json = response.data
       if(200 == json.code){
         commit(TOGGLE_LIKE, { 
-          like_count: json.data.count,
+          likeCount: json.data.likeCount,
           isLike: json.data.isLike 
         })
       }
@@ -46,7 +39,7 @@ const mutations = {
     state.item = {...state.item, ...action.articleDetail }
   },
   [TOGGLE_LIKE](state,action){
-    state.item = {...state.item, isLike:action.isLike, like_count: action.like_count}
+    state.item = {...state.item, isLike:action.isLike, likeCount: action.likeCount}
   }
 }
 

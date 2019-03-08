@@ -2,7 +2,8 @@
 package cn.com.qingqfeng.archer.pojo.article;
 
 
-import cn.com.qingqfeng.archer.enums.SortType;
+import cn.com.qingqfeng.archer.enums.ArticleSortNameEnum;
+import cn.com.qingqfeng.archer.enums.SortEnum;
 import cn.com.qingqfeng.archer.pojo.Query;
 
 /**   
@@ -15,27 +16,30 @@ import cn.com.qingqfeng.archer.pojo.Query;
  */
 public class ArticleQuery extends Query{
 
-	/**
-	 * @param page
-	 * @param pageSize
-	 * @param sortName
-	 * @param sortType
-	 */
-	public ArticleQuery(Integer page, Integer pageSize, String sortName,
-			SortType sortType) {
-		super(page, pageSize, sortName, sortType);
-	}
 	public ArticleQuery(){
 		super();
 	}
 	public ArticleQuery(Integer page, Integer pageSize){
 		super(page, pageSize);
 	}
+	public ArticleQuery(Integer page, Integer pageSize, String sortName, String sortType){
+		this.page = page;
+		this.pageSize = pageSize;
+		ArticleSortNameEnum name = ArticleSortNameEnum.requestEnumByView(sortName);
+		if(null != name){
+			this.sortName = name.getCode();
+		}
+		SortEnum sort = SortEnum.requestTypeBySort(sortType);
+		if(null != sort){
+			this.sortType=sort.getSort();
+		}
+	}
 	/** */
 	private static final long serialVersionUID = 1L;
 	
 	private String tag;
 	private String id;
+	private String sortName;
 	public String getTag() {
 		return tag;
 	}
@@ -47,6 +51,15 @@ public class ArticleQuery extends Query{
 	}
 	public void setId(String id) {
 		this.id = id;
+	}
+	public String getSortName() {
+		return sortName;
+	}
+	public void setSortName(ArticleSortNameEnum name){
+		if(null == name){
+			return;
+		}
+		this.sortName = name.getCode();
 	}
 
 }

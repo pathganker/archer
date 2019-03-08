@@ -349,4 +349,12 @@ span.active{
 .article-box{
   margin-top : 61px;
 }
-
+.instagram:hover{
+  background-color: #337ab7;
+}
+.instagram{
+  background-color: #eee;
+}
+.night-mode .instagram{
+  background-color: #2f2f2f;
+}

@@ -2,6 +2,7 @@
 package cn.com.qingqfeng.archer.service.user.impl;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -10,6 +11,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import cn.com.qingqfeng.archer.dao.like.ILikeDao;
 import cn.com.qingqfeng.archer.dao.user.IUserDao;
 import cn.com.qingqfeng.archer.pojo.user.UserDO;
 import cn.com.qingqfeng.archer.pojo.user.UserDTO;
@@ -29,6 +31,9 @@ public class UserServiceImpl implements IUserService{
 	
 	@Autowired
 	private IUserDao userDao;
+	
+	@Autowired
+	private ILikeDao likeDao;
 	
 	@Autowired
 	private CryptogramService cryptogramService;
@@ -101,6 +106,14 @@ public class UserServiceImpl implements IUserService{
 		UserDO comrade = new UserDO();
 		BeanUtils.copyProperties(user, comrade);
 		this.userDao.update(comrade);
+	}
+
+	/** (non-Javadoc)
+	 * @see cn.com.qingqfeng.archer.service.user.IUserService#requestUserLikeByUserId(java.lang.String)
+	 */
+	@Override
+	public List<String> requestUserLikeByUserId(String id) {
+		return this.likeDao.queryLikeByUserId(id);
 	}
 
 }

@@ -14,8 +14,8 @@ export default {
   props:['isFetching','isMore','options'],
   methods:{
     addData(){
-      let currentPage = this.options.currentPage
-      this.$parent.handleChange({currentPage:++currentPage},true)
+      let page = this.options.page
+      this.$parent.handleChange({page:++page},true)
     }
   }
 }

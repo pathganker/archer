@@ -9,7 +9,7 @@
           <div class="content">
             <div class="meta-top">
               <a class="avatar">
-                <img :src="defaultAvatar" alt="comment.nickname" />
+                <img :src="comment.avatar|| defaultAvatar" alt="comment.nickname" />
               </a>
               <a class="author-name link-light">{{comment.nickname}}</a>
               <span class="reply-time">
@@ -21,9 +21,9 @@
               <a class="reply" href="javascript:;" @click.prevent="showReply(i, comment.nickname )">回复</a>
             </div>
 
-            <Reply v-show="comment.replys.length > 0" :replys="comment.replys" :k="i"></Reply>
+            <Reply v-show="comment.replys && comment.replys.length > 0" :replys="comment.replys" :k="i"></Reply>
 
-             <form v-bind:id="'replyForm' + i" class="new-reply hide" @submit.prevent="submitReply(i,comment._id)"> 
+             <form v-bind:id="'replyForm' + i" class="new-reply hide" @submit.prevent="submitReplyToComment(i,comment.uid)"> 
                <div class="comment-text"> 
                   <textarea v-bind:id="'replyContent' + i"
                       required 
@@ -35,10 +35,8 @@
                   </div> 
                </div>
              </form>
-
           </div>
         </div>               
-   
     </div>
 
       <form v-if="user" class="new_comment" @submit.prevent="submitComment">
@@ -50,7 +48,7 @@
             placeholder="写下你的评论…" 
             id="comment_content"></textarea>
           <div>
-            <input type="submit" id="comment_submit_btn" value="发 表" class="btn btn-info"></input>
+            <input type="submit" id="comment_submit_btn" value="发 表" class="btn btn-info" />
           </div>
         </div>
       </form>
@@ -64,7 +62,6 @@
 <script>
 import defaultAvatar from '../../assets/images/avatar.png'
 import Reply from './reply.vue'
-
 export default {
   props:['commentList','user'],
   components:{ Reply },
@@ -72,7 +69,7 @@ export default {
     return {
       defaultAvatar: defaultAvatar,
       isReply: false,
-      newCommentContent:''
+      newCommentContent:'',
     }
   },
   methods:{
@@ -83,10 +80,10 @@ export default {
       this.$parent.handleSubmitComment(this.newCommentContent)
       this.newCommentContent = ''
     },
-    submitReply(i,cid){
+    submitReplyToComment(i,cid){
       const eleForm = document.getElementById('replyForm' + i)
       const eleTextarea = document.getElementById('replyContent' + i)
-      this.$parent.handleSubmitReply(cid,eleTextarea.value)
+      this.$parent.handleSubmitReplyToComment(cid,eleTextarea.value)
       eleTextarea.value = ''
       eleForm.className += ' hide'
     },
@@ -98,7 +95,7 @@ export default {
         if(eleForm.className.indexOf('hide') != -1){
           eleForm.className = 'new-reply'
           eleTextarea.focus()
-          eleTextarea.value = '@' + nickname + ' '
+          eleTextarea.placeholder = '@' + nickname + ' '
         }else{
           eleForm.className += ' hide'
         }

@@ -108,4 +108,5 @@ public interface IArticleDao {
 	 * void
 	 */
 	void deleteArticle(String id);
+	
 }
