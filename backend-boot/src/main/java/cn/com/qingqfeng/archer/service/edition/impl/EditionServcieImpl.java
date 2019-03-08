@@ -10,6 +10,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import cn.com.qingqfeng.archer.dao.article.IArticleDao;
 import cn.com.qingqfeng.archer.dao.edition.IEditionDao;
 import cn.com.qingqfeng.archer.pojo.article.ArticleDO;
 import cn.com.qingqfeng.archer.pojo.article.ArticleDTO;
@@ -30,6 +31,9 @@ public class EditionServcieImpl implements IEditionService{
 	
 	@Autowired
 	private IEditionDao editionDao;
+	
+	@Autowired
+	private IArticleDao articleDao;
 
 	/** (non-Javadoc)
 	 * @see cn.com.qingqfeng.archer.service.edition.IEditionService#requestEditionsByUserId(java.lang.String)
@@ -90,6 +94,18 @@ public class EditionServcieImpl implements IEditionService{
 			return;
 		}
 		this.editionDao.deleteEdition(id);
+	}
+
+	/** (non-Javadoc)
+	 * @see cn.com.qingqfeng.archer.service.edition.IEditionService#deleteEditionWhole(java.lang.String)
+	 */
+	@Override
+	public void deleteEditionWhole(String id) {
+		if(StringUtils.isBlank(id)){
+			return;
+		}
+		this.editionDao.deleteEdition(id);
+		this.articleDao.deleteArticleByEditionId(id);
 	}
 	
 

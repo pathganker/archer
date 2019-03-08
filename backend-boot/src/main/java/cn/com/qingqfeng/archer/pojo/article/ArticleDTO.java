@@ -47,6 +47,10 @@ public class ArticleDTO implements Serializable{
 	private String nickname;
 	/** 发布状态 */
 	private Boolean publish;
+	/** 创建时间 */
+	private Date createTime;
+	/** 修改时间 */
+	private Date modifyTime;
 	
 	public String getImage() {
 		return image;
@@ -134,5 +138,17 @@ public class ArticleDTO implements Serializable{
 	}
 	public void setPublish(Boolean publish) {
 		this.publish = publish;
+	}
+	public Date getCreateTime() {
+		return createTime;
+	}
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+	public Date getModifyTime() {
+		return modifyTime;
+	}
+	public void setModifyTime(Date modifyTime) {
+		this.modifyTime = modifyTime;
 	}
 }

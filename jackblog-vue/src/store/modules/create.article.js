@@ -6,7 +6,9 @@ import {
   UPDATE_ARTICLE,
   SAVE_ARTICLE_DRAFT,
   GET_ARTICLE_ORIGIN_LOCAL,
-  ARTICLE_SUCCESS
+  ARTICLE_SUCCESS,
+  ADD_ARTICLE,
+  DELETE_ARTICLE
 } from '../types'
 import localstorage from '../../utils/localstorage'
 const state = {
@@ -31,7 +33,7 @@ const actions = {
     })
   },
   addBackendArticle (store,data){
-    store.commit(SAVE_ARTICLE_DRAFT,{article: data})
+    store.commit(ADD_ARTICLE,{article:data})
     api.addBackendArticle(data).then(response => {
       const json = response.data
       if(200==json.code){
@@ -39,7 +41,8 @@ const actions = {
       }else{
         return showMsg(store, json.message || '保存失败')
       }
-    }, error =>{
+    }, 
+    error =>{
       showMsg(store, error)
     })
   },
@@ -56,6 +59,20 @@ const actions = {
     }, error =>{
       showMsg(store, error)
     })
+  },
+  deleteBackendArticle (store, data){
+    store.commit(DELETE_ARTICLE,{id: data})
+    api.deleteBackednArticle(data).then(response => {
+      const json = response.data
+      if(200==json.code){
+        return showMsg(store, '已删除','success')
+      }else{
+        return showMsg(store, json.message || '未成功删除')
+      }
+    },
+    error =>{
+      showMsg(store, error)
+    })
   }
 
 }
@@ -63,10 +80,6 @@ const actions = {
 const mutations = {
   [GET_ARTICLE_ORIGIN](state, data){
     state.draft = data.article
-  },
-  [UPDATE_ARTICLE](state, data){
-    state.draft=data.article
-    localstorage.save(data.article.id, data.article)
   },
   [SAVE_ARTICLE_DRAFT](state, data){
     state.draft = data.article
@@ -80,7 +93,7 @@ const mutations = {
   },
   [ARTICLE_SUCCESS](state){
 
-  }
+  },
 }
 
 export default {

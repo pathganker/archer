@@ -320,4 +320,88 @@ public class ArticleController {
 		rs.setCode(ApiCodeEnum.SUCCESS);
 		return rs;		
 	}
+	
+	/**
+	 * 
+	 * <p>方法名:  addEdition </p> 
+	 * <p>描述:    TODO </p>
+	 * <p>创建时间:  2019年3月8日下午5:37:07 </p>
+	 * @version 1.0
+	 * @author lijunliang
+	 * @param edition
+	 * @return  
+	 * Result
+	 */
+	@RequestMapping(value="backend/newedition",method={RequestMethod.POST})
+	public Result addEdition(@RequestBody EditionDTO edition){
+		Result rs = new Result();
+		if(null == edition || StringUtils.isBlank(edition.getId())){
+			rs.setCode(ApiCodeEnum.ARGS_WRONG);
+			return rs;			
+		}
+		String userId = JwtUtils.getCurrentUserId();
+		edition.setUserId(userId);
+		this.editionService.addEdition(edition);
+		rs.setCode(ApiCodeEnum.SUCCESS);
+		return rs;
+	}
+	/**
+	 * 
+	 * <p>方法名:  updateEdition </p> 
+	 * <p>描述:    TODO </p>
+	 * <p>创建时间:  2019年3月8日下午5:44:09 </p>
+	 * @version 1.0
+	 * @author lijunliang
+	 * @param edition
+	 * @return  
+	 * Result
+	 */
+	@RequestMapping(value="backend/oldedition",method={RequestMethod.POST})
+	public Result updateEdition(@RequestBody EditionDTO edition){
+		Result rs = new Result();
+		if(null == edition || StringUtils.isBlank(edition.getId())){
+			rs.setCode(ApiCodeEnum.ARGS_WRONG);
+			return rs;			
+		}
+		String userId = JwtUtils.getCurrentUserId();
+		edition.setUserId(userId);
+		this.editionService.updateEdition(edition);
+		rs.setCode(ApiCodeEnum.SUCCESS);
+		return rs;
+	}
+	/**
+	 * 
+	 * <p>方法名:  deleteEditionOnly </p> 
+	 * <p>描述:    TODO </p>
+	 * <p>创建时间:  2019年3月8日下午5:49:55 </p>
+	 * @version 1.0
+	 * @author lijunliang
+	 * @param id
+	 * @return  
+	 * Result
+	 */
+	@RequestMapping(value="backend/edition/less",method={RequestMethod.DELETE})
+	public Result deleteEditionOnly(String id){
+		Result rs = new Result();
+		this.editionService.deleteEdition(id);
+		return rs;
+	}
+	
+	/**
+	 * 
+	 * <p>方法名:  deleteEditionWhole </p> 
+	 * <p>描述:    TODO </p>
+	 * <p>创建时间:  2019年3月8日下午5:50:02 </p>
+	 * @version 1.0
+	 * @author lijunliang
+	 * @param id
+	 * @return  
+	 * Result
+	 */
+	@RequestMapping(value="backend/edition/lesswhole",method={RequestMethod.DELETE})
+	public Result deleteEditionWhole(String id){
+		Result rs = new Result();
+		this.editionService.deleteEditionWhole(id);
+		return rs;
+	}
 }

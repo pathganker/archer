@@ -159,6 +159,13 @@ export default {
       data: data
     })
   },
+  deleteBackednArticle: function(data){
+    return fetch({
+      url: 'article/backend/blogless',
+      method: 'delete',
+      params: {id:data}
+    })
+  },
   addEdition: function(data){
     return fetch({
       url: 'article/backend/newedition',
@@ -171,6 +178,20 @@ export default {
       url: 'article/backend/oldedition',
       method: 'post',
       data: data
+    })
+  },
+  deleteEdition: function(data){
+    return fetch({
+      url: 'article/backend/less',
+      method: 'delete',
+      params:{id:data}
+    })
+  },
+  deleteEdtionWhole: function(data){
+    return fetch({
+      url: 'article/backend/lesswhole',
+      method: 'delete',
+      params:{id:data}     
     })
   }
 

@@ -1,9 +1,9 @@
 <template>
-  <div class="markdown-container" id="markdownContent" @click="editActive()">
+  <div class="markdown-container" id="markdownContent">
     <div class="border-bar" @click="hidebar()">
     </div>
     <div class="edit-body" v-if="editionList!=null && editionList[cured]!=null && editionList[cured].articles!=null && editionList[cured].articles[curar]!=null">
-      <input id="title-input" class="intro-head " name="title" type="text" :value="editionList[cured].articles[curar].title" @input="title = $event.target.value" autocomplete="false"/>
+      <input id="title-input" class="intro-head " name="title" type="text" :value="editionList[cured].articles[curar].title" @input="title = $event.target.value" autocomplete="false" />
       <mavon-editor  ref="md" :value="editionList[cured].articles[curar].backendContent == null ? '': editionList[cured].articles[curar].backendContent" @input="e => content = e" @save="save()" 
         :toolbars="toolbars" :externalLink="externalLink" />
     </div>
@@ -19,14 +19,15 @@ import  { mavonEditor } from 'mavon-editor'
 import { mapState,mapActions } from 'vuex'
 import 'mavon-editor/dist/css/index.css'
 import store from '../../store'
-
+import {
+  CURRENT_EDITION,
+  CURRENT_ARTICLE
+} from '../../store/types'
 export default {
   props:['editionList','cured','curar'],
   components: { mavonEditor },
   methods: {
     ...mapActions([
-      'updateBackendArticle',
-      'getEditionList'
     ]),
     hidebar(){
       const editionMenu = document.getElementById('editionNav')
@@ -43,21 +44,11 @@ export default {
         edition: this.editionList[this.cured].id,
         backendContent: backendContent,
         frontContent: frontContent,
+        modifyTime: new Date(),
       }
+      store.commit(CURRENT_EDITION,{cured:this.cured})
+      store.commit(CURRENT_ARTICLE,{curar:this.curar})
       this.$parent.handleUpdateBlog(blog)
-    },
-    editActive(){
-      if(!this.isedit){
-        this.isedit = true
-      }
-    }
-  },
-  watch: {
-    curar(val){
-      if(this.isedit){
-      //  this.save()
-        this.isedit=false
-      }
     },
   },
   data() {
@@ -100,7 +91,6 @@ export default {
       },
       content:'',
       title: null,
-      isedit: false
     }
   }
 }

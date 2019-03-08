@@ -1,16 +1,16 @@
 <template>
 	<modal v-model="showConfirmModal" effect="fade" width="400" >
 	  <div slot="modal-header" class="modal-header">
-	  	<h4 class="modal-title text-center">发布文章</h4>
+	  	<h4 class="modal-title text-center">保存</h4>
 	  </div>
 	  <div slot="modal-body" class="modal-body">
 	  	<div class="portlet-body">
-        <a>其他人将可以看到这篇博客</a>
+        <a>编辑内容还未保存</a>
 	  	</div>
 	  </div>
 	  <div slot="modal-footer" class="modal-footer"> 
-            <button type="button" class="btn btn-primary" @click="confirm()">确认</button>
-            <button type="button" class="btn btn-default" @click="cancle()">取消</button>
+            <button type="button" class="btn btn-primary" @click="confirm()">不保存</button>
+            <button type="button" class="btn btn-default" @click="cancle()">继续编辑</button>
 	  </div>
 	</modal>
 </template>
@@ -31,7 +31,7 @@ export default {
       this.showConfirmModal = true
     },
     confirm(){
-      this.$parent.handleUpdateBlog(this.$parent.newblog)
+      this.$parent.isedit = false
       this.showConfirmModal = false
     },
     cancle(){

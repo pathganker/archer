@@ -78,8 +78,8 @@
 						<router-link :to="{ path: '/about' }" class="navbar-item " title="关于">
 						关于
 						</router-link>
-						<router-link  v-if="auth.token && auth.user" :to="{ path: '/creation' }" class="navbar-item" title="创作">
-						创作
+						<router-link  v-if="auth.token && auth.user" :to="{ path: '/creation' }" class="navbar-item" title="编辑">
+						编辑
 						</router-link>
 					</div>
 		  </div> 
