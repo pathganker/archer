@@ -193,6 +193,12 @@ export default {
       method: 'delete',
       params:{id:data}     
     })
+  },
+  isLogin: function(){
+    return fetch({
+      url: 'login/check',
+      method: 'get'
+    })
   }
 
 }

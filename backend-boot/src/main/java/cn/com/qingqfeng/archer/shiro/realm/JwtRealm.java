@@ -81,6 +81,10 @@ public class JwtRealm extends AuthorizingRealm{
             jwtPlayload.setAudience(claims.getAudience());// 接收方
             jwtPlayload.setRoles(claims.get("roles", String.class));// 访问主张-角色
             jwtPlayload.setPerms(claims.get("perms", String.class));// 访问主张-权限
+            jwtPlayload.setHost(claims.get("host", String.class));
+            if(!jwtToken.getHost().equals(jwtPlayload.getHost())) {
+            	throw new AuthenticationException("JWR 令牌HOST错误");
+            }
         } catch (ExpiredJwtException e) {
             throw new AuthenticationException("JWT 令牌过期:" + e.getMessage());
         } catch (UnsupportedJwtException e) {

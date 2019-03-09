@@ -22,6 +22,7 @@ public class JwtPlayload implements Serializable{
 	private String audience;
 	private String roles;
 	private String perms;
+	private String host;
 	public String getId() {
 		return id;
 	}
@@ -63,5 +64,11 @@ public class JwtPlayload implements Serializable{
 	}
 	public void setAudience(String audience) {
 		this.audience = audience;
+	}
+	public String getHost() {
+		return host;
+	}
+	public void setHost(String host) {
+		this.host = host;
 	}
 }

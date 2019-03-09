@@ -105,7 +105,7 @@
 <script>
 import defaultAvatar from '../assets/images/avatar.png'
 import { mapState,mapActions } from 'vuex'
-
+import {isLogin} from '../utils/cookies'
 export default {
   computed: {
     ...mapState({
@@ -118,7 +118,7 @@ export default {
   }, 
   created (){
 		document.body.className = this.styleMode
-    if(this.auth.token){
+    if(isLogin()){
       this.getUserInfo()
 		}
   },

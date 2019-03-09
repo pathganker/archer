@@ -17,7 +17,7 @@ const state = {
   user: null,
   isRefreshToken: false,
   accessToken: '',
-  expireTime: 180000
+  isSigin: false,
 }
 
 const actions = {
@@ -86,7 +86,6 @@ const actions = {
       if(200 == json.code){
         commit(GET_ACCESS_TOKEN, {
           accessToken: json.data.jwt,
-          expireTime: json.data.expireTime
         })
         return response
       }else{
@@ -103,24 +102,27 @@ const actions = {
 const mutations = {
   [LOGIN_SUCCESS](state , action){
     state.token = action.token
+    state.isSigin = true
   },
   [USERINFO_SUCCESS](state,action){
     state.user = action.user
+    state.isSigin = true
   },
   [USERINFO_FAILURE](state,action){
     state.user = null
+    state.isSigin = false
   },
   [LOGOUT_USER](state,action){
     state.token = getCookie('token') || null
     state.user = null
     state.token = null
+    state.isSigin = false
   },
   [UPDATE_USER_SUCCESS](state,action){
     state.user = action.user
   },
   [GET_ACCESS_TOKEN](state, data){
     state.accessToken = data.accessToken
-    state.expireTime = data.expireTime
   },
   [REFRESH_ACCESS_TOKEN](state, data){
     state.isRefreshToken = data.isRefreshToken

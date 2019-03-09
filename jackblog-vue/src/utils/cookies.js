@@ -2,9 +2,12 @@ import Cookies from 'universal-cookie'
 const cookies = new Cookies()
 import { CookieDomain } from '../config.js'
 let cookieConfig = {}
-if(CookieDomain !== ''){
-  cookieConfig = { domain: CookieDomain } //path:'/',maxAge:365*24*60*60
-}
+// const today = new Date()
+cookieConfig = { 
+  domain: CookieDomain,
+  // expires: new Date(today.getMilliseconds+3600*1000*24),
+  maxAge: 3600*24*7
+} //path:'/',maxAge:365*24*60*60
 
 export function saveCookie(name,value) {
   cookies.set(name, value, cookieConfig)

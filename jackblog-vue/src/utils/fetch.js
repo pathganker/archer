@@ -4,7 +4,7 @@ import {API_ROOT} from '../config'
 import {
   REFRESH_ACCESS_TOKEN
 } from '../store/types'
-import { getCookie} from './cookies'
+import { getCookie, removeCookie} from './cookies'
 // 创建axios实例
 const service = axios.create({
   baseURL: API_ROOT, // api的base_url
@@ -34,6 +34,7 @@ service.interceptors.response.use(
     let config = response.config
     if(105 == response.data.code){
       if(!store.getters.isRefreshToken){
+        removeCookie('token')
         store.commit(REFRESH_ACCESS_TOKEN,{isRefreshToken: true})
         store.dispatch('getAccessToken').then(
           config.headers['Auth-jwt']=store.getters.accessToken

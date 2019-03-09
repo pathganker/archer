@@ -8,7 +8,7 @@ const Apps = () => import('components/Apps/index')
 const NotFound = () => import('components/NotFound')
 const Creation = () => import('components/Creation/index')
 import {isLogin} from './utils/cookies'
-
+import store from './store'
 Vue.use(Router)
 
 const router = new Router({
@@ -76,7 +76,7 @@ router.beforeEach((to, from, next) => {
   }
 
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (!isLogin()) {
+    if (!isLogin() || !store.getters.isSigin) {
       return next({path: '/login'})
     }
   }

@@ -28,7 +28,7 @@ public class JwtUtils {
 	private final static String SECRET_KEY = "*(-=4eklfasdfarerf0417fdasf";
 	
     public static String issueJwt(String id, String subject, String issuer, Long period,
-    		String roles, String permissions, SignatureAlgorithm algorithm) {
+    		String roles, String permissions, String host, SignatureAlgorithm algorithm) {
 		long currentTimeMillis = System.currentTimeMillis();// 当前时间戳
 		byte[] secretKeyBytes = DatatypeConverter.parseBase64Binary(SECRET_KEY);// 秘钥
 		JwtBuilder jwt  =  Jwts.builder();
@@ -46,6 +46,9 @@ public class JwtUtils {
 			jwt.claim("roles", roles);//角色
 		if(StringUtils.isNotBlank(permissions)) 
 			jwt.claim("perms", permissions);//权限
+		if(StringUtils.isNotBlank(host)) {
+			jwt.claim("host", host);
+		}
 		jwt.compressWith(CompressionCodecs.DEFLATE);//压缩，可选GZIP
 		jwt.signWith(algorithm, secretKeyBytes);//加密设置
 		return jwt.compact();

@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cn.com.qingqfeng.archer.enums.ApiCodeEnum;
 import cn.com.qingqfeng.archer.pojo.Result;
+import cn.com.qingqfeng.archer.utils.ArcherWebUtils;
 import cn.com.qingqfeng.archer.utils.JwtUtils;
 import cn.com.qingqfeng.archer.utils.VerifyCodeUtils;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -48,7 +49,8 @@ public class AuthController {
 	
 
 	 private final static String CAPTCHA_KEY = "captcha:key_";
-	/**
+
+	 /**
 	 * 
 	 * <p>方法名:  getCaptcha </p> 
 	 * <p>描述:    TODO </p>
@@ -127,15 +129,15 @@ public class AuthController {
 			rs.setData(req.getParameter("jwt"));
 			return rs;
 		}
+		String host = ArcherWebUtils.getRemoteIpAddr(req);
         // 签发一个Json Web Token
         // 令牌ID=uuid,用户=clientKey,签发者=token-server
         // token有效期=3分钟,用户角色=ordinary,用户权限=read
         String jwt = JwtUtils.issueJwt(UUID.randomUUID().toString(), clientKey, 
-                                    "token-server",180000L, "ordinary", "read", SignatureAlgorithm.HS256);
+                                    "token-server",180000L, "ordinary", "read", host, SignatureAlgorithm.HS256);
         rs.setCode(ApiCodeEnum.SUCCESS);
         Map<String, Object> data = new LinkedHashMap<String, Object>();
         data.put("jwt", jwt);
-        data.put("expireTime", "180000");
         rs.setData(data);
         return rs;
     }

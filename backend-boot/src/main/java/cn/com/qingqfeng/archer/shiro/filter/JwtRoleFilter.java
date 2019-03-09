@@ -3,10 +3,10 @@ package cn.com.qingqfeng.archer.shiro.filter;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.shiro.subject.Subject;
-import org.apache.shiro.web.util.WebUtils;
+import cn.com.qingqfeng.archer.enums.ApiCodeEnum;
+import cn.com.qingqfeng.archer.pojo.Result;
+import cn.com.qingqfeng.archer.utils.ArcherWebUtils;
 
 
 /**   
@@ -31,7 +31,10 @@ public class JwtRoleFilter extends HmacFilter{
         if (roles != null && roles.length > 0) {
             if (roles.length == 1) {
                 if (!subject.hasRole(roles[0])) {
-                	WebUtils.toHttp(response).sendError(HttpServletResponse.SC_UNAUTHORIZED,"没有权限");
+                	Result rs = new Result();
+                	rs.setCode(ApiCodeEnum.API_AUTHORITY);
+                	rs.setMessage("没有权限");
+                	ArcherWebUtils.handlerReturnJSON(response, rs);
                     isPermitted = false;
                 }
             } else {

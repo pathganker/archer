@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.support.DelegatingSubject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,6 +42,21 @@ public class LoginController {
 	private CryptogramService cryptogramService;
 	
 	//private final static  Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
+	 /**
+	  * 
+	  * <p> 方法名 ：checkToken  </p> 
+	  * <p> 描述 ：TODO </p> 
+	  * <p> 创建时间  ： 2019年3月9日 下午2:47:52 </p>  
+	  * @return           
+	  * @author lijunliang 
+	  * @version 1.0
+	  */
+	 @RequestMapping(value="check",method= {RequestMethod.GET})
+	 public Result checkToken() {
+		 Result rs = new Result();
+		 rs.setCode(ApiCodeEnum.SUCCESS);
+		 return rs;
+	 }
 	
 	/**
 	 * 
@@ -72,11 +89,12 @@ public class LoginController {
 		user.setId(comrade.getId());
 		if(this.cryptogramService.passwordsMatch(user, comrade.getPassword())){
 			rs.setCode(ApiCodeEnum.SUCCESS);
+			DelegatingSubject test=  (DelegatingSubject) SecurityUtils.getSubject();
+			String host = test.getHost();
 			String jwt = JwtUtils.issueJwt(comrade.getId(), user.getUsername(), 
-					"token-server", 24*3600*1000L, "ordinary,admin", "create", SignatureAlgorithm.HS256);
+					"token-server", 24*3600*1000*7L, "ordinary,admin", "create", host, SignatureAlgorithm.HS256);
 	        Map<String, Object> data = new LinkedHashMap<String, Object>();
 	        data.put("jwt", jwt);
-	        data.put("expireTime", 24*3600*1000L);
 	        rs.setData(data);
 		}else{
 			//密码错误
@@ -121,4 +139,6 @@ public class LoginController {
 		result.setData(code);
 		return result;
 	}
+	
+	
 }

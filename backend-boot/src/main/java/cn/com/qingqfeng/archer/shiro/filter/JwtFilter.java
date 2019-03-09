@@ -51,6 +51,12 @@ public class JwtFilter extends AccessControlFilter {
 	protected boolean onAccessDenied(ServletRequest request,
 			ServletResponse response) throws Exception {
 		Result rs = new Result();
+        //不处理OPTIONS
+        HttpServletRequest req = (HttpServletRequest)request;
+        if("OPTIONS".equals(req.getMethod())){
+        	return false;
+        }
+        LOG.debug(req.getMethod());
         if(isJwtSubmission(request)){
             AuthenticationToken token = createToken(request, response);
             try {
@@ -65,11 +71,6 @@ public class JwtFilter extends AccessControlFilter {
                 ArcherWebUtils.handlerReturnJSON(response, rs);
                 return false;
             } 
-        }
-        //不处理OPTIONS
-        HttpServletRequest req = (HttpServletRequest)request;
-        if("OPTIONS".equals(req.getMethod())){
-        	return false;
         }
         //WebUtils.toHttp(response).sendError(HttpServletResponse.SC_UNAUTHORIZED,"Token丢失");
         rs.setCode(ApiCodeEnum.TOKEN_LOST);
