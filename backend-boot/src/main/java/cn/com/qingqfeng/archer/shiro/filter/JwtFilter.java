@@ -56,7 +56,6 @@ public class JwtFilter extends AccessControlFilter {
         if("OPTIONS".equals(req.getMethod())){
         	return false;
         }
-        LOG.debug(req.getMethod());
         if(isJwtSubmission(request)){
             AuthenticationToken token = createToken(request, response);
             try {

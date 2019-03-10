@@ -197,9 +197,9 @@ public class ArticleController {
 	 * Result
 	 */
 	@RequestMapping(value="front/next/{id}",method={RequestMethod.GET})
-	public Result getPreNext(@PathVariable String id, Integer page, Integer pageSize, String tag){
+	public Result getPreNext(@PathVariable String id, Integer page, Integer pageSize, String tag, String sortName, String sortType){
 		Result rs = new Result();
-		ArticleQuery query = new ArticleQuery(page, pageSize);
+		ArticleQuery query = new ArticleQuery(page, pageSize, sortName, sortType);
 		query.setTag(tag);
 		List<ArticleDTO> articles = this.articleService.requestPreNext(id, query);
 		if(null == articles || articles.isEmpty()){

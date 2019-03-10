@@ -89,23 +89,27 @@
     </select>
 <!-- 排序名次     -->
     <select id="querySortNum" parameterType="cn.com.qingqfeng.archer.pojo.article.ArticleQuery" resultType="java.lang.Integer">
-	   SELECT e.rank 
+	   SELECT e.rankNum 
 	   FROM
 	       (SELECT
-	            id, (@rownum:=@rownum+1) AS rank
+	            id, (@rownum:=@rownum+1) AS rankNum
 	       from
                 <if test="tag!=null and tag!=''">
                (select a.id, a.publish_time,a.is_delete, a.is_publish from qfeng_article a RIGHT JOIN (select article_id from qfeng_ref_article_tag where tag = #{tag} where is_delete = 0) b on a.id = b.article_id
                ) c
                </if>
 	           <if test="tag==null or tag==''">
-	           (select a.id, a.publish_time,a.is_delete, a.is_publish from qfeng_article a) c
+	           (select a.id, a.publish_time,a.is_delete, a.is_publish, e.visit_count from qfeng_article a  LEFT JOIN
+               (select article_id, count(1) as visit_count from qfeng_visit_record group by article_id) e ON a.id=e.article_id) c
 	           </if>
 	           ,(select (@rownum:=0) )d 
 	       where
 	           c.is_delete =0 and c.is_publish =1
 	       ORDER BY
-	            c.publish_time DESC  ) e
+            <if test="sortName!=null and sortName!='publish_time'">
+            ${sortName} ${sortType},
+            </if>
+            publish_time DESC  ) e
 	   WHERE e.id = #{id}
     </select>
 <!-- 添加     -->

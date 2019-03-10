@@ -1,0 +1,28 @@
+spring:
+  datasource:
+    def:
+      druid:
+        driverClassName: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://127.0.0.1:3306/manage?useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+        username: root
+        password: root1010@mysql
+        filters: stat,wall,config
+        maxActive: 100
+        initialAize: 1
+        maxWait: 60000
+        minIdle: 1
+        timeBetweenLogStatsMillis: 60000
+        minEvictableIdleTimeMillis: 300000
+        validationQuery : select 1
+        testWhileIdle: true
+        testOBorrow: false
+  redis:
+    database: 0
+    host: 172.16.0.4
+    port: 6379
+    password: redis@1010
+    timeout: 1000
+        
+        
+          
+      

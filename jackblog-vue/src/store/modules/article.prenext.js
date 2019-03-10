@@ -19,8 +19,8 @@ const actions = {
 
 const mutations = {
   [PRENEXT_ARTICLE](state,action){
-    state.prev = action.prenextArticle.prev || {}
-    state.next = action.prenextArticle.next || {}
+    state.prev = action.prenextArticle[0] || {}
+    state.next = action.prenextArticle[1] || {}
   }
 }
 

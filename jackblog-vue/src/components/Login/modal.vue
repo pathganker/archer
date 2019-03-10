@@ -1,47 +1,46 @@
 <template>
-	<modal v-model="showLoginModal" effect="fade" width="400">
+	<modal :show.sync="showLoginModal"  effect="fade" width="400">
 	  <div slot="modal-header" class="modal-header">
 	  	<h4 class="modal-title text-center">请用以下方式登录</h4>
 	  </div>
 	  <div slot="modal-body" class="modal-body">
-	  	<div class="portlet-body">
-	  			<!-- <snsloginbtns :logins="logins"></snsloginbtns> -->
-        <div id="signinForm">
-          <form class="signin-form form-horizontal">
-            <div class="form-group">
-              <div class="input-group">
-                <div class="input-group-addon">
-                  <i class="fa fa-envelope-o"></i>
+      <div class="portlet-body">
+          <div id="signinForm">
+            <form class="signin-form form-horizontal">
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-addon">
+                    <i class="fa fa-envelope-o"></i>
+                  </div>
+                  <input type="text" name="username" data-vv-as="用户名" v-model="user.username" v-validate="'required|username'" data-vv-delay="100" class="form-control" placeholder="邮箱" />
                 </div>
-                <input type="text" name="username" data-vv-as="用户名" v-model="user.username" v-validate="'required|username'" data-vv-delay="100" class="form-control" placeholder="邮箱" />
+                <span class="tip-span">{{ errors.first('username') }}</span>
+                <span class="tip-span">{{ errors.first('required') }}</span>
               </div>
-              <span class="tip-span">{{ errors.first('username') }}</span>
-              <span class="tip-span">{{ errors.first('required') }}</span>
-            </div>
-            <div class="form-group">
-              <div class="input-group">
-                <div class="input-group-addon"><i class="fa fa-unlock-alt"></i></div>
-                <input type="password" name="password" data-vv-as="密码" v-model="user.password" v-validate="'required'" class="form-control current-password" placeholder="密码" autocomplete />
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-addon"><i class="fa fa-unlock-alt"></i></div>
+                  <input type="password" name="password" data-vv-as="密码" v-model="user.password" v-validate="'required'" class="form-control current-password" placeholder="密码" autocomplete />
+                </div>
+                <span class="tip-span">{{ errors.first('password') }}</span>
               </div>
-              <span class="tip-span">{{ errors.first('password') }}</span>
-            </div>
-            <div class="form-group">
-              <div class="col-xs-6 captcha-code">
-                <input type="text" name="captcha" data-vv-as="验证码"  v-validate="'required|captcha'" maxlength="6" class="form-control" placeholder="验证码" />
+              <div class="form-group">
+                <div class="col-xs-6 captcha-code">
+                  <input type="text" name="captcha" data-vv-as="验证码"  v-validate="'required|captcha'" maxlength="6" class="form-control" placeholder="验证码" />
+                </div>
+                <div class="col-xs-6 captcha-img">
+                  <a href="javascript:;" @click.prevent="getCaptchaUrl()">
+                    <img :src="captchaUrl"/>
+                  </a>
+                </div>
+              <span class="tip-span-captcha">{{ errors.first('captcha') }}</span>
               </div>
-              <div class="col-xs-6 captcha-img">
-                <a href="javascript:;" @click.prevent="getCaptchaUrl()">
-                  <img :src="captchaUrl"/>
-                </a>
+              <div class="form-group">
+                <button class="btn btn-primary btn-lg btn-block" @click.stop.prevent="login(user)" id="signin_btn">登 录</button>
               </div>
-            <span class="tip-span-captcha">{{ errors.first('captcha') }}</span>
-            </div>
-            <div class="form-group">
-              <button class="btn btn-primary btn-lg btn-block" @click.stop.prevent="login(user)" id="signin_btn">登 录</button>
-            </div>
-          </form>
-        </div>
-	  	</div>
+            </form>
+          </div>
+      </div>
 	  </div>
 	  <div slot="modal-footer">
 	  </div>
@@ -49,18 +48,15 @@
 </template>
 
 <script>
-import snsloginbtns from './snsLogin'
 import { mapState,mapActions } from 'vuex'
 import { modal } from 'vue-strap'
 
 export default {
   components:{
-    modal,
-    snsloginbtns
+    modal
   },
   computed: {
     ...mapState({
-      logins: ({logins}) => logins.items,
       captchaUrl: ({ globalVal }) => globalVal.captchaUrl,     
     })
   },
@@ -68,21 +64,17 @@ export default {
     return {
       showLoginModal:false,
       user: {
-        username: 'zankokutenshi@yeah.net',
-        password: 'cankutianshi'
+        username: '',
+        password: ''
       }
     }
   },
   created () {
-    // if(this.logins.length < 1){
-    //   this.getSnsLogins()
-    // }
     this.getCaptchaUrl()
   },
   methods: {
     ...mapActions([
       'getCaptchaUrl',
-      'getSnsLogins',
       'localLogin',
       'showMsg'
     ]),    

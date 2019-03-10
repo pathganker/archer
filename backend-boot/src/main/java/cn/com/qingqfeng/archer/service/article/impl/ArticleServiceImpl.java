@@ -98,15 +98,34 @@ public class ArticleServiceImpl implements IArticleService{
 		}
 		query.setId(id);
 		Integer sortNum = this.articleDao.querySortNum(query);
-		query.setPage(sortNum);
+		if(sortNum>1){
+			query.setPage(sortNum-2);
+			query.setPageSize(3);
+		}else {
+			query.setPage(sortNum-1);
+			query.setPageSize(2);
+		}
 		List<ArticleDO> ados = this.articleDao.queryArticleByOptions(query);
 		if(null == ados || ados.isEmpty()){
 			return articles;
 		}
+		int i=0,index=0;
 		for(ArticleDO ado : ados){
+			i++;
+			if(id.equals(ado.getId())){
+				index=i;
+				continue;
+			}
 			ArticleDTO article = new ArticleDTO();
 			BeanUtils.copyProperties(ado, article);
 			articles.add(article);
+		}
+		if(articles.size()<2) {
+			if(index==1) {
+				articles.add(0, new ArticleDTO());
+			}else {
+				articles.add(new ArticleDTO());
+			}
 		}
 		return articles;
 	}

@@ -63,8 +63,8 @@ export default {
   data() {
     return {
       user: {
-        username: 'zankokutenshi@yeah.net',
-        password: 'cankutianshi'
+        username: '',
+        password: ''
       }
     }
   },

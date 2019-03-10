@@ -11,6 +11,7 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Component;
@@ -52,8 +53,20 @@ public class CorsFilter implements Filter{
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 		HttpServletResponse res = (HttpServletResponse) response;
+		HttpServletRequest req = (HttpServletRequest) request;
+		String[] whiteList= {"http://106.12.198.62","http://localhost:3000"};
+		String origin = req.getHeader("origin");
+		Boolean isValid = false;
+		for(String domain : whiteList) {
+			if(domain.equals(origin)) {
+				isValid = true;
+			}
+		}
+		if(isValid) {
+			res.addHeader("Access-Control-Allow-Origin", origin);
+		}
         //response.reset(); 
-        res.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+        //res.addHeader("Access-Control-Allow-Origin", "http://106.12.198.62");
         res.addHeader("Access-Control-Allow-Methods", "GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS, TRACES");
         res.addHeader("Access-Control-Max-Age", "3600");
         res.addHeader("Access-Control-Allow-Headers", "content-type, Auth-clientKey, Auth-jwt");
