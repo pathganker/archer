@@ -33,12 +33,12 @@
 							</a>
 						</div>
 					</div>
-      		<router-link :to="{ path: '/' }" class="navtitle " :class="{'active':$route.name !== 'apps'}" title="首页">
-						青团子
-					</router-link>
-      		<!-- <router-link :to="{ path: '/apps',activeClass: 'active'}" class="navbar-item mobile" active-class="active" title="移动应用">
-						<i class="fa fa-mobile"></i>
-					</router-link> -->
+					<div class="navtitle">
+						<router-link :to="{ path: '/' }"  class="title" title="首页">
+							青团子的小窝
+						</router-link>
+						<p class="sub-title">做一个有梦想爱学习的实力派</p>
+					</div>
 					<div v-if="auth.token && auth.user" class="navbar-items">
 						<a class="navbar-item-expand change-mode"  @click="changeMode()">
 		        	<i v-if="styleMode === 'day-mode'" class="fa fa-moon-o"></i>
@@ -62,7 +62,7 @@
 								</li>
 							</ul>
 		      </div>
-	      	<div v-else class="navbar-items">
+	      	<!-- <div v-else class="navbar-items">
 						<a class="navbar-item-expand change-mode" href="javascript:;" @click="changeMode()">
 		        	<i v-if="styleMode === 'day-mode'" class="fa fa-moon-o"></i>
 		        	<i v-else class="fa fa-sun-o"></i>
@@ -70,35 +70,41 @@
 						<router-link :to="{ path: '/login',activeClass:'active' }" class="navbar-item-expand" title="登录">
 							<i class="fa fa-sign-in"></i>
 						</router-link>   
-	      	</div>
-					<div class="navbar-items">
-						<router-link :to="{ path: '/' }" class="navbar-item" title="首页">
-						首页
-						</router-link>
-						<router-link :to="{ path: '/about' }" class="navbar-item " title="关于">
-						关于
-						</router-link>
-						<router-link  v-if="auth.token && auth.user" :to="{ path: '/creation' }" class="navbar-item" title="编辑">
-						编辑
-						</router-link>
+	      	</div> -->
+					<div class="navbar">
+						<ul class="nav navbar-items">
+							<li class="navbar-item"> 
+								<span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+								<router-link :to="{ path: '/' }" class="" title="首页">
+								首页
+								</router-link>
+							</li >
+							<li class="navbar-item">
+								<span class="glyphicon glyphicon-th" aria-hidden="true"></span>
+								<router-link :to="{ path: '/edition' }" class="" title="分类">
+								分类
+								</router-link>
+							</li>
+							<li class="navbar-item">
+								<span class="glyphicon glyphicon-tag" aria-hidden="true"></span>
+								<router-link :to="{ path: '/tag' }" class="" title="标签">
+								标签
+								</router-link>
+							</li>
+							<li class="navbar-item">
+								<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+								<router-link :to="{ path: '/about' }" class="" title="关于">
+								关于
+								</router-link>
+							</li>
+							<li class="navbar-item">
+								<router-link  v-if="auth.token && auth.user" :to="{ path: '/creation' }" class="" title="编辑">
+								编辑
+								</router-link>
+							</li>
+						</ul>
 					</div>
 		  </div> 
-		  <!-- <div class="navbar-expanded">
-		      <div class="navbar-menu">
-			      <a class="expanded-var angular2" href="//angular2.jackhu.top" title="angular2.x版">
-			      </a>
-			      <a class="expanded-var vue" href="//vue.jackhu.top" title="Vue版">
-			      </a>
-			      <a class="expanded-var react" href="//react.jackhu.top" title="React版">
-			      </a>
-			      <a class="expanded-var angular1" href="//angular.jackhu.top" title="Angular1.x版">
-			      </a>
-		        <a class="navbar-item change-mode" href="javascript:;" @click="changeMode()">
-		        	<i v-if="styleMode === 'day-mode'" class="fa fa-moon-o"></i>
-		        	<i v-else class="fa fa-sun-o"></i>
-		        </a>
-		      </div>
-		  </div> -->
 		</div>
 </template>
 

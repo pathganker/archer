@@ -107,7 +107,7 @@ const config = {
         ]
       },
       {
-        test: /\.(woff|woff2|ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        test: /\.(woff|woff2|ttf|eot|svg|otf)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
         use: [{
           loader: 'url-loader',
           options: {
@@ -156,7 +156,7 @@ if (debug) {
     watchOptions: {
       aggregateTimeout: 300,
       poll: 1000
-    }
+    },
   }
 
 } else {

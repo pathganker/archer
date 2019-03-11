@@ -21,7 +21,7 @@
             <charset>${encoding}</charset>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>/ROOT/logs/saber/avalon.log.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>/ROOT/logs/qingqfeng/archer.log.%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>7</maxHistory>
         </rollingPolicy>
     </appender>
