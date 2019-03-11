@@ -1,7 +1,7 @@
 <template>
 		<div class="navbar-box navbar-skin">
 		  <div class="navbar-menu">
-					<div class="navbar-shrink">
+					<!-- <div class="navbar-shrink">
 						<div v-if="auth.token && auth.user" class="pull-right">
 							<a href="javascript:;" class="shrink-avatar" @click="dropdown()">
 								<img :src="auth.user.avatar || defaultAvatar"></img>
@@ -32,7 +32,7 @@
 								<i v-else class="fa fa-sun-o"></i>
 							</a>
 						</div>
-					</div>
+					</div> -->
 					<div class="navtitle">
 						<router-link :to="{ path: '/' }"  class="title" title="首页">
 							青团子的小窝
@@ -74,31 +74,27 @@
 					<div class="navbar">
 						<ul class="nav navbar-items">
 							<li class="navbar-item"> 
-								<span class="glyphicon glyphicon-home" aria-hidden="true"></span>
-								<router-link :to="{ path: '/' }" class="" title="首页">
+								<router-link :to="{ path: '/' }" title="首页"><span class="glyphicon glyphicon-home" aria-hidden="true"></span><br>
 								首页
 								</router-link>
 							</li >
 							<li class="navbar-item">
-								<span class="glyphicon glyphicon-th" aria-hidden="true"></span>
-								<router-link :to="{ path: '/edition' }" class="" title="分类">
+								<router-link :to="{ path: '/edition' }"  title="分类"><span class="glyphicon glyphicon-th" aria-hidden="true"></span><br>
 								分类
 								</router-link>
 							</li>
 							<li class="navbar-item">
-								<span class="glyphicon glyphicon-tag" aria-hidden="true"></span>
-								<router-link :to="{ path: '/tag' }" class="" title="标签">
+								<router-link :to="{ path: '/tag' }" title="标签"><span class="glyphicon glyphicon-tag" aria-hidden="true"></span><br>
 								标签
 								</router-link>
 							</li>
 							<li class="navbar-item">
-								<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-								<router-link :to="{ path: '/about' }" class="" title="关于">
+								<router-link :to="{ path: '/about' }"  title="关于"><span class="glyphicon glyphicon-user" aria-hidden="true"></span><br>
 								关于
 								</router-link>
 							</li>
-							<li class="navbar-item">
-								<router-link  v-if="auth.token && auth.user" :to="{ path: '/creation' }" class="" title="编辑">
+							<li v-if="auth.token && auth.user" class="navbar-item">
+								<router-link   :to="{ path: '/creation' }"  title="编辑">
 								编辑
 								</router-link>
 							</li>

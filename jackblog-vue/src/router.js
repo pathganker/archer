@@ -14,6 +14,8 @@ Vue.use(Router)
 const router = new Router({
   mode: 'history',
   // scrollBehavior: true,  
+  linkActiveClass:'',
+  linkExactActiveClass:'',
   routes: [
     {
       path: '/',
