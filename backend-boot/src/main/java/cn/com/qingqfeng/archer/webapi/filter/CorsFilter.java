@@ -54,7 +54,7 @@ public class CorsFilter implements Filter{
 			throws IOException, ServletException {
 		HttpServletResponse res = (HttpServletResponse) response;
 		HttpServletRequest req = (HttpServletRequest) request;
-		String[] whiteList= {"http://106.12.198.62","http://localhost:3000"};
+		String[] whiteList= {"http://106.12.198.62","http://localhost:3000","http://localhost:5000"};
 		String origin = req.getHeader("origin");
 		Boolean isValid = false;
 		for(String domain : whiteList) {

@@ -52,7 +52,7 @@
   top:0;
   width: 100%;
 }
-@media (max-width: 767px) {
+@media (max-width: 600px) {
   .day-mode{
     margin: 0;
     padding: 0;
@@ -64,7 +64,32 @@
     
   }
   .day-mode .main-box{
-    margin-top: 20px;
+    margin:0 5px;
+  }
+  .day-mode .article-list-item{
+    padding: 0px 0px;
+    margin: 0 0 30px 0;
+    max-width: 750px;
+    min-width: 350px;
+  }
+  .day-mode .list-image img{
+    max-width: 700px;
+    min-width: 324px;
+  }
+  .day-mode .title{
+    margin: 0;
+  }
+  .day-mode .list-body{
+    margin: 0;
+  }
+  .day-mode .ivu-card-head{
+    padding: 16px 16px 0px 16px;
+  }
+  .day-mode .ivu-card-body{
+    padding: 0 16px 16px 16px;
+  }
+  .day-mode .profile{
+    margin: 10px 0!important;
   }
   .day-mode .navbar-menu{
     float: left;
@@ -117,14 +142,14 @@
     display: none;
   }
   .day-mode .main-content{
-    min-width: 375px;
-    margin:0px
+    min-width: 360px;
+    padding: 0 5px;
   }
   .day-mode .navbar-box .navbar-shrink .pull-right{
     width: 100%
   }
 }
-@media (max-width: 767px) {
+@media (max-width: 600px) {
   .night-mode .main-box{
     margin-top: 20px;
   }

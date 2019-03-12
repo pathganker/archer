@@ -59,13 +59,14 @@ export default {
 	position: relative;
 	margin-left: auto; 
 	margin-right: auto;
-	min-width: 789px;
+	min-width: 500px;
 	max-width: 1000px;
 	border-bottom: none;
 	padding:50px 50px;
 }
 .title{
 	margin-top: 20px;
+	
 }
 .profile p{
 	font-family:Lato,'Microsoft YaHei',sans-serif;
@@ -83,7 +84,7 @@ export default {
 .list-image img{
 	width: 95%;
 	max-width: 880px;
-	min-width: 650px;
+	min-width: 364px;
 }
 .list-footer{
 	margin: 20px 0 30px 0 px;
