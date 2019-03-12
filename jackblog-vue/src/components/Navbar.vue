@@ -1,38 +1,6 @@
 <template>
 		<div class="navbar-box navbar-skin">
 		  <div class="navbar-menu">
-					<!-- <div class="navbar-shrink">
-						<div v-if="auth.token && auth.user" class="pull-right">
-							<a href="javascript:;" class="shrink-avatar" @click="dropdown()">
-								<img :src="auth.user.avatar || defaultAvatar"></img>
-							</a>							
-							<ul class="dropdown-menu pull-right" id="dropdownMenu">
-								<li>
-									<router-link :to="{ path: '/settings' }">
-										<i class="fa fa-cog"></i> 
-									</router-link>
-								</li>
-								<li role="separator" class="divider"></li>
-								<li>					
-									<a href="javascript:;" class="shrink-logout" @click="logout()">
-											<i class="fa fa-sign-out"></i> 
-									</a>  
-								</li>
-							</ul>
-						</div>
-						<div v-else class="pull-left">
-							<router-link :to="{ path: '/login' }" class="shrink-login" title="登录">
-								<i class="fa fa-sign-in"> </i>
-							</router-link>
-						</div>
-						<br>
-						<div class="pull-left">
-							<a  class="shrink-login change-mode" href="javascript:;" @click="changeMode()">
-								<i v-if="styleMode === 'day-mode'" class="fa fa-moon-o"></i>
-								<i v-else class="fa fa-sun-o"></i>
-							</a>
-						</div>
-					</div> -->
 					<div class="navtitle">
 						<router-link :to="{ path: '/' }"  class="title" title="首页">
 							青团子的小窝
@@ -62,15 +30,6 @@
 								</li>
 							</ul>
 		      </div>
-	      	<!-- <div v-else class="navbar-items">
-						<a class="navbar-item-expand change-mode" href="javascript:;" @click="changeMode()">
-		        	<i v-if="styleMode === 'day-mode'" class="fa fa-moon-o"></i>
-		        	<i v-else class="fa fa-sun-o"></i>
-		        </a>
-						<router-link :to="{ path: '/login',activeClass:'active' }" class="navbar-item-expand" title="登录">
-							<i class="fa fa-sign-in"></i>
-						</router-link>   
-	      	</div> -->
 					<div class="navbar">
 						<ul class="nav navbar-items">
 							<li class="navbar-item"> 

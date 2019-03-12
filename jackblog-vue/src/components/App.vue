@@ -1,20 +1,28 @@
 <template>
-  <div class="top-box">
-    <Navbar></Navbar>
-    <transition>
-      <router-view class="enter"></router-view>
-    </transition>
+  <div class="top-box" >
+    <CanvasStar ref="star"></CanvasStar>
+    <div class="second-box" @mousemove="handleMove">
+      <Navbar></Navbar>
+      <transition>
+         <router-view class="enter"></router-view>
+      </transition>
+    </div>
     <Toaster></Toaster>
   </div>
 </template>
-
 <script>
 import store from 'store'
 import Navbar from './Navbar'
 import Toaster from './Toaster'
+import CanvasStar from './Effects'
 export default {
   store,
-  components:{ Navbar,Toaster }
+  components:{ Navbar,Toaster, CanvasStar},
+  methods:{
+    handleMove(e){
+      this.$refs.star.drawMove(e)
+    }
+  }
 }
 </script>
 <style>

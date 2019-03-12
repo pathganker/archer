@@ -3,11 +3,6 @@
 	<div class="footer-container">
 	  <ul>
 	    <li>
-	      <a class="github" href="https://github.com/pathganker" target="_blank">
-	        <i class="fa fa-github"></i>
-	      </a>
-	    </li>
-	    <li>
 	      <a class="weibo" href="https://weibo.com/2459209222" target="_blank">
 	        <i class="fa fa-weibo"></i>
 	      </a>

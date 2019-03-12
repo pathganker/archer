@@ -1,31 +1,102 @@
 <template>
-	<ul class="article-list list-unstyled clearfix">
-		<li class="article-item" v-for="(article,index) in articleList"  :key="index" :class="article.image !=null ? 'have-img' : ''">
-			<router-link v-if="article.image !=null" :to="{ name: 'article', params: {aid: article.id } }" class="wrap-img">
-				<img :src="article.image"/>
-			</router-link>
-			<div>
-				<p class="list-top">               
-				<span class="time">{{ article.publishTime | customTime }}</span>
-				</p>
-				<h4 class="title">
+	<div class="article-list ">
+		<div class="article-list-item" v-for="(article,index) in articleList"  :key="index">
+			<Card shadow>
+				<header class="title" slot="title">
 					<router-link :to="{ name: 'article', params: {aid: article.id } }" class="link-title">
 						{{article.title}}
 					</router-link>
-				</h4>
-				<div class="list-footer">
-					<span>阅读 {{article.visitCount}}</span>
-					<span> · 评论 {{article.commentCount}}</span>        
-					<span> · 喜欢 {{article.likeCount}}</span>
+					<div class="list-info">
+						<span>阅读 {{article.visitCount}}</span>
+						<span> · 评论 {{article.commentCount}}</span>        
+						<span> · 喜欢 {{article.likeCount}}</span>
+						<span class="time"> · {{ article.publishTime | customTime }}</span>
+					</div>
+				</header>
+				<div class="list-body" style="margin:10px 0px">
+					<div class="list-image" >
+						<img src="../../assets/images/nopicky.jpg"  style="margin:10px 0;padding:3px;border: 1px solid #ddd;"/>
+						<router-link v-if="article.image !=null" :to="{ name: 'article', params: {aid: article.id } }" class="wrap-img" >
+							<img :src="article.image"/>
+						</router-link>
+					</div>
+					<div class="profile" style="margin:40px 0px;">
+						<p>“你最近是不是又胖了？”</p>
+						<p>“没有啊，为什么这么说？”</p>
+						<p>“那你为什么在我心里的分量越来越重了呢？”</p>
+					</div>
 				</div>
-			</div>
-		</li>
+				<div class="list-footer" >
+					<Button type="default" :to="{ name: 'article', params: {aid: article.id } }">阅读全文</Button>
+				</div>
+        	</Card>
+		</div>
 		<li v-if="articleList.length < 1" class="no-content">正在大力回车...</li>
-	</ul>
+	</div>
 </template>
 
 <script>
+import { Card, Button } from 'iview'
+import imageTets from '../../assets/images/nopicky.jpg'
 export default {
-  props: ['articleList']
+  props: ['articleList'],
+  components:{ Card, Button},
+  data(){
+	  return {
+		  imageTest: this.imageTest
+	  }
+  }
 }
 </script>
+<style>
+.article-list{
+	position: relative;
+	text-align: center;
+	margin: 0;
+}
+ .article-list-item{
+	display: block;
+	position: relative;
+	margin-left: auto; 
+	margin-right: auto;
+	min-width: 789px;
+	max-width: 1000px;
+	border-bottom: none;
+	padding:50px 50px;
+}
+.title{
+	margin-top: 20px;
+}
+.profile p{
+	font-family:Lato,'Microsoft YaHei',sans-serif;
+}
+.link-title{
+	font-family: 'Hiragino Sans GB';
+	font-size: 28px;
+}
+.list-info{
+	font-family: 'Microsoft JhengHei';
+	font-size: 14px;
+	color: rgb(155, 155, 155);
+	margin: 15px 0 5px 0;
+}
+.list-image img{
+	width: 95%;
+	max-width: 880px;
+	min-width: 650px;
+}
+.list-footer{
+	margin: 20px 0 30px 0 px;
+}
+.list-footer a{
+	color: #2d8cf0;
+}
+.ivu-card{
+	position: relative;
+	box-shadow: 0px 0px 6px 4px #939697;
+}
+.ivu-card-head {
+	border-bottom:none;
+}
+
+</style>
