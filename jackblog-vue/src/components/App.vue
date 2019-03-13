@@ -2,7 +2,7 @@
   <div class="top-box" >
     <CanvasStar ref="star"></CanvasStar>
     <div class="second-box" @mousemove="handleMove">
-      <Navbar></Navbar>
+      <Navbar ref="nav"></Navbar>
       <transition>
          <router-view class="enter"></router-view>
       </transition>
@@ -21,6 +21,16 @@ export default {
   methods:{
     handleMove(e){
       this.$refs.star.drawMove(e)
+    },
+    hideNavbar(){
+      this.$refs.nav.hideNav()
+    }
+  },
+  watch:{
+    $route(to, from){
+      if(from.path == '/creation'){
+        this.$refs.nav.showNav()
+      }
     }
   }
 }

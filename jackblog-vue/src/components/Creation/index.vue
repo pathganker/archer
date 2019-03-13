@@ -1,9 +1,14 @@
 <template>
   <div class="creation-content">
-    <Edition :editionList="editionList" :cured="cured" :curar="curar"></Edition>
-    <div class="mask" id="editmask" @dblclick="editActive()"></div>
-    <Markdown :editionList="editionList" :cured="cured" :curar="curar"></Markdown>
-    <Savemodal ref='savmodal' ></Savemodal>
+    <Split v-model="splitper" min="238" ref="split">
+      <div slot="left" class="demo-split-pane no-padding">
+        <Edition :editionList="editionList" :cured="cured" :curar="curar"></Edition>
+      </div>
+      <div slot="right" class="demo-split-pane">
+        <Markdown ref="mark" :editionList="editionList" :cured="cured" :curar="curar"></Markdown>
+      </div>
+     </Split>
+     <Savemodal ref='savmodal' ></Savemodal>
   </div>
 </template>
 
@@ -13,13 +18,14 @@ import Markdown from './markdown.vue'
 import Edition from './edition.vue'
 import store from '../../store'
 import Savemodal from './savmodal.vue'
+import {Split} from 'iview'
 import {
   CURRENT_ARTICLE,
 } from '../../store/types'
 import {getCookie} from '../../utils/cookies'
 import {formatDate, uuid} from '../../utils/stringUtils'
 export default{
-  components:{ Edition, Markdown, Savemodal},
+  components:{ Edition, Markdown, Savemodal,Split},
   computed:{
     ...mapState({
       editionList: ({editionList}) => editionList.items,
@@ -30,6 +36,7 @@ export default{
   },
   created(){
     this.getEditionList()
+    this.$parent.hideNavbar()
   },
   methods:{
     ...mapActions([
@@ -65,8 +72,7 @@ export default{
       this.addBackendArticle(blog)
     },
     handleUpdateBlog(blog){
-      this.isedit = false
-      this.updateBackendArticle(blog)
+      this.updateBackendArticle(blog).then(this.editCancel())
     },
     handleUpdateEdition(id,content){
       this.updateEdition({
@@ -84,36 +90,29 @@ export default{
     },
     editActive(){
       this.isedit = true
+    },
+    editCancel(){
+      this.$refs.mark.endEdit()
+      this.isedit = false
     }
   },
   watch:{
     isedit(val){
-      if(this.isedit){
-        document.getElementById('editmask').style.display='none'
-      }else{
-        document.getElementById('editmask').style.display='block'
-      }
+      // if(this.isedit){
+      //   this.openSaveModal()
+      // }
     }
   },
   data(){
     return {
       newblog:'',
       isedit: false,
+      splitper: 0.2
     }
   }
 }
 
 </script>
 <style>
-.mask{
-  width: 80%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.5);
-  opacity: 1;
-  bottom: 0;
-  right: 0;
-  position: fixed;
-  z-index: 998;
 
-}
 </style>

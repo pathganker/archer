@@ -62,10 +62,10 @@ public class CorsFilter implements Filter{
 				isValid = true;
 			}
 		}
+		response.reset(); 
 		if(isValid) {
 			res.addHeader("Access-Control-Allow-Origin", origin);
 		}
-        //response.reset(); 
         //res.addHeader("Access-Control-Allow-Origin", "http://106.12.198.62");
         res.addHeader("Access-Control-Allow-Methods", "GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS, TRACES");
         res.addHeader("Access-Control-Max-Age", "3600");

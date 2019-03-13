@@ -47,7 +47,7 @@ const actions = {
     })
   },
   updateBackendArticle (store, data){
-    store.commit(UPDATE_ARTICLE,{article: data})
+    store.commit(UPDATE_ARTICLE, data)
     api.updateBackendArticle(data).then(response => {
       const json = response.data
       if(200==json.code){

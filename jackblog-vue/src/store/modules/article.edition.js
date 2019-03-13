@@ -89,11 +89,19 @@ const mutations = {
   },
   [UPDATE_ARTICLE](state, data){
     state.items[state.cured].articles.map(item =>{
-      if(data.id === item.id){
-        item.title = data.title
-        item.backendContent = data.backendContent
-        item.publish = data.publish
-        item.publishTime = data.publishTime
+      if(data.id == item.id){
+        if(data.title){
+          item.title = data.title
+        }
+        if(data.backendContent){
+          item.backendContent = data.backendContent
+        }
+        if(data.publish){
+          item.publish = data.publish
+        }
+        if(data.publishTime){
+          item.publishTime = data.publishTime
+        }
       }
       return item
     })

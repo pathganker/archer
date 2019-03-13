@@ -1,5 +1,5 @@
 <template>
-		<div class="navbar-box navbar-skin">
+		<div v-show="navshow" class="navbar-box navbar-skin">
 		  <div class="navbar-menu">
 					<div class="navtitle">
 						<router-link :to="{ path: '/' }"  class="title" title="首页">
@@ -7,7 +7,7 @@
 						</router-link>
 						<p class="sub-title">做一个有梦想爱学习的实力派</p>
 					</div>
-					<div v-if="auth.token && auth.user" class="navbar-items">
+					<!-- <div v-if="auth.token && auth.user" class="navbar-items">
 						<a class="navbar-item-expand change-mode"  @click="changeMode()">
 		        	<i v-if="styleMode === 'day-mode'" class="fa fa-moon-o"></i>
 		        	<i v-else class="fa fa-sun-o"></i>
@@ -29,7 +29,7 @@
 									</a>  
 								</li>
 							</ul>
-		      </div>
+		      </div> -->
 					<div class="navbar">
 						<ul class="nav navbar-items">
 							<li class="navbar-item"> 
@@ -53,7 +53,7 @@
 								</router-link>
 							</li>
 							<li v-if="auth.token && auth.user" class="navbar-item">
-								<router-link   :to="{ path: '/creation' }"  title="编辑">
+								<router-link   :to="{ path: '/creation' }"  title="编辑"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span><br>
 								编辑
 								</router-link>
 							</li>
@@ -68,6 +68,11 @@ import defaultAvatar from '../assets/images/avatar.png'
 import { mapState,mapActions } from 'vuex'
 import {isLogin} from '../utils/cookies'
 export default {
+	data(){
+		return {
+			navshow: true
+		}
+	},
   computed: {
     ...mapState({
       auth: state => state.auth,
@@ -102,7 +107,14 @@ export default {
 		dropmenu(){
 			const dropdownMenu = document.getElementById('droptestMenu')
 			dropdownMenu.style.display = 'block'
+		},
+		hideNav(){
+			this.navshow=false
+		},
+		showNav(){
+			this.navshow=true
 		}
+
 	},
 	directives:{
 		//菜单外点击事件

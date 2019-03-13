@@ -1,14 +1,12 @@
 <template>
-  <div class="markdown-container" id="markdownContent">
-    <div class="border-bar" @click="hidebar()">
-    </div>
+  <div class="markdown-container" id="markdownContent" @change="beginEdit">
     <div class="edit-body" v-if="editionList!=null && editionList[cured]!=null && editionList[cured].articles!=null && editionList[cured].articles[curar]!=null">
       <input id="title-input" class="intro-head " name="title" type="text" :value="editionList[cured].articles[curar].title" @input="title = $event.target.value" autocomplete="false" />
-      <mavon-editor  ref="md" :value="editionList[cured].articles[curar].backendContent == null ? '': editionList[cured].articles[curar].backendContent" @input="e => content = e" @save="save()" 
-        :toolbars="toolbars" :externalLink="externalLink" />
+      <mavon-editor  ref="md" :value="editionList[cured].articles[curar].backendContent == null ? '': editionList[cured].articles[curar].backendContent" @input="edit" @save="save()" 
+        :toolbars="toolbars" :externalLink="externalLink"/>
     </div>
     <div v-else>
-            <mavon-editor  ref="md" :value="''" @input="e => content = e" @save="save()" 
+            <mavon-editor  ref="md" :value="''" @input="edit" @save="save" 
         :toolbars="toolbars" :externalLink="externalLink"/>
     </div>
   </div>
@@ -48,12 +46,49 @@ export default {
       }
       store.commit(CURRENT_EDITION,{cured:this.cured})
       store.commit(CURRENT_ARTICLE,{curar:this.curar})
-      this.$parent.handleUpdateBlog(blog)
+      this.$parent.$parent.handleUpdateBlog(blog)
     },
+    edit(e){
+      if(this.editing){
+        this.$parent.$parent.editActive()
+      }
+      this.content = e
+    },
+    beginEdit(){
+      this.editing = true
+    },
+    endEdit(){
+      this.editing = false
+    }
   },
   data() {
     return {
-      externalLink: false,
+      externalLink: {
+        markdown_css: function() {
+            // 这是你的markdown css文件路径
+            return '/markdown/github-markdown.min.css';
+        },
+        hljs_js: function() {
+            // 这是你的hljs文件路径
+            return '/highlightjs/highlight.min.js';
+        },
+        hljs_css: function(css) {
+            // 这是你的代码高亮配色文件路径
+            return '/highlightjs/styles/' + css + '.min.css';
+        },
+        hljs_lang: function(lang) {
+            // 这是你的代码高亮语言解析路径
+            return '/highlightjs/languages/' + lang + '.min.js';
+        },
+        katex_css: function() {
+            // 这是你的katex配色方案路径路径
+            return '/katex/katex.min.css';
+        },
+        katex_js: function() {
+            // 这是你的katex.js路径
+            return '/katex/katex.min.js';
+        },
+      },
       toolbars: {
         bold: true, // 粗体
         italic: true, // 斜体
@@ -91,6 +126,7 @@ export default {
       },
       content:'',
       title: null,
+      editing: false,
     }
   }
 }
@@ -101,13 +137,15 @@ export default {
   text-align: left;
   font-size: 20px;
   height: 40px;
-  width: 80%;
+  width: 100%;
   border: none;
   outline: none;
   padding: 5px 10px 5px 20px;
+  display: inline-block;
+  background-color: #C7EDCC;
   }
 .v-note-wrapper{
-  z-index:1 !important;
+  background: #C7EDCC!important;
 }
 </style>
 
