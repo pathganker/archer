@@ -5,7 +5,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin')
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
+// const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 const env = process.env.NODE_ENV || 'development'
 const debug = env !== 'production'
@@ -48,16 +48,16 @@ const config = {
       }
     }),
     new CleanWebpackPlugin(['dist']),
-    new CopyWebpackPlugin([{
-      from: 'node_modules/mavon-editor/dist/highlightjs',
-      to: path.resolve(__dirname, 'dist/highlightjs'), // 插件将会把文件导出于/dist/highlightjs之下
-    }, {
-        from: 'node_modules/mavon-editor/dist/markdown',
-        to: path.resolve(__dirname, 'dist/markdown'), // 插件将会把文件导出于/dist/markdown之下
-    }, {
-        from: 'node_modules/mavon-editor/dist/katex', // 插件将会把文件导出
-        to: path.resolve(__dirname, 'dist/katex')
-    }]),
+    // new CopyWebpackPlugin([{
+    //   from: 'node_modules/mavon-editor/dist/highlightjs',
+    //   to: path.resolve(__dirname, 'dist/highlightjs'), // 插件将会把文件导出于/dist/highlightjs之下
+    // }, {
+    //     from: 'node_modules/mavon-editor/dist/markdown',
+    //     to: path.resolve(__dirname, 'dist/markdown'), // 插件将会把文件导出于/dist/markdown之下
+    // }, {
+    //     from: 'node_modules/mavon-editor/dist/katex', // 插件将会把文件导出
+    //     to: path.resolve(__dirname, 'dist/katex')
+    // }]),
   ],
   module: {
     rules: [

@@ -21,9 +21,7 @@
 						</router-link>
 					</div>
 					<div class="profile" style="margin:40px 0px;">
-						<p>“你最近是不是又胖了？”</p>
-						<p>“没有啊，为什么这么说？”</p>
-						<p>“那你为什么在我心里的分量越来越重了呢？”</p>
+						<p>{{article.profile}}</p>
 					</div>
 				</div>
 				<div class="list-footer" >
@@ -70,6 +68,8 @@ export default {
 }
 .profile p{
 	font-family:Lato,'Microsoft YaHei',sans-serif;
+	padding:0 20px;
+	text-align: left;
 }
 .link-title{
 	font-family: 'Hiragino Sans GB';

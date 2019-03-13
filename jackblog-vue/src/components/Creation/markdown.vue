@@ -3,11 +3,12 @@
     <div class="edit-body" v-if="editionList!=null && editionList[cured]!=null && editionList[cured].articles!=null && editionList[cured].articles[curar]!=null">
       <input id="title-input" class="intro-head " name="title" type="text" :value="editionList[cured].articles[curar].title" @input="title = $event.target.value" autocomplete="false" />
       <mavon-editor  ref="md" :value="editionList[cured].articles[curar].backendContent == null ? '': editionList[cured].articles[curar].backendContent" @input="edit" @save="save()" 
-        :toolbars="toolbars" :externalLink="externalLink"/>
+        :toolbars="toolbars" />
+        <!-- :externalLink="externalLink" -->
     </div>
     <div v-else>
             <mavon-editor  ref="md" :value="''" @input="edit" @save="save" 
-        :toolbars="toolbars" :externalLink="externalLink"/>
+        :toolbars="toolbars" />
     </div>
   </div>
 </template>
@@ -34,8 +35,8 @@ export default {
       markdownEditor.classList.toggle('markdown-container-max')
     },
     save(){
-      let frontContent = this.$refs.md.d_render
       let backendContent = this.content
+      let frontContent = this.$refs.md.markdownIt.render(backendContent)
       let blog ={
         id: this.editionList[this.cured].articles[this.curar].id,
         title: this.title == null ? this.editionList[this.cured].articles[this.curar].title : this.title,
@@ -63,32 +64,32 @@ export default {
   },
   data() {
     return {
-      externalLink: {
-        markdown_css: function() {
-            // 这是你的markdown css文件路径
-            return '/markdown/github-markdown.min.css';
-        },
-        hljs_js: function() {
-            // 这是你的hljs文件路径
-            return '/highlightjs/highlight.min.js';
-        },
-        hljs_css: function(css) {
-            // 这是你的代码高亮配色文件路径
-            return '/highlightjs/styles/' + css + '.min.css';
-        },
-        hljs_lang: function(lang) {
-            // 这是你的代码高亮语言解析路径
-            return '/highlightjs/languages/' + lang + '.min.js';
-        },
-        katex_css: function() {
-            // 这是你的katex配色方案路径路径
-            return '/katex/katex.min.css';
-        },
-        katex_js: function() {
-            // 这是你的katex.js路径
-            return '/katex/katex.min.js';
-        },
-      },
+      // externalLink: {
+      //   markdown_css: function() {
+      //       // 这是你的markdown css文件路径
+      //       return '/markdown/github-markdown.min.css';
+      //   },
+      //   hljs_js: function() {
+      //       // 这是你的hljs文件路径
+      //       return '/highlightjs/highlight.min.js';
+      //   },
+      //   hljs_css: function(css) {
+      //       // 这是你的代码高亮配色文件路径
+      //       return '/highlightjs/styles/' + css + '.min.css';
+      //   },
+      //   hljs_lang: function(lang) {
+      //       // 这是你的代码高亮语言解析路径
+      //       return '/highlightjs/languages/' + lang + '.min.js';
+      //   },
+      //   katex_css: function() {
+      //       // 这是你的katex配色方案路径路径
+      //       return '/katex/katex.min.css';
+      //   },
+      //   katex_js: function() {
+      //       // 这是你的katex.js路径
+      //       return '/katex/katex.min.js';
+      //   },
+      // },
       toolbars: {
         bold: true, // 粗体
         italic: true, // 斜体
@@ -123,6 +124,7 @@ export default {
         /* 2.2.1 */
         subfield: false, // 单双栏模式
         preview: true, // 预览
+        externalLink: true
       },
       content:'',
       title: null,
@@ -144,8 +146,8 @@ export default {
   display: inline-block;
   background-color: #C7EDCC;
   }
-.v-note-wrapper{
-  background: #C7EDCC!important;
+.v-note-wrapper {
+  background-color: #C7EDCC!important;
 }
 </style>
 

@@ -342,6 +342,8 @@ span.active{
 }
 .markdown-body{
   height: auto;
+  width: 100%;
+  margin: 0 0 0 5px;
 }
 .markdown-container-max{
   padding: 0px 6px 5px 2px;

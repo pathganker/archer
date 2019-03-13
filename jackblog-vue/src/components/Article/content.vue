@@ -13,13 +13,14 @@
 					<div class="list-image" style="display:none">
 						<img src="../../assets/images/nopicky.jpg"  style="margin:10px 0;padding:3px;border: 1px solid #ddd;"/>
 					</div>
-          <div class="markdown-content" v-html="articleDetail.frontContent"></div>
+          <div class="markdown-body" v-html="articleDetail.frontContent"></div>
 				</div>
       </Card>
   </div>
 </template>
 <script>
 import { Card } from 'iview'
+import 'mavon-editor/dist/css/index.css'
 export default {
   props:['articleDetail'],
   components:{Card}
