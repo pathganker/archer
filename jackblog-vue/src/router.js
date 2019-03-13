@@ -78,7 +78,7 @@ router.beforeEach((to, from, next) => {
   }
 
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (!isLogin() || !store.getters.isSigin) {
+    if (!isLogin() && !store.getters.isSigin) {
       return next({path: '/login'})
     }
   }
