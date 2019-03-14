@@ -22,7 +22,7 @@ spring:
     port: 6379
     password: redis@1010
     timeout: 1000
-        
+
         
           
       

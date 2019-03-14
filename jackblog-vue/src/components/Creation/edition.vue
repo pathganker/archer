@@ -64,7 +64,7 @@
                     </li>
                     <li>
                       <a  class="upload-button">
-                        <input type="file"  class="file-input" ref="picInput" @input="addCover(article.id)" accept="image/gif,image/jpeg,image/jpg,image/png"/>
+                        <input type="file"  class="file-input" ref="picInput" @change="addCover($event,article.id)" accept="image/gif,image/jpeg,image/jpg,image/png"/>
                         <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>&nbsp;&nbsp;添加/修改封面</a>
                     </li>
                     <li><a @click="arDelete(article.id,index)"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>&nbsp;&nbsp;删除</a></li>
@@ -272,11 +272,12 @@ export default {
       document.getElementById('ar_drop_menu_sec_'+index).style.display='none'
 
     },
-    addCover(id){
-      let file = this.$refs.picInput.files[0]
+    addCover(e,id){
+      let file = e.target.files[0]
       console.log(file)
       let data = new FormData()
       data.append('picture', file)
+      console.log(data)
       if(file) {
         this.uploadCover({
           picture: data,

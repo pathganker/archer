@@ -18,18 +18,19 @@ import org.springframework.web.multipart.MultipartFile;
  * 
  */
 public class FileUtils {
-	private final static String COVERDIR = "/upload/picture/cover";
+	
+	private final static String COVERDIR = "\\\\upload/picture/cover";
 	
 	public static String handleCover(MultipartFile file, String articleId) throws RuntimeException{
 		if(null == file || file.getSize() < 1){
 			return null;
 		}
 		//重命名
-		String filename = file.getName();
+		String filename = file.getOriginalFilename();
     	String time = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
     	String newFilename =time+"_"+filename;
     	//创建文件
-    	File newFile = new File(COVERDIR+"/"+articleId,newFilename);
+    	File newFile = new File(COVERDIR+"/"+articleId, newFilename);
     	if(!newFile.exists()){
     		newFile.mkdirs();
     	}
