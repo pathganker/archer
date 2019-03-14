@@ -23,6 +23,9 @@ export function removeCookie(name) {
 
 export function signOut() {
   cookies.remove('token', cookieConfig)
+  cookies.remove('cured',cookieConfig)
+  cookies.remove('curar',cookieConfig)
+  cookies.remove('isedit',cookieConfig)
 }
 
 export function isLogin() {
