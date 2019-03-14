@@ -11,13 +11,15 @@ import {
   UPDATE_ARTICLE,
   DELETE_ARTICLE,
   MOVE_ARTICLE,
-  SAVE_EDITION
+  SAVE_EDITION,
+  SAVE_ARTICLE_DRAFT
 } from '../types'
 import {saveCookie,getCookie} from '../../utils/cookies'
 const state = {
   items:[],
   cured: null,
   curar: null,
+  draft: null,
 }
 // actions
 const actions = {
@@ -137,6 +139,9 @@ const mutations = {
       }
       return item
     })
+  },
+  [SAVE_ARTICLE_DRAFT](state,data){
+    state.draft = state.items[data.cured].articles[data.curar].backendContent
   }
 }
 

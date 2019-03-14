@@ -66,6 +66,10 @@
   .day-mode .main-box{
     margin:0 5px;
   }
+  .day-mode .article-box{
+    margin:0 5px;
+    width: auto;
+  }
   .day-mode .article-list-item{
     padding: 0px 0px;
     margin: 0 0 30px 0;
@@ -342,8 +346,7 @@ span.active{
 }
 .markdown-body{
   height: auto;
-  width: 100%;
-  margin: 0 0 0 5px;
+  margin: 0 0 0 6px;
 }
 .markdown-container-max{
   padding: 0px 6px 5px 2px;
@@ -450,12 +453,22 @@ span.active{
 .auto-textarea-wrapper .auto-textarea-input.no-resize {
   background: #C7EDCC!important;
 }
-.dropdown-wrapper{
-  background: #C7EDCC!important;
-}
+
 .ivu-split-pane{
   min-width: 238px!important;
 }
 .comment-text textarea{
   background: 0 0;
+}
+.markdown-body pre code{
+  word-wrap: break-word !important;
+  white-space: pre-wrap;
+}
+.markdown-body pre>code{
+  word-wrap: break-word !important;
+  white-space: pre-wrap !important;
+  line-height:22px
+}
+[type=button] {
+  -webkit-appearance: none!important;
 }

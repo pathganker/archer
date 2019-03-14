@@ -1,14 +1,14 @@
 <template>
-  <div class="markdown-container" id="markdownContent" @change="beginEdit">
+  <div class="markdown-container" id="markdownContent">
     <div class="edit-body" v-if="editionList!=null && editionList[cured]!=null && editionList[cured].articles!=null && editionList[cured].articles[curar]!=null">
       <input id="title-input" class="intro-head " name="title" type="text" :value="editionList[cured].articles[curar].title" @input="title = $event.target.value" autocomplete="false" />
       <mavon-editor  ref="md" :value="editionList[cured].articles[curar].backendContent == null ? '': editionList[cured].articles[curar].backendContent" @input="edit" @save="save()" 
-        :toolbars="toolbars" />
+        :toolbars="toolbars" :externalLink="externalLink"/>
         <!-- :externalLink="externalLink" -->
     </div>
     <div v-else>
             <mavon-editor  ref="md" :value="''" @input="edit" @save="save" 
-        :toolbars="toolbars" />
+        :toolbars="toolbars" :externalLink="externalLink"/>
     </div>
   </div>
 </template>
@@ -17,13 +17,15 @@
 import  { mavonEditor } from 'mavon-editor'
 import { mapState,mapActions } from 'vuex'
 import 'mavon-editor/dist/css/index.css'
+import 'mavon-editor/dist/markdown/github-markdown.min.css'
 import store from '../../store'
 import {
   CURRENT_EDITION,
   CURRENT_ARTICLE
 } from '../../store/types'
+import { saveCookie} from '../../utils/cookies'
 export default {
-  props:['editionList','cured','curar'],
+  props:['editionList','cured','curar','draft'],
   components: { mavonEditor },
   methods: {
     ...mapActions([
@@ -50,16 +52,11 @@ export default {
       this.$parent.$parent.handleUpdateBlog(blog)
     },
     edit(e){
-      if(this.editing){
-        this.$parent.$parent.editActive()
-      }
       this.content = e
-    },
-    beginEdit(){
-      this.editing = true
-    },
-    endEdit(){
-      this.editing = false
+      if(this.content!='' && this.content != this.draft){
+        this.$parent.$parent.editActive()
+        saveCookie('isedit',true)
+      }
     }
   },
   data() {
@@ -90,6 +87,7 @@ export default {
       //       return '/katex/katex.min.js';
       //   },
       // },
+      externalLink: false,
       toolbars: {
         bold: true, // 粗体
         italic: true, // 斜体
@@ -128,7 +126,6 @@ export default {
       },
       content:'',
       title: null,
-      editing: false,
     }
   }
 }
@@ -142,7 +139,7 @@ export default {
   width: 100%;
   border: none;
   outline: none;
-  padding: 5px 10px 5px 20px;
+  padding: 5px 0px 5px 20px;
   display: inline-block;
   background-color: #C7EDCC;
   }

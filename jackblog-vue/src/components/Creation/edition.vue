@@ -1,9 +1,9 @@
 <template>
   <div class="edition" id="editionNav">
-      <Split v-model="splitper" mode="vertical" min="238">
+      <Split v-model="splitper" mode="vertical" min=238>
         <div slot="top" class="demo-split-pane">
           <div class="edition-list">
-            <ul class="nav nav-pills nav-stacked" @click="edition()">
+            <ul class="nav nav-pills nav-stacked">
               <li class="navbar-item-menu"> 
 								<router-link :to="{ path: '/' }" title="首页" class="item-menu"><span class="glyphicon glyphicon-home" aria-hidden="true"></span><br>
 								首页
@@ -14,29 +14,29 @@
 								<router-link :to="{ path: '/tag' }" title="标签" class="item-menu"><span class="glyphicon glyphicon-tag" aria-hidden="true"></span><br>
 								标签
 								</router-link>
-								<router-link :to="{ path: '/about' }"  title="关于" class="item-menu"><span class="glyphicon glyphicon-user" aria-hidden="true"></span><br>
-								关于
-								</router-link>
+                <a href="javascript:;" class="item-menu" @click="logout()"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span><br>
+								 登出
+						  	</a>  
 							</li>       
-              <li ><a class="fa fa-plus">&nbsp;&nbsp;&nbsp;新建文集</a></li>
+              <li  @click="edition()" ><a class="fa fa-plus">&nbsp;&nbsp;&nbsp;新建文集</a></li>
+              <div id="editioninput" class="input-group medium" style="display:none" v-clickoutside="1">
+                <div class="panel-body">
+                  <input type="text" name="newEdition" v-model="newEdition" v-validate="'required'" class="form-control" placeholder="新建文集" data-vv-as="文集名">
+                  <span class="tip-span">{{ errors.first('newEdition') }}</span>
+                </div>
+                <div class="panel-footer">
+                  <button type="button" class="btn btn-success" @click="confirm()">确认</button>
+                  <button type="button" class="btn btn-info" @click="cancel()">取消</button>
+                </div>
+              </div>
             </ul>
-            <div id="editioninput" class="input-group medium" style="display:none">
-              <div class="panel-body">
-                <input type="text" name="newEdition" v-model="newEdition" v-validate="'required'" class="form-control" placeholder="新建文集" data-vv-as="文集名">
-                <span class="tip-span">{{ errors.first('newEdition') }}</span>
-              </div>
-              <div class="panel-footer">
-                <button type="button" class="btn btn-success" @click="confirm()">确认</button>
-                <button type="button" class="btn btn-info" @click="cancel()">取消</button>
-              </div>
-            </div>
             <ul class="nav nav-pills nav-stacked">
               <li v-for="(edition,index) in editionList" :key="index" @click="editionActive(edition,index)" :class="{active:index==cured}" @dblclick="edconfig(index)">
                 <a>{{edition.title}}  
                   <span class="glyphicon glyphicon-cog " aria-hidden="true" @click="edconfig(index)" style="display:none;float:right;" :class="{active:index==cured}"></span>
                   <ul class="dropdown-menu"  :id="'ed_drop_menu_'+index" style="display:none;user-select:none;" v-clickoutside="index">
-                    <li><a @click="edModify(edition)">修改</a></li>
-                    <li><a @click="edDelete(edition)">删除</a></li>
+                    <li><a @click="edModify(edition)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span>&nbsp;&nbsp;修改名称</a></li>
+                    <li><a @click="edDelete(edition)"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>&nbsp;&nbsp;删除文集</a></li>
                   </ul>
                 </a>
               </li>
@@ -62,7 +62,11 @@
                       <li v-for="(edition,key) in editionList" :key="key" @click="moveArticle(article.id, edition.id, index)"><a class="ar-title" v-if="key!=cured"><span class="glyphicon glyphicon-book" aria-hidden="true"></span>&nbsp;&nbsp;{{edition.title}}</a></li>
                     </ul>
                     </li>
-                    <li><a @click="''"><span class="glyphicon glyphicon-picture" aria-hidden="true"></span>&nbsp;&nbsp;添加/修改封面</a></li>
+                    <li>
+                      <a  class="upload-button">
+                        <input type="file"  class="file-input"  @change="addCover($event, article.id)" accept="image/gif,image/jpeg,image/jpg,image/png"/>
+                        <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>&nbsp;&nbsp;添加/修改封面</a>
+                    </li>
                     <li><a @click="arDelete(article.id,index)"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>&nbsp;&nbsp;删除</a></li>
                   </ul>
                 </a>
@@ -97,7 +101,7 @@
   </div>
 </template>
 <script>
-import { Split, Modal } from 'iview'
+import { Split, Modal, Upload } from 'iview'
 import { mapState,mapActions } from 'vuex'
 import store from '../../store'
 import {
@@ -111,13 +115,16 @@ import {formatDate, uuid} from '../../utils/stringUtils'
 export default {
   props:['editionList','cured','curar'],
   components:{
-    Split,Modal
+    Split,Modal,Upload
   },
   methods:{
     ...mapActions([
       'getBackendArticle',
+      'logout',
+      'uploadCover'
     ]),
     editionActive(edition,num){
+      store.commit(SAVE_ARTICLE_DRAFT,{cured:num,curar:0})
       if(num!= this.cured && this.$parent.$parent.isedit ){
         this.$parent.$parent.openSaveModal()
         return
@@ -128,6 +135,7 @@ export default {
       store.commit(CURRENT_ARTICLE,{curar:0})
     },
     articleActive(num, id){
+      store.commit(SAVE_ARTICLE_DRAFT,{cured:this.cured,curar:num})
       if(num!= this.curar && this.$parent.$parent.isedit){
         this.$parent.$parent.openSaveModal()
         return
@@ -159,7 +167,17 @@ export default {
     },
     createblog(){
       store.commit(CURRENT_ARTICLE, {curar:0})
-      this.$parent.$parent.handleCreateBlog(this.editionList[this.cured].id)
+      if(null ==this.cured){
+        if(null !=this.editionList[0]){
+          store.commit(CURRENT_EDITION,{cured:0})
+          this.$parent.$parent.handleCreateBlog(this.editionList[0].id)
+        }else{
+          this.$parent.$parent.handleUpdateEdition('新建文件夹').then(this.createblog())
+        }
+      }else{
+        this.$parent.$parent.handleCreateBlog(this.editionList[this.cured].id)
+      }
+      
     },
     edconfig(num){
       const dropmenu = document.getElementById('ed_drop_menu_'+num)
@@ -253,6 +271,17 @@ export default {
       document.getElementById('ar_drop_menu_'+index).style.display='none'
       document.getElementById('ar_drop_menu_sec_'+index).style.display='none'
 
+    },
+    addCover(e,id){
+      let file = e.target.files[0]
+      let data = new FormData()
+      data.append('picture', file)
+      if(file) {
+        this.uploadCover({
+          picture: data,
+          id: id
+        })
+      }
     }
   },
   directives:{
@@ -262,8 +291,9 @@ export default {
         function  hidemenu(el){
           el.style.display="none" 
         }
+        
         function documentHandler(e){
-          if(el.contains(e.target) || el.contains(e.target.nextElementSibling)){
+          if(el.contains(e.target) || el.contains(e.target.nextElementSibling)|| el.contains(e.target.parentElement.nextElementSibling)){
             return true
           }else if (el.style.display!='none'){
             hidemenu(el)
@@ -304,13 +334,32 @@ export default {
   height: 100%;
   width: 100%;
   overflow-y: auto;
-  min-width: 238px;
 }
 .navbar-item-menu{
   text-align: center;
-  min-width: 238px;
 }
 .navbar-item-menu .item-menu{
   display: inline-block;
+}
+.panel-footer{
+  background: 0 0;
+  border-top: none;
+}
+.panel-body{
+  background: 0 0;
+}
+.upload-button{
+  display: block!important;
+  color: black!important;
+}
+.upload-button :hover{
+  display: block!important;
+  color: black!important;
+}
+.file-input{
+  opacity: 0;
+  position:absolute;
+  width:100%;
+  left: 0;
 }
 </style>

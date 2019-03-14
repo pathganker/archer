@@ -4,7 +4,6 @@ import {
   GET_ARTICLE_ORIGIN,
   FAILURE_GET_ARTICLE_ORIGIN,
   UPDATE_ARTICLE,
-  SAVE_ARTICLE_DRAFT,
   GET_ARTICLE_ORIGIN_LOCAL,
   ARTICLE_SUCCESS,
   ADD_ARTICLE,
@@ -12,7 +11,7 @@ import {
 } from '../types'
 import localstorage from '../../utils/localstorage'
 const state = {
-  draft: {},
+  storage:''
 }
 // actions
 const actions = {
@@ -73,23 +72,31 @@ const actions = {
     error =>{
       showMsg(store, error)
     })
+  },
+  uploadCover(store, data){
+    api.uploadCover(data).then(response =>{
+      const json = response.data
+      if(200== json.code){
+        return showMsg(store, '保存成功','success')
+      }else{
+        return showMsg(store, json.message || '未成功保存')
+      }
+    },error=>{
+      showMsg(store, error)
+    })
   }
 
 }
 
 const mutations = {
   [GET_ARTICLE_ORIGIN](state, data){
-    state.draft = data.article
-  },
-  [SAVE_ARTICLE_DRAFT](state, data){
-    state.draft = data.article
-    localstorage.save(state.draft.id, data.article)
+    state.storage = data.article
   },
   [FAILURE_GET_ARTICLE_ORIGIN](state){
-    state.draft={}
+    state.storage={}
   },
   [GET_ARTICLE_ORIGIN_LOCAL](state,data){
-    state.draft = data.article
+    state.storage = data.article
   },
   [ARTICLE_SUCCESS](state){
 

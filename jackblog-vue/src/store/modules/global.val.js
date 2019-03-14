@@ -2,7 +2,8 @@ import {API_ROOT} from '../../config'
 import {
   CHANGE_STYLE_MODE,
   GET_INDEX_IMG,
-  GET_CAPTCHAURL
+  GET_CAPTCHAURL,
+  CHANGE_SPLITER
 } from '../types'
 import { getCookie,saveCookie } from '../../utils/cookies'
 
@@ -10,7 +11,9 @@ const state = {
   indexImg: '',
   styleMode: getCookie('styleMode') || 'day-mode',
   captchaUrl: API_ROOT + 'auth/captcha/',
-  captchaKey: Math.random()
+  captchaKey: Math.random(),
+  splitper: 0.2
+
 }
 
 const mutations = {
@@ -24,6 +27,9 @@ const mutations = {
   [GET_CAPTCHAURL](state){
     state.captchaKey = Math.random()
     state.captchaUrl = API_ROOT+'auth/captcha/'+state.captchaKey
+  },
+  [CHANGE_SPLITER](state,data){
+    state.splitper = data.splitper
   }
 }
 

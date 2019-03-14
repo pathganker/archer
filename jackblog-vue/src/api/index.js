@@ -199,6 +199,13 @@ export default {
       url: 'login/check',
       method: 'get'
     })
+  },
+  uploadCover: function(data){
+    return fetch({
+      url: 'article/backend/upload/cover/'+data.id,
+      method: 'post',
+      data: data.picture
+    })
   }
 
 }

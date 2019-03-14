@@ -21,6 +21,7 @@
 <script>
 import { Card } from 'iview'
 import 'mavon-editor/dist/css/index.css'
+import 'mavon-editor/dist/markdown/github-markdown.min.css'
 export default {
   props:['articleDetail'],
   components:{Card}

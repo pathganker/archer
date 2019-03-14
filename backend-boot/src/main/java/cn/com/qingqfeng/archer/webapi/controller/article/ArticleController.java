@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import cn.com.qingqfeng.archer.enums.ApiCodeEnum;
 import cn.com.qingqfeng.archer.pojo.Result;
@@ -39,6 +40,7 @@ import cn.com.qingqfeng.archer.pojo.record.ArticleVisitDTO;
 import cn.com.qingqfeng.archer.service.article.IArticleService;
 import cn.com.qingqfeng.archer.service.edition.IEditionService;
 import cn.com.qingqfeng.archer.service.record.IVisitRecordService;
+import cn.com.qingqfeng.archer.utils.FileUtils;
 import cn.com.qingqfeng.archer.utils.JwtUtils;
 
 /**   
@@ -404,4 +406,41 @@ public class ArticleController {
 		this.editionService.deleteEditionWhole(id);
 		return rs;
 	}
+	
+	/**
+	 * 
+	 * <p>方法名:  uploadCover </p> 
+	 * <p>描述:    TODO </p>
+	 * <p>创建时间:  2019年3月14日下午8:59:34 </p>
+	 * @version 1.0
+	 * @author lijunliang
+	 * @param picture
+	 * @param articleId
+	 * @return  
+	 * Result
+	 */
+	@RequestMapping(value="backend/upload/cover/{id}", method={RequestMethod.POST})
+	public Result uploadCover(MultipartFile picture, @PathVariable String id){
+		Result rs = new Result();
+		ArticleDTO article = new ArticleDTO();
+		ArticleDTO old = this.articleService.requestArticleById(id);
+		String userId = JwtUtils.getCurrentUserId();
+		if(null == old || null == old.getUserId() || !old.getUserId().equals(userId)){
+			rs.setCode(ApiCodeEnum.API_AUTHORITY);
+			return rs;
+		}
+		String image = new String();
+		try {
+			image = FileUtils.handleCover(picture, id);
+		}catch(RuntimeException e){
+			rs.setCode(ApiCodeEnum.SERVICE_WRONG);
+			return rs;
+		}
+		article.setId(id);
+		article.setImage(image);
+		this.articleService.updateArticle(article);
+		rs.setCode(ApiCodeEnum.SUCCESS);
+		return rs;
+	}
+	
 }
