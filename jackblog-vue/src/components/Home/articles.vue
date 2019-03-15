@@ -34,15 +34,9 @@
 
 <script>
 import { Card, Button } from 'iview'
-import imageTets from '../../assets/images/nopicky.jpg'
 export default {
   props: ['articleList'],
   components:{ Card, Button},
-  data(){
-	  return {
-		  imageTest: this.imageTest
-	  }
-  }
 }
 </script>
 <style>

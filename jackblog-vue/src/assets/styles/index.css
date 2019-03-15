@@ -80,6 +80,10 @@
     max-width: 700px;
     min-width: 324px;
   }
+  .day-mode .about{
+    width: 100%;
+    padding: 0 10px;
+  }
   .day-mode .title{
     margin: 0;
   }

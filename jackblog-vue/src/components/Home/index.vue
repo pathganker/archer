@@ -44,7 +44,6 @@ export default {
   },
   methods:{
     ...mapActions([
-      'getIndexImage',
       'getTagList',
       'changeOptions',
       'getArticleList',

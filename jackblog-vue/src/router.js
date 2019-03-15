@@ -7,6 +7,7 @@ const Article = () => import('components/Article/index')
 const Apps = () => import('components/Apps/index')
 const NotFound = () => import('components/NotFound')
 const Creation = () => import('components/Creation/index')
+const About = () => import('components/About/index')
 import {isLogin} from './utils/cookies'
 import store from './store'
 Vue.use(Router)
@@ -64,11 +65,11 @@ const router = new Router({
         requiresAuth: true
       } 
     },
-    // {
-    //   path: '/about',
-    //   name: 'about',
-    //   component: About,
-    // }
+    {
+      path: '/about',
+      name: 'about',
+      component: About,
+    }
   ]
 })
 

@@ -10,8 +10,8 @@
           </div> 
 				</header>
 				<div class="list-body" style="margin:10px 0px">
-					<div class="list-image" style="display:none">
-						<img src="../../assets/images/nopicky.jpg"  style="margin:10px 0;padding:3px;border: 1px solid #ddd;"/>
+					<div class="list-image" >
+						<img :src="articleDetail.image"  style="margin:10px auto;padding:3px;border: 1px solid #ddd;"/>
 					</div>
           <div class="markdown-body" v-html="articleDetail.frontContent"></div>
 				</div>
@@ -35,6 +35,14 @@ export default {
   padding: 0;
   margin: 0 auto 0 auto;
   width:50%;
-  
+}
+.list-image {
+  text-align: center
+}
+.list-image img{
+  width: 100%;
+  max-width: 880px;
+  min-width: 364px;
+  display: inline-block;
 }
 </style>

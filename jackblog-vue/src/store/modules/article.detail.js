@@ -31,7 +31,7 @@ const actions = {
         })
       }
     })
-  }
+  },
 }
 
 const mutations = {
