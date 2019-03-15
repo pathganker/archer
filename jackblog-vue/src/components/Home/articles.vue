@@ -15,9 +15,8 @@
 				</header>
 				<div class="list-body" style="margin:10px 0px">
 					<div class="list-image" >
-						<img :src="article.image"  style="margin:10px 0;padding:3px;border: 1px solid #ddd;"/>
 						<router-link v-if="article.image !=null" :to="{ name: 'article', params: {aid: article.id } }" class="wrap-img" >
-							<img :src="article.image"/>
+							<img :src="article.image"  style="margin:10px 0;padding:3px;border: 1px solid #ddd;"/>
 						</router-link>
 					</div>
 					<div class="profile" style="margin:40px 0px;">

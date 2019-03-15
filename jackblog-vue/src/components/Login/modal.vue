@@ -1,9 +1,8 @@
 <template>
-	<modal :show.sync="showLoginModal"  effect="fade" width="400">
-	  <div slot="modal-header" class="modal-header">
-	  	<h4 class="modal-title text-center">请用以下方式登录</h4>
-	  </div>
-	  <div slot="modal-body" class="modal-body">
+	<Modal v-model="showLoginModal"  
+    width="400"
+    title="请用以下方式登录"
+  >
       <div class="portlet-body">
           <div id="signinForm">
             <form class="signin-form form-horizontal">
@@ -41,19 +40,18 @@
             </form>
           </div>
       </div>
-	  </div>
-	  <div slot="modal-footer">
-	  </div>
-	</modal>
+      <div slot="footer">
+      </div>
+	</Modal>
 </template>
 
 <script>
 import { mapState,mapActions } from 'vuex'
-import { modal } from 'vue-strap'
+import { Modal } from 'iview'
 
 export default {
   components:{
-    modal
+    Modal
   },
   computed: {
     ...mapState({

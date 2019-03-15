@@ -274,10 +274,8 @@ export default {
     },
     addCover(e,id){
       let file = e.target.files[0]
-      console.log(file)
       let data = new FormData()
       data.append('picture', file)
-      console.log(data)
       if(file) {
         this.uploadCover({
           picture: data,

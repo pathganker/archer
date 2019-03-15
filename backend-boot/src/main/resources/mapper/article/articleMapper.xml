@@ -135,6 +135,7 @@
            <if test="modifyTime != null">modify_time = #{modifyTime},</if>
            <if test="publish != null">is_publish = #{publish},</if>
            <if test="profile != null ">profile = #{profile},</if>
+           <if test="image !=null"> image = #{image},</if>
        </trim>
        WHERE 
             id = #{id}

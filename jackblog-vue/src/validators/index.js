@@ -31,6 +31,7 @@ Validator.extend('captcha', {
 })
 
 
+
 const config = {
   errorBagName: 'errors', // change if property conflicts.
   fieldsBagName: 'fields', 

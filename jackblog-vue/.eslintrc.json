@@ -28,10 +28,7 @@
       "error",
       "single"
     ],
-    "semi": [
-      "error",
-      "never"
-    ],
+    "semi": 0,
     "no-console": 0,
     "linebreak-styl":0,
     "no-unused-vars": ["error", { "vars": "all", "args": "none" }],

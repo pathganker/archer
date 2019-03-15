@@ -3,6 +3,4 @@ spring:
     active: dev
 server:
   port: 7000
-  tomcat:
-    basedir: /ROOT/tomcat
       

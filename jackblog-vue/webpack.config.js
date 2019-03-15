@@ -3,8 +3,9 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin')
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const UglifyjsWebpackPlugin = require('uglifyjs-webpack-plugin')
 // const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 const env = process.env.NODE_ENV || 'development'
@@ -21,6 +22,12 @@ const config = {
     filename: debug? '[name].js':'js/[hash:8].[name].js',
     chunkFilename: debug? '[name].js':'js/[name].[chunkhash].js',
     publicPath: '/'
+  },
+  externals: {
+    'vue':'Vue',
+    'vue-router':'VueRouter',
+    'vuex':'Vuex',
+    'vee-validate': 'VeeValidate'
   },
   plugins: [
     new webpack.DefinePlugin({
@@ -47,6 +54,7 @@ const config = {
         collapseWhitespace:true    //删除空白符与换行符
       }
     }),
+    new BundleAnalyzerPlugin(),
     new CleanWebpackPlugin(['dist']),
     // new CopyWebpackPlugin([{
     //   from: 'node_modules/mavon-editor/dist/highlightjs',
@@ -64,7 +72,7 @@ const config = {
       { enforce: 'pre', test: /\.js$/, exclude: /node_modules/, use: ['eslint-loader'] },
       { test: /\.vue$/,
         use: ['vue-loader'], 
-        include: path.join(__dirname,'src')}, 
+        },
       { test: /\.js$/, 
         use: ['babel-loader'],
         exclude: /node_modules|vue\/dist|vue-hot-reload-api|vue-router\/|vue-loader/
@@ -73,6 +81,12 @@ const config = {
         use: ExtractTextPlugin.extract({
           fallback: 'style-loader',
           use: 'css-loader'
+          //   loader:'',
+          //   options:{
+          //     minimize: true,
+          //     modules: true,
+          //   }
+          // }
         })
       },
       {
@@ -137,7 +151,7 @@ const config = {
       getters: path.resolve(__dirname, 'src/store/getters'),
       modules: path.resolve(__dirname, 'src/store/modules'),
       store: path.resolve(__dirname, 'src/store'),
-      vue: 'vue/dist/vue.js'
+      vue: 'vue/dist/vue.common.js'
     }
   },
   node: {
@@ -169,10 +183,9 @@ if (debug) {
       poll: 1000
     },
   }
-
 } else {
   config.plugins.push(  
-    new UglifyJSPlugin()
+    new UglifyjsWebpackPlugin()
   )
 }
 

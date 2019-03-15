@@ -66,3 +66,4 @@ export const DELETE_EDITION = 'DELETE_EDITION'
 export const MOVE_ARTICLE = 'MOVE_ARTICLE'
 
 export const CHANGE_SPLITER = 'CHANGE_SPLITER'
+

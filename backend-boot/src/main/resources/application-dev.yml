@@ -5,7 +5,7 @@ spring:
         driverClassName: com.mysql.cj.jdbc.Driver
         url: jdbc:mysql://127.0.0.1:3306/manage?useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
         username: root
-        password: root1010@mysql
+        password: 123456
         filters: stat,wall,config
         maxActive: 100
         initialAize: 1

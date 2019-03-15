@@ -55,7 +55,6 @@ export default {
       this.content = e
       if(this.content!='' && this.content != this.draft){
         this.$parent.$parent.editActive()
-        saveCookie('isedit',true)
       }
     }
   },
