@@ -10,9 +10,9 @@ import {
   EDITION_FAILURE,
   UPDATE_ARTICLE,
   DELETE_ARTICLE,
+  DELETE_EDITION,
   MOVE_ARTICLE,
   SAVE_EDITION,
-  SAVE_ARTICLE_DRAFT
 } from '../types'
 import {saveCookie,getCookie} from '../../utils/cookies'
 const state = {
@@ -38,11 +38,10 @@ const actions = {
   },
   addEdition(store,data){
     store.commit(ADD_EDITION,data)
-    console.log(data)
     api.addEdition(data).then(response =>{
       const json = response.data
-      if(200==json.data){
-        store.commit(ADD_EDITION,data)
+      if(200==json.code){
+        showMsg(store, '创建成功', 'success')
       }else{
         showMsg(store, json.message || '创建失败', 'error')
       }
@@ -63,6 +62,23 @@ const actions = {
       showMsg(store, error.message || '保存失败', 'error')
     })
   },
+  deleteEdition(store,data){
+    store.commit(DELETE_EDITION,{id: data})
+    api.deleteEdition(data).then(response =>{
+      const json = response.data
+      if(200==json.code){
+        showMsg(store, '保存成功', 'success')
+      }else{
+        showMsg(store, json.message || '保存失败', 'error')
+      }
+    },
+    error =>{
+      showMsg(store, error.message || '保存失败', 'error')
+    })
+  },
+  deleteEditionWhole(store, data){
+
+  }
 }
 
 const mutations = {
@@ -79,6 +95,7 @@ const mutations = {
   [CURRENT_ARTICLE](state, data){
     state.curar = data.curar
     saveCookie('curar', data.curar)
+    saveCookie('arid', data.arid)
   },
   [ADD_ARTICLE](state, data){
     state.items[state.cured ==null ? getCookie('cured') : state.cured].articles.unshift(data.article)
@@ -140,8 +157,8 @@ const mutations = {
       return item
     })
   },
-  [SAVE_ARTICLE_DRAFT](state,data){
-    state.draft = state.items[data.cured].articles[data.curar].backendContent
+  [DELETE_EDITION](state,data){
+    state.items.splice(state.items.findIndex(item => item.id == data.id),1)
   }
 }
 

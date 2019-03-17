@@ -9,16 +9,12 @@ import {
   ADD_ARTICLE,
   DELETE_ARTICLE
 } from '../types'
-import localstorage from '../../utils/localstorage'
 const state = {
-  storage:''
+  article:''
 }
 // actions
 const actions = {
   getBackendArticle ({ commit }, id){
-    if(localstorage.fetch(id)){
-      return commit(GET_ARTICLE_ORIGIN_LOCAL,{article: localstorage.fetch(id)})
-    }
     api.getBackendArticle(id).then(response => {
       const  json = response.data
       if(200==json.code){
@@ -90,13 +86,13 @@ const actions = {
 
 const mutations = {
   [GET_ARTICLE_ORIGIN](state, data){
-    state.storage = data.article
+    state.article = data.article
   },
   [FAILURE_GET_ARTICLE_ORIGIN](state){
-    state.storage={}
+    state.article={}
   },
   [GET_ARTICLE_ORIGIN_LOCAL](state,data){
-    state.storage = data.article
+    state.article = data.article
   },
   [ARTICLE_SUCCESS](state){
 

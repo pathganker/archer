@@ -1,11 +1,11 @@
 <template>
   <div class="creation-content">
-    <Split v-model="splitper"  ref="split" min="238" >
+    <Split v-model="splitper"  ref="split" min="255" >
       <div slot="left" class="demo-split-pane no-padding">
         <Edition :editionList="editionList" :cured="cured" :curar="curar"></Edition>
       </div>
       <div slot="right" class="demo-split-pane">
-        <Markdown ref="mark" :editionList="editionList" :cured="cured" :curar="curar" :draft="draft"></Markdown>
+        <Markdown ref="mark" :article="article" :draft="draft"></Markdown>
       </div>
      </Split>
      <Savemodal ref='savmodal' ></Savemodal>
@@ -22,7 +22,6 @@ import {Split} from 'iview'
 import {
   CURRENT_EDITION,
   CURRENT_ARTICLE,
-  SAVE_ARTICLE_DRAFT
 } from '../../store/types'
 import {getCookie,saveCookie,removeCookie} from '../../utils/cookies'
 import {formatDate, uuid} from '../../utils/stringUtils'
@@ -31,32 +30,34 @@ export default{
   computed:{
     ...mapState({
       draft: ({editionList}) => editionList.draft,
+      article: ({backendArticle}) => backendArticle.article,
       editionList: ({editionList}) => editionList.items,
       cured: ({editionList}) => editionList.cured == null ?  getCookie('cured') : editionList.cured,
       curar: ({editionList}) => editionList.curar == null ?  getCookie('curar') : editionList.curar,
       user: ({auth}) =>auth.user,
-      splitmin: ({globalVal}) => globalVal.splitper
+      splitmin: ({globalVal}) => globalVal.splitper,
     }),
   },
   created(){
-    this.getEditionList().then(response => {
-      if(this.cured && this. curar && this.editionList.length > 0){
-        store.commit(CURRENT_EDITION,{cured:this.cured})
-        store.commit(CURRENT_ARTICLE,{curar:this.curar})
-        store.commit(SAVE_ARTICLE_DRAFT,{cured:this.cured,curar:this.curar})
-      }
-    })
+    this.getEditionList()
+    if(getCookie('arid')){
+      this.getBackendArticle(getCookie('arid'))
+    }
     this.$parent.hideNavbar()
   },
   methods:{
     ...mapActions([
       'getEditionList',
+      'getBackendArticle',
       'addBackendArticle',
       'addEdition',
       'updateEdition',
       'updateBackendArticle',
       'deleteBackendArticle'
     ]),
+    handleGetArticle(id){
+      this.getBackendArticle(id)
+    },
     handleAddEdition(content){
       this.addEdition(
         {
@@ -111,13 +112,13 @@ export default{
     splitmin(val){
       const WIDTH = document.documentElement.clientWidth * val
       this.splitper = val
-    },
+    }
   },
   data(){
     return {
       newblog:'',
       isedit: false,
-      splitper: document.documentElement.clientWidth * 0.2>238?0.2:238/document.documentElement.clientWidth
+      splitper: document.documentElement.clientWidth * 0.2>255?0.2:255/document.documentElement.clientWidth
     }
   }
 }

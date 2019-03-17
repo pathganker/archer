@@ -164,6 +164,7 @@ public class ArticleController {
 			rs.setCode(ApiCodeEnum.NO_RESULT);
 			return rs;
 		}
+		article.setBackendContent(null);
 		article.setCommentCount(count.getCommentCount());
 		article.setVisitCount(count.getVisitCount());
 		article.setLikeCount(count.getLikeCount());
@@ -251,10 +252,12 @@ public class ArticleController {
 	@RequestMapping(value="backend", method={RequestMethod.GET})
 	public Result getBackendArticle(@RequestParam String id){
 		Result rs = new Result();
-		ArticleDTO article = new ArticleDTO();
-		article.setBackendContent("这是一个无情的人");
-		article.setTitle("这是一个无情的人");
-		article.setId(id);
+		ArticleDTO article = this.articleService.requestArticleById(id);
+		String userId = JwtUtils.getCurrentUserId();
+		if(null == article || null ==userId || !userId.equals(article.getUserId())) {
+			rs.setCode(ApiCodeEnum.NO_RESULT);
+			return rs;
+		}
 		rs.setData(article);
 		rs.setCode(ApiCodeEnum.SUCCESS);
 		return rs;
@@ -383,29 +386,15 @@ public class ArticleController {
 	 * Result
 	 */
 	@RequestMapping(value="backend/edition/less",method={RequestMethod.DELETE})
-	public Result deleteEditionOnly(String id){
+	public Result deleteEdition(String id){
 		Result rs = new Result();
-		this.editionService.deleteEdition(id);
+		//TODO 校验
+		//String userId = JwtUtils.getCurrentUserId();
+		this.editionService.deleteEditionWhole(id);
+		rs.setCode(ApiCodeEnum.SUCCESS);
 		return rs;
 	}
 	
-	/**
-	 * 
-	 * <p>方法名:  deleteEditionWhole </p> 
-	 * <p>描述:    TODO </p>
-	 * <p>创建时间:  2019年3月8日下午5:50:02 </p>
-	 * @version 1.0
-	 * @author lijunliang
-	 * @param id
-	 * @return  
-	 * Result
-	 */
-	@RequestMapping(value="backend/edition/lesswhole",method={RequestMethod.DELETE})
-	public Result deleteEditionWhole(String id){
-		Result rs = new Result();
-		this.editionService.deleteEditionWhole(id);
-		return rs;
-	}
 	
 	/**
 	 * 

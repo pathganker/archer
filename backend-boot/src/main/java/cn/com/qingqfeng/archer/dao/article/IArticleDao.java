@@ -119,5 +119,16 @@ public interface IArticleDao {
 	 * void
 	 */
 	void deleteArticleByEditionId(String id);
+	/**
+	 * 
+	 * <p> 方法名 ：queryArticleByEdition  </p> 
+	 * <p> 描述 ：TODO </p> 
+	 * <p> 创建时间  ： 2019年3月17日 下午1:59:26 </p>  
+	 * @param id
+	 * @return           
+	 * @author lijunliang 
+	 * @version 1.0
+	 */
+	List<ArticleDO> queryArticleByEdition(String id);
 	
 }

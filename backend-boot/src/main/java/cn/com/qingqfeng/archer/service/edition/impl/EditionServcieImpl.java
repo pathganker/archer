@@ -107,6 +107,46 @@ public class EditionServcieImpl implements IEditionService{
 		this.editionDao.deleteEdition(id);
 		this.articleDao.deleteArticleByEditionId(id);
 	}
+
+	/**   
+	 * <p>Title: requestEditionFront</p>   
+	 * <p>Description: </p>   
+	 * @param userId
+	 * @return   
+	 * @see cn.com.qingqfeng.archer.service.edition.IEditionService#requestEditionFront(java.lang.String)   
+	 */
+	@Override
+	public List<EditionDTO> requestEditionFront(String userId) {
+		List<EditionDTO> editions = new ArrayList<>();
+		List<EditionDO> edos = this.editionDao.queryEditionFront(userId);
+		if(null == edos || edos.isEmpty()) {
+			return editions;
+		}
+		for(EditionDO edo : edos) {
+			EditionDTO edition = new EditionDTO();
+			BeanUtils.copyProperties(edo, edition);
+			editions.add(edition);
+		}
+		return editions;
+	}
+
+	/**   
+	 * <p>Title: requestEditionById</p>   
+	 * <p>Description: </p>   
+	 * @param id
+	 * @return   
+	 * @see cn.com.qingqfeng.archer.service.edition.IEditionService#requestEditionById(java.lang.String)   
+	 */
+	@Override
+	public EditionDTO requestEditionById(String id) {
+		EditionDTO edition = new EditionDTO();
+		EditionDO edo = this.editionDao.queryEditionById(id);
+		if(null == edo) {
+			return edition;
+		}
+		BeanUtils.copyProperties(edo, edition);
+		return edition;
+	}
 	
 
 }

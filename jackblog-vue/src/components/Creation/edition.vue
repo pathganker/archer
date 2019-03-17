@@ -11,15 +11,15 @@
 								<router-link :to="{ path: '/edition' }"  title="分类" class="item-menu"><span class="glyphicon glyphicon-th" aria-hidden="true"></span><br>
 								分类
 								</router-link>
-								<router-link :to="{ path: '/tag' }" title="标签" class="item-menu"><span class="glyphicon glyphicon-tag" aria-hidden="true"></span><br>
-								标签
+								<router-link :to="{ path: '/manage' }" title="管理" class="item-menu"><span class="glyphicon glyphicon-ice-lolly-tasted" aria-hidden="true"></span><br>
+								管理
 								</router-link>
                 <a href="javascript:;" class="item-menu" @click="logout()"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span><br>
 								 登出
 						  	</a>  
 							</li>       
               <li  @click="edition()" ><a class="fa fa-plus">&nbsp;&nbsp;&nbsp;新建文集</a></li>
-              <div id="editioninput" class="input-group medium" style="display:none" v-clickoutside="1">
+              <li v-show="editionEdit" class="input-group medium" >
                 <div class="panel-body">
                   <input type="text" name="newEdition" v-model="newEdition" v-validate="'required'" class="form-control" placeholder="新建文集" data-vv-as="文集名">
                   <span class="tip-span">{{ errors.first('newEdition') }}</span>
@@ -28,13 +28,13 @@
                   <button type="button" class="btn btn-success" @click="confirm()">确认</button>
                   <button type="button" class="btn btn-info" @click="cancel()">取消</button>
                 </div>
-              </div>
+              </li>
             </ul>
             <ul class="nav nav-pills nav-stacked">
               <li v-for="(edition,index) in editionList" :key="index" @click="editionActive(edition,index)" :class="{active:index==cured}" @dblclick="edconfig(index)">
                 <a>{{edition.title}}  
                   <span class="glyphicon glyphicon-cog " aria-hidden="true" @click="edconfig(index)" style="display:none;float:right;" :class="{active:index==cured}"></span>
-                  <ul class="dropdown-menu"  :id="'ed_drop_menu_'+index" style="display:none;user-select:none;" v-clickoutside="index">
+                  <ul class="dropdown-menu"  :id="'ed_drop_menu_'+index" style="display:none;user-select:none;" v-clickany="index">
                     <li><a @click="edModify(edition)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span>&nbsp;&nbsp;修改名称</a></li>
                     <li><a @click="edDelete(edition)"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>&nbsp;&nbsp;删除文集</a></li>
                   </ul>
@@ -98,16 +98,30 @@
       @on-cancel="deleteCancel">
       <p>这篇博客将要人间蒸发</p>
     </Modal>
+
+    <Modal v-model="editDelete"  width="400" 
+      title="删除"
+      :closable="false"
+      :mask-closable="false">
+      <p slot="header">删除</p>
+      <div style="text-align:center">
+        <p>删除文集会删除文集下所有文章</p>
+        <p>请慎重操作</p>
+      </div>
+      <div slot="footer" style="text-align:center">
+          <Button type="error"   :loading="edition_loading" @click="wholeDelete">删除文集及其所有文章</Button>
+          <Button type="success" @click="editCancel">取消</Button>
+      </div>
+    </Modal>
   </div>
 </template>
 <script>
-import { Split, Modal, Upload } from 'iview'
+import { Split, Modal, Upload, Button } from 'iview'
 import { mapState,mapActions } from 'vuex'
 import store from '../../store'
 import {
   CURRENT_ARTICLE,
   CURRENT_EDITION,
-  SAVE_ARTICLE_DRAFT,
   ADD_EDITION,
   MOVE_ARTICLE
 } from '../../store/types'
@@ -115,16 +129,16 @@ import {formatDate, uuid} from '../../utils/stringUtils'
 export default {
   props:['editionList','cured','curar'],
   components:{
-    Split,Modal,Upload
+    Split,Modal,Upload,Button
   },
   methods:{
     ...mapActions([
       'getBackendArticle',
       'logout',
-      'uploadCover'
+      'uploadCover',
+      'deleteEdition',
     ]),
     editionActive(edition,num){
-      store.commit(SAVE_ARTICLE_DRAFT,{cured:num,curar:0})
       if(num!= this.cured && this.$parent.$parent.isedit ){
         this.$parent.$parent.openSaveModal()
         return
@@ -132,15 +146,17 @@ export default {
       this.newEdition=edition.title
       this.editionId=edition.id
       store.commit(CURRENT_EDITION,{cured:num})
-      store.commit(CURRENT_ARTICLE,{curar:0})
+      const id = edition.articles[0]?edition.articles[0].id:'null'
+      store.commit(CURRENT_ARTICLE,{curar:0,arid: id})
+      this.$parent.$parent.getBackendArticle(id)
     },
     articleActive(num, id){
-      store.commit(SAVE_ARTICLE_DRAFT,{cured:this.cured,curar:num})
       if(num!= this.curar && this.$parent.$parent.isedit){
         this.$parent.$parent.openSaveModal()
         return
       }
-      store.commit(CURRENT_ARTICLE,{curar:num})
+      store.commit(CURRENT_ARTICLE,{curar:num, arid: id})
+      this.$parent.$parent.getBackendArticle(id)
     },
     newActive(num){
       store.commit(CURRENT_ARTICLE,{curar:num})
@@ -148,7 +164,7 @@ export default {
     edition(){
       this.editionId=null
       this.newEdition='新建文件夹'+(1+this.editionList.length)
-      document.getElementById('editioninput').style.display="block"
+      this.editionEdit=true
     },
     confirm(){
       this.$validator.validateAll().then(valid =>{
@@ -157,13 +173,14 @@ export default {
             this.$parent.$parent.handleUpdateEdition(this.editionId, this.newEdition)
           }else{
             this.$parent.$parent.handleAddEdition(this.newEdition)
+            this.editionId = this.editionList[this.cured].id
           }
-          document.getElementById('editioninput').style.display="none"
+          this.editionEdit=false
         }
       })
     },
     cancel(){
-      document.getElementById('editioninput').style.display="none"
+       this.editionEdit=false
     },
     createblog(){
       store.commit(CURRENT_ARTICLE, {curar:0})
@@ -192,10 +209,11 @@ export default {
     edModify(edition){
       this.newEdition=edition.title
       this.editionId=edition.id
-      document.getElementById('editioninput').style.display="block"
+      this.editionEdit = true
     },
-    edDelete(){
-
+    edDelete(edition){
+      this.editDelete=true
+      this.editionId= edition.id
     },
     arModifyTitle(index){
       this.$parent.$parent.isedit = true
@@ -282,20 +300,52 @@ export default {
           id: id
         })
       }
+    },
+    wholeDelete(){
+      this.edition_loading=true
+      this.deleteEdition(this.editionId).then(response =>{
+        this.edition_loading=false
+        this.editDelete=false
+      })
+    },
+    editCancel(){
+      this.editDelete=false
     }
   },
   directives:{
-    //菜单外点击事件
+    //菜单外点击隐藏事件
     clickoutside:{
       bind:function(el,binding,vnode){
         function  hidemenu(el){
           el.style.display="none" 
         }
-        
         function documentHandler(e){
           if(el.contains(e.target) || el.contains(e.target.nextElementSibling)|| el.contains(e.target.parentElement.nextElementSibling)){
             return true
-          }else if (el.style.display!='none'){
+          }else if (el.style.display=='block'|| el.style.display!='none'){
+            hidemenu(el)
+          }else if(this.editionEdit=true){
+            this.editionEdit=false
+          }
+        }
+        el._vueClickOutside_ = documentHandler
+        document.addEventListener('click',documentHandler);
+      },
+      unbind:function(el,binding){
+          document.removeEventListener('click',el._vueClickOutside_);
+          delete el._vueClickOutside_;
+      }
+    },
+    //任意点击隐藏菜单
+    clickany:{
+      bind:function(el,binding,vnode){
+        function  hidemenu(el){
+          el.style.display="none" 
+        }
+        function documentHandler(e){
+          if(el.contains(e.target.nextElementSibling)){
+            return true
+          }else if (el.style.display=='block'){
             hidemenu(el)
           }
         }
@@ -318,7 +368,10 @@ export default {
       showDelete: false,
       deleteId:'',
       dialog: '',
-      splitper: 0.5
+      splitper: 0.5,
+      editionEdit: false,
+      editDelete:false,
+      edition_loading: false,
     }
   }
 }

@@ -59,4 +59,26 @@ public interface IEditionDao {
 	 * void
 	 */
 	void deleteEdition(String id);
+	/**
+	 * 
+	 * <p> 方法名 ：queryEditionFront  </p> 
+	 * <p> 描述 ：TODO </p> 
+	 * <p> 创建时间  ： 2019年3月17日 下午2:00:21 </p>  
+	 * @param userId
+	 * @return           
+	 * @author lijunliang 
+	 * @version 1.0
+	 */
+	List<EditionDO> queryEditionFront(String userId);
+	/**
+	 * 
+	 * <p> 方法名 ：queryEditionById  </p> 
+	 * <p> 描述 ：TODO </p> 
+	 * <p> 创建时间  ： 2019年3月17日 下午5:41:48 </p>  
+	 * @param id
+	 * @return           
+	 * @author lijunliang 
+	 * @version 1.0
+	 */
+	EditionDO queryEditionById(String id);
 }

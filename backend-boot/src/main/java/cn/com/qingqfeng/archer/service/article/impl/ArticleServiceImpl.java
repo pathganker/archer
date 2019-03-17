@@ -235,4 +235,26 @@ public class ArticleServiceImpl implements IArticleService{
 		return this.likeDao.queryLikeCount(articleId);
 	}
 
+	/**   
+	 * <p>Title: requestArticleByEdition</p>   
+	 * <p>Description: </p>   
+	 * @param id
+	 * @return   
+	 * @see cn.com.qingqfeng.archer.service.article.IArticleService#requestArticleByEdition(java.lang.String)   
+	 */
+	@Override
+	public List<ArticleDTO> requestArticleByEdition(String id) {
+		List<ArticleDTO> articles = new ArrayList<>();
+		List<ArticleDO> ados = this.articleDao.queryArticleByEdition(id);
+		if(null == ados || ados.isEmpty()) {
+			return articles;
+		}
+		for(ArticleDO ado : ados) {
+			ArticleDTO article = new ArticleDTO();
+			BeanUtils.copyProperties(ado, article);
+			articles.add(article);
+		}
+		return articles;
+	}
+
 }

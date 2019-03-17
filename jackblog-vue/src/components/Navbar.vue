@@ -57,6 +57,11 @@
 								编辑
 								</router-link>
 							</li>
+							<li v-if="auth.token && auth.user" class="navbar-item">
+								<router-link   :to="{ path: '/manage' }"  title="管理"><span class="glyphicon glyphicon-ice-lolly-tasted" aria-hidden="true"></span><br>
+								管理
+								</router-link>
+							</li>
 						</ul>
 					</div>
 		  </div> 

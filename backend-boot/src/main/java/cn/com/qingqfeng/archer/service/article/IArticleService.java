@@ -160,5 +160,16 @@ public interface IArticleService {
 	 * Long
 	 */
 	Long requestLikeCount(String articleId);
+	/**
+	 * 
+	 * <p> 方法名 ：requestArticleByEdition  </p> 
+	 * <p> 描述 ：TODO </p> 
+	 * <p> 创建时间  ： 2019年3月17日 下午2:15:53 </p>  
+	 * @param id
+	 * @return           
+	 * @author lijunliang 
+	 * @version 1.0
+	 */
+	List<ArticleDTO> requestArticleByEdition(String id);
 	
 }

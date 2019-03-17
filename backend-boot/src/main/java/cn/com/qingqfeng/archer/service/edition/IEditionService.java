@@ -70,4 +70,26 @@ public interface IEditionService {
 	 * void
 	 */
 	void deleteEditionWhole(String id);
+	/**
+	 * 
+	 * <p> 方法名 ：requestEditionFront  </p> 
+	 * <p> 描述 ：TODO </p> 
+	 * <p> 创建时间  ： 2019年3月17日 下午1:58:19 </p>  
+	 * @param userId
+	 * @return           
+	 * @author lijunliang 
+	 * @version 1.0
+	 */
+	List<EditionDTO> requestEditionFront(String userId);
+	/**
+	 * 
+	 * <p> 方法名 ：requestEditionById  </p> 
+	 * <p> 描述 ：TODO </p> 
+	 * <p> 创建时间  ： 2019年3月17日 下午5:40:54 </p>  
+	 * @param id
+	 * @return           
+	 * @author lijunliang 
+	 * @version 1.0
+	 */
+	EditionDTO requestEditionById(String id);
 }

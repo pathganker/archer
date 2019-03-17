@@ -68,7 +68,7 @@ export default {
     window.onresize = () => {
       return (() => {
         this.$refs.star.handleWindowWidth()
-        const splitper = 238/document.documentElement.clientWidth
+        const splitper = 255/document.documentElement.clientWidth
         store.commit(CHANGE_SPLITER,{splitper:splitper})
       })()
     }

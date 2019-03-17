@@ -16,7 +16,7 @@ import tagList from './modules/tag.list'
 import showmsg from './modules/showmsg'
 import * as actions from './actions'
 import getters from './getters'
-
+import category from './modules/category'
 
 const debug = process.env.NODE_ENV !== 'production'
 Vue.use(Vuex)
@@ -37,7 +37,8 @@ export default new Vuex.Store({
     options,
     logins,
     tagList,
-    showmsg
+    showmsg,
+    category
   },
   strict: debug,
   plugins: debug ? [createLogger()] : []

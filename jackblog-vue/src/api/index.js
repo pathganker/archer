@@ -182,16 +182,9 @@ export default {
   },
   deleteEdition: function(data){
     return fetch({
-      url: 'article/backend/less',
+      url: 'article/backend/edition/less',
       method: 'delete',
       params:{id:data}
-    })
-  },
-  deleteEdtionWhole: function(data){
-    return fetch({
-      url: 'article/backend/lesswhole',
-      method: 'delete',
-      params:{id:data}     
     })
   },
   isLogin: function(){
@@ -205,6 +198,19 @@ export default {
       url: 'article/backend/upload/cover/'+data.id,
       method: 'post',
       data: data.picture
+    })
+  },
+  getEditionFront: function(){
+    return fetch({
+      url: 'category/front',
+      method: 'get'
+    })
+  },
+  getArticleList: function(id){
+    return fetch({
+      url: 'category/edition',
+      method: 'get',
+      params: {id:id}
     })
   }
 

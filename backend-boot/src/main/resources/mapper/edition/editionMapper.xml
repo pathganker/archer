@@ -11,18 +11,17 @@
             <id column="ar_id" property="id" />
 	        <result column="ar_title" property="title" jdbcType="VARCHAR" />
 	        <result column="is_publish" property="publish" jdbcType="BOOLEAN" />
-	        <result column="backend_content" property="backendContent" jdbcType="LONGVARCHAR" />
         </collection>
     </resultMap>
 <!-- 根据用户id -->
     <select id="queryEditionsByUserId" parameterType="java.lang.String" resultMap="BaseResultMap"  >
        SELECT 
-            a.id, a.title, a.user_id, a.create_time, a.modify_time,b.is_publish, b.id as ar_id, b.title as ar_title, b.backend_content
+            a.id, a.title, a.user_id, a.create_time, a.modify_time,b.is_publish, b.id as ar_id, b.title as ar_title
        FROM 
             qfeng_edition a 
        LEFT JOIN 
-            qfeng_article b ON a.id=b.edition
-       WHERE a.is_delete =0 and (b.is_delete =0 or b.is_delete is null) and a.user_id = #{id}
+            (select id, title, edition, create_time, is_publish from qfeng_article where (is_delete =0 or is_delete is null)) b ON a.id=b.edition
+       WHERE a.is_delete =0 and a.user_id = #{id}
        ORDER BY
             a.create_time DESC, b.create_time DESC
     </select>
@@ -58,4 +57,22 @@
              id =#{id}
     </update>
     
+    <select id="queryEditionFront" parameterType="java.lang.String" resultMap="BaseResultMap"  >
+       SELECT 
+            a.id, a.title, a.user_id, a.create_time, a.modify_time
+       FROM 
+            qfeng_edition a 
+       WHERE a.is_delete =0 and a.user_id = #{id}
+       ORDER BY
+            a.create_time DESC
+    </select>
+<!-- 根据id查询     -->
+    <select id="queryEditionById"  parameterType="java.lang.String" resultMap="BaseResultMap">
+       SELECT
+            id, title
+       FROM
+            qfeng_edition
+       WHERE
+            is_delete =0 and id = #{id}
+    </select>
 </mapper>

@@ -1,7 +1,7 @@
 <template>
 	<div class="article-list ">
 		<div class="article-list-item" v-for="(article,index) in articleList"  :key="index">
-			<Card shadow>
+			<Card shadow class="portal-article">
 				<header class="title" slot="title">
 					<router-link :to="{ name: 'article', params: {aid: article.id } }" class="link-title">
 						{{article.title}}
@@ -86,6 +86,9 @@ export default {
 	color: #2d8cf0;
 }
 .ivu-card{
+	
+}
+.portal-article{
 	position: relative;
 	box-shadow: 0px 0px 6px 4px #939697;
 }
