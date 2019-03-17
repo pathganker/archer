@@ -20,7 +20,7 @@
 <!-- 分页查询 -->
     <select id="queryArticleByOptions" parameterType="cn.com.qingqfeng.archer.pojo.article.ArticleQuery" resultMap="BaseResultMap"  >
        SELECT 
-            a.id, a.title, a.publish_time, a.image, a.profile, b.nickname, a.user, c.visit_count, (d.comme_count+i.reply) as comme_count, e.like_count 
+            a.id, a.title, a.publish_time, a.image, a.profile, b.nickname, a.user, c.visit_count, if(isnull(i.reply), d.comme_count, (d.comme_count+i.reply) ) as comme_count, e.like_count 
        FROM 
             qfeng_article a 
        LEFT JOIN 
