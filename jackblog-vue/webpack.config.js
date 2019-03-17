@@ -27,7 +27,8 @@ const config = {
     'vue':'Vue',
     'vue-router':'VueRouter',
     'vuex':'Vuex',
-    'vee-validate': 'VeeValidate'
+    'vee-validate': 'VeeValidate',
+    'iview': 'iView',
   },
   plugins: [
     new webpack.DefinePlugin({
