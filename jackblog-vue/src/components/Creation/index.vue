@@ -9,6 +9,7 @@
       </div>
      </Split>
      <Savemodal ref='savmodal' ></Savemodal>
+     <Cropper ref='cropper' :image="imageindex" :croppershow="croppershow" ></Cropper>
   </div>
 </template>
 
@@ -18,6 +19,7 @@ import Markdown from './markdown.vue'
 import Edition from './edition.vue'
 import store from '../../store'
 import Savemodal from './savmodal.vue'
+import Cropper from './cropper.vue'
 import {Split} from 'iview'
 import {
   CURRENT_EDITION,
@@ -26,7 +28,7 @@ import {
 import {getCookie,saveCookie,removeCookie} from '../../utils/cookies'
 import {formatDate, uuid} from '../../utils/stringUtils'
 export default{
-  components:{ Edition, Markdown, Savemodal,Split},
+  components:{ Edition, Markdown, Savemodal, Split, Cropper},
   computed:{
     ...mapState({
       draft: ({editionList}) => editionList.draft,
@@ -106,6 +108,12 @@ export default{
     editCancel(){
       this.isedit = false
       removeCookie('isedit')
+    },
+    showCropper(){
+      this.croppershow=true
+    },
+    hideCropper(){
+      this.croppershow=false
     }
   },
   watch:{
@@ -118,7 +126,9 @@ export default{
     return {
       newblog:'',
       isedit: false,
-      splitper: document.documentElement.clientWidth * 0.2>255?0.2:255/document.documentElement.clientWidth
+      splitper: document.documentElement.clientWidth * 0.2>255?0.2:255/document.documentElement.clientWidth,
+      croppershow: true,
+      imageindex:'',
     }
   }
 }

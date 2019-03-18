@@ -48,6 +48,7 @@
     "url-loader": "0.5.9",
     "vee-validate": "2.1.1",
     "vue": "^2.6.8",
+    "vue-cropper": "^0.4.8",
     "vue-hot-reload-api": "2.1.0",
     "vue-html-loader": "1.2.4",
     "vue-loader": "13.0.4",

@@ -75,7 +75,6 @@
           </div>
         </div>
       </Split>
-
     <Modal v-model="cancelPublish" 
       width="400" 
       title="取消发布"
@@ -292,14 +291,16 @@ export default {
     },
     addCover(e,id){
       let file = e.target.files[0]
-      let data = new FormData()
-      data.append('picture', file)
-      if(file) {
-        this.uploadCover({
-          picture: data,
-          id: id
-        })
-      }
+      // let data = new FormData()
+      // data.append('picture', file)
+      // if(file) {
+      //   this.uploadCover({
+      //     picture: data,
+      //     id: id
+      //   })
+      // }
+      this.$parent.$parent.imageindex=file
+      this.$parent.$parent.showCropper()
     },
     wholeDelete(){
       this.edition_loading=true
