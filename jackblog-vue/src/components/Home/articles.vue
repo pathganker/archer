@@ -51,7 +51,7 @@ export default {
 	margin-left: auto; 
 	margin-right: auto;
 	min-width: 500px;
-	max-width: 1000px;
+	max-width: 936px;
 	border-bottom: none;
 	padding:50px 50px;
 }
@@ -75,7 +75,7 @@ export default {
 	margin: 15px 0 5px 0;
 }
 .list-image img{
-	width: 95%;
+	width: 90%;
 	max-width: 880px;
 	min-width: 364px;
 }

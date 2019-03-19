@@ -299,8 +299,8 @@ export default {
       //     id: id
       //   })
       // }
-      this.$parent.$parent.imageindex=file
       this.$parent.$parent.showCropper()
+      this.$parent.$parent.changeImage(file)
     },
     wholeDelete(){
       this.edition_loading=true

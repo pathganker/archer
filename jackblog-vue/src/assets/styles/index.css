@@ -227,8 +227,8 @@
 .day-mode a{
   color:white;
 }
-.nav > li > a:hover, .nav > li > a:focus{
-  background: 0 0;
+.navbar .nav > li > a:hover, .navbar .nav > li > a:focus{
+  background: 0 0!important;
   color: #0ad2e0;
 }
 

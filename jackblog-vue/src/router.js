@@ -13,6 +13,11 @@ const Tags = () => import('components/Tags/index')
 const Edition = () => import('components/Edition/index')
 const Category =() => import('components/Edition/edition')
 const Manage =() => import('components/Manage/index')
+const ArticelMana =() => import('components/Manage/article')
+const TagMana =() => import('components/Manage/tag')
+const My =() => import('components/Manage/my')
+const Other =() => import('components/Manage/other')
+const Statics =() => import('components/Manage/statics')
 import {isLogin} from './utils/cookies'
 import store from './store'
 Vue.use(Router)
@@ -95,7 +100,34 @@ const router = new Router({
       component: Manage,
       meta:{
         requiresAuth: true
-      }
+      },
+      children:[
+        {
+          path: '#/article',
+          name: 'articleMana',
+          component: ArticelMana,
+        },
+        {
+          path: 'tag',
+          name: 'tag',
+          component: TagMana,
+        },
+        {
+          path: 'my',
+          name: 'my',
+          component: My,
+        },
+        {
+          path: 'other',
+          name: 'other',
+          component: Other,
+        },
+        {
+          path: 'statics',
+          name: 'statics',
+          component: Statics,
+        }
+      ]
     }
   ]
 })

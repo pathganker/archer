@@ -27,6 +27,7 @@ export default {
     save(){
       let backendContent = this.content
       let frontContent = this.$refs.md.markdownIt.render(backendContent)
+      console.log(this.article.id)
       let blog ={
         id: this.article.id,
         title: this.title == null ? this.article.title : this.title,

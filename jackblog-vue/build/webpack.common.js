@@ -3,14 +3,11 @@ const webpack = require('webpack')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
-
+const env = process.env.NODE_ENV || 'development'
+const CopyWebpackPlugin=require('copy-webpack-plugin')
 module.exports ={
-  entry: {
-    vendor: ['vue','vuex','vue-router'],
-    bundle: './src/index'
-  },
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.join(__dirname, 'dist'),
     filename: 'js/[hash:8].[name].js',
     chunkFilename: 'js/[name].[chunkhash].js',
     publicPath: '/'
@@ -23,11 +20,11 @@ module.exports ={
       minChunks: Infinity //Infinity
     }),
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('production')
+      'process.env.NODE_ENV': JSON.stringify(env)
     }),
     new HtmlWebpackPlugin({
-      favicon:path.join(__dirname,'..y/src/favicon.ico'),
-      title: '学姐不玩了',
+      favicon:path.join(__dirname,'../src/favicon.ico'),
+      title: '再见老学姐',
       template: path.join(__dirname,'../src/index.html'),  //模板文件
       inject:'body',
       hash:false,    //为静态资源生成hash值
@@ -41,13 +38,26 @@ module.exports ={
       disable: false, 
       allChunks: true 
     }),
+    new CopyWebpackPlugin([{
+      from: path.resolve(__dirname, '../static/WEB-INF'),
+      to: 'WEB-INF'
+    },
+    {
+      from: path.resolve(__dirname, '../static/css'),
+      to: 'static/css'
+    },
+    {
+      from: path.resolve(__dirname, '../static/fonts'),
+      to: 'static/fonts'
+    }
+    ])
   ],
   module: {
     rules: [
       { enforce: 'pre', test: /\.js$/, exclude: /node_modules/, use: ['eslint-loader'] },
       { test: /\.vue$/,
         use: ['vue-loader'], 
-        include: path.join(__dirname,'src')}, 
+      }, 
       { test: /\.js$/, 
         use: ['babel-loader'],
         exclude: /node_modules|vue\/dist|vue-hot-reload-api|vue-router\/|vue-loader/

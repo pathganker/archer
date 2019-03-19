@@ -9,7 +9,7 @@
       </div>
      </Split>
      <Savemodal ref='savmodal' ></Savemodal>
-     <Cropper ref='cropper' :image="imageindex" :croppershow="croppershow" ></Cropper>
+     <Cropper ref='cropper' :croppershow="croppershow" :id="article.id"></Cropper>
   </div>
 </template>
 
@@ -44,6 +44,12 @@ export default{
     this.getEditionList()
     if(getCookie('arid')){
       this.getBackendArticle(getCookie('arid'))
+    }
+    if(getCookie('cured')){
+      store.commit(CURRENT_EDITION,{cured:getCookie('cured')})
+    }
+    if(getCookie('curar')){
+      store.commit(CURRENT_ARTICLE,{curar:getCookie('curar')})
     }
     this.$parent.hideNavbar()
   },
@@ -114,6 +120,9 @@ export default{
     },
     hideCropper(){
       this.croppershow=false
+    },
+    changeImage(file){
+      this.$refs.cropper.changeImage(file)
     }
   },
   watch:{
@@ -127,8 +136,7 @@ export default{
       newblog:'',
       isedit: false,
       splitper: document.documentElement.clientWidth * 0.2>255?0.2:255/document.documentElement.clientWidth,
-      croppershow: true,
-      imageindex:'',
+      croppershow: false,
     }
   }
 }

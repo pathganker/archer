@@ -23,7 +23,7 @@ const config = {
     chunkFilename: debug? '[name].js':'js/[name].[chunkhash].js',
     publicPath: '/'
   },
-  externals: {
+  externals: debug?{}:{
     'vue':'Vue',
     'vue-router':'VueRouter',
     'vuex':'Vuex',

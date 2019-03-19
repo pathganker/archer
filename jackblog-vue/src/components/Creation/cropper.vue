@@ -3,22 +3,22 @@
     <div class="cropper-mask"></div>
     <div class="cropper-container">
         <div class="cropper-image">
-            <vueCropper
+            <VueCropper
                 ref="cropper"
                 :img="option.img"
                 :outputSize="option.size"
                 :outputType="option.outputType"
                 :auto-crop="option.autoCrop" :auto-crop-width="option.autoCropWidth" :auto-crop-height="option.autoCropHeight"
                 :center-box="option.centerBox"
-                :info="true" :full="option.full"
-            ></vueCropper>
+                :full="option.full" :info="true"
+            ></VueCropper>
         </div>
         <div class="cropper-func">
             <div class="funcgroup">
                 <a class="ivu-btn ivu-btn-primary ivu-btn-circle" @click="selectImage">
                     <i class="ivu-icon ivu-icon-md-add"></i>
                     <span>重选图片</span>
-                    <input type="file"  id="cropper-input" class="cropper-input"  @change="cropperImage" accept="image/gif,image/jpeg,image/jpg,image/png"/>
+                    <input type="file"  id="cropper-input" class="cropper-input" name="cropper-input"  @change="uploadImage($event)" accept="image/gif,image/jpeg,image/jpg,image/png"/>
                 </a>
                 <Button icon="md-sync"  type="primary" shape="circle" @click="refresh">&nbsp;&nbsp;重置&nbsp;&nbsp;</Button>
                 <Button icon="md-arrow-back" type="primary" shape="circle" @click="rotateLeft"> &nbsp;&nbsp;左旋&nbsp;&nbsp;</Button>
@@ -32,20 +32,32 @@
             </div>
         </div>
     </div>
+    <div class="cropper-preview" v-show="previewModel" @click="hide"> 
+      <img :src="previewSrc" />
+    </div>
 </div>
 </template>
 <script>
-import { VueCropper  }  from 'vue-cropper'
-import { ButtonGroup,Button } from 'iview'
+import { VueCropper }  from 'vue-cropper'
+import {Button} from 'iview'
+import { mapActions } from 'vuex'
 export default {
-    components:{ VueCropper  },
-    props:['croppershow','imageindex'],
+    components:{ VueCropper, Button},
+    props:['croppershow','id'],
     // created:{
     //     inintData(){
     //         this.option.img=this.imageindex
     //     }
     // },
+    // created(){
+    //     if(this.imageindex){
+    //         console.log(this.imageindex)
+    //     }
+    // },
     methods:{
+      ...mapActions([
+          'uploadCover',
+        ]),
         refresh() {
           // clear
           this.$refs.cropper.refresh()
@@ -62,22 +74,20 @@ export default {
           // test.document.body.innerHTML = '图片生成中..'
           if (type === 'blob') {
             this.$refs.cropper.getCropBlob((data) => {
-              console.log(data);
               var img = window.URL.createObjectURL(data)
-              this.model = true
-              this.modelSrc = img
+              this.previewModel = true
+              this.previewSrc = img
             })
           } else {
             this.$refs.cropper.getCropData((data) => {
-              this.model = true
-              this.modelSrc = data
+              this.previewModel = true
+              this.previewSrc = data
             })
           }
         },
         // 实时预览函数
         realTime(data) {
           this.previews = data
-          console.log(data)
         },
         download() {
              // event.preventDefault()
@@ -93,10 +103,7 @@ export default {
         selectImage(){
             document.getElementById("cropper-input").click()
         },
-        cropperImage(e){
-            this.option.img=e.target.files[0]
-        },
-        uploadImage(e, num) {
+        uploadImage(e) {
           //上传图片
           // this.option.img
           var file = e.target.files[0]
@@ -113,25 +120,62 @@ export default {
             } else {
               data = e.target.result
             }
-            if (num === 1) {
               this.option.img = data
-            } else if (num === 2) {
-              this.example2.img = data
-            }
           }
           // 转化为base64
           // reader.readAsDataURL(file)
           // 转化为blob
           reader.readAsArrayBuffer(file)
         },
+        changeImage(file){
+            if(file){
+                var reader = new FileReader()
+                reader.onload = (e) => {
+                    let data
+                    if (typeof e.target.result === 'object') {
+                    // 把Array Buffer转化为blob 如果是base64不需要
+                    data = window.URL.createObjectURL(new Blob([e.target.result]))
+                    } else {
+                    data = e.target.result
+                    }
+                    this.option.img = data
+                }
+                // 转化为blob
+                reader.readAsArrayBuffer(file)
+            }
+          },
         imgLoad(msg) {
           console.log(msg)
         },
         confirm(){
-
+            this.$refs.cropper.getCropData((data) => {
+              const file = this.dataURLtoFile(data,"cover.png")
+              if(file) {
+                let params = new FormData()
+                params.append('picture', file)
+                this.uploadCover({
+                  picture: params,
+                  id: this.id
+                })
+              }
+            })
         },
         cancel(){
             this.$parent.hideCropper()
+        },
+        hide(){
+            this.previewModel= false
+        },
+        dataURLtoFile(dataurl, filename) {//将base64转换为文件
+            const arr = dataurl.split(',')
+            const mime = arr[0].match(/:(.*?);/)[1]
+            const bstr = atob(arr[1])
+            let n = bstr.length
+            const u8arr = new Uint8Array(n);
+            while(n--){
+                u8arr[n] = bstr.charCodeAt(n);
+            }
+            return new File([u8arr], filename, {type:mime});
         }
     },
     data(){
@@ -139,7 +183,7 @@ export default {
             option: {
                 img: '',
                 size: 1,
-                full: true,
+                full: false,
                 outputType: 'png',
                 canMove: true,
                 fixedBox: false,
@@ -147,11 +191,14 @@ export default {
                 canMoveBox: true,
                 autoCrop: true,
                 // 只有自动截图开启 宽度高度才生效
-                autoCropWidth: 200,
-                autoCropHeight: 150,
+                autoCropWidth: 400,
+                autoCropHeight: 300,
                 centerBox: false,
                 high: true
-                }
+                },
+            previewSrc: '',
+            previewModel: false
+                
         }
     }
 }
@@ -181,26 +228,45 @@ export default {
     border-radius: 5px;
     border-style:solid;
     border-width:2px;
+    min-width: 888px;
 }
 .cropper-image{
     float: left;
-    width: 60%;
+    width: 65%;
     height: 100%;
-    padding: 5% 40px 5% 20px;
+    padding: 5% 20px 5% 50px;
+    min-width: 460px;
 }
 .cropper-func{
     float: left;
-    width: 40%;
+    width: 35%;
     height: 100%;
     padding: 10% 40px;
 }
 .funcgroup{
     height: 100px;
     margin: 20px 0;
+    line-height: 50px;
+    min-width: 203px;
 }
 .cropper-input{
     position:absolute;
     width: 60px;
     display: none!important;
+}
+.cropper-preview{
+    position:absolute;
+    top:0;
+    bottom:0;
+    right:0;
+    left:0;
+    background:rgba(0,0,0,0.5);
+    z-index:4001;
+    display: flex;
+    text-align: center;
+}
+.cropper-preview img{
+    /* display: inline; */
+    margin: auto;
 }
 </style>
