@@ -13,7 +13,7 @@ const Tags = () => import('components/Tags/index')
 const Edition = () => import('components/Edition/index')
 const Category =() => import('components/Edition/edition')
 const Manage =() => import('components/Manage/index')
-const ArticelMana =() => import('components/Manage/article')
+const ArticleMana =() => import('components/Manage/article')
 const TagMana =() => import('components/Manage/tag')
 const My =() => import('components/Manage/my')
 const Other =() => import('components/Manage/other')
@@ -103,9 +103,9 @@ const router = new Router({
       },
       children:[
         {
-          path: '#/article',
+          path: 'article',
           name: 'articleMana',
-          component: ArticelMana,
+          component: ArticleMana,
         },
         {
           path: 'tag',

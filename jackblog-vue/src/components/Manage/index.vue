@@ -14,8 +14,8 @@
                                     <Icon type="ios-navigate"></Icon>
                                     文章管理
                                 </template>
-                                <MenuItem name="1-1" :to="{ path: '#/article' }">文章列表</MenuItem>
-                                <MenuItem name="1-2" :to="{ path: '#/tag' }">标签管理</MenuItem>
+                                <MenuItem name="1-1" :to="{ path: 'manage/article' }">文章列表</MenuItem>
+                                <MenuItem name="1-2" :to="{ path: 'manage/tag' }">标签管理</MenuItem>
                             </Submenu>
                             <Submenu name="2">
                                 <template slot="title">
