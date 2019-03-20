@@ -10,8 +10,8 @@ package cn.com.qingqfeng.archer.enums;
  * 
  */
 public enum SortEnum {
-	ASC("ASC"),
-	DESC("DESC");
+	ASC("asc"),
+	DESC("desc");
 	
 	private String sort;
 	private SortEnum(String sort){

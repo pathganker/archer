@@ -93,7 +93,7 @@ public class ArticleServiceImpl implements IArticleService{
 	@Override
 	public List<ArticleDTO> requestPreNext(String id, ArticleQuery query) {
 		List<ArticleDTO> articles = new ArrayList<ArticleDTO>();
-		if(StringUtils.isBlank(id)){
+		if(StringUtils.isBlank(id) || null == query){
 			return articles;
 		}
 		query.setId(id);
@@ -255,6 +255,45 @@ public class ArticleServiceImpl implements IArticleService{
 			articles.add(article);
 		}
 		return articles;
+	}
+
+	/** (non-Javadoc)
+	 * @see cn.com.qingqfeng.archer.service.article.IArticleService#requestArticleManage(cn.com.qingqfeng.archer.pojo.article.ArticleQuery)
+	 */
+	@Override
+	public List<ArticleDTO> requestArticleManage(ArticleQuery query) {
+		if(query.getPage()<0){
+			return null;
+		}
+		query.setPage((query.getPage()> 0?query.getPage()-1:query.getPage())*query.getPageSize());
+		List<ArticleDTO> ars = new ArrayList<ArticleDTO>();
+		List<ArticleDO> dos = this.articleDao.queryArticleManage(query);
+		if(null == dos || dos.isEmpty()){
+			return ars;
+		}
+		for(ArticleDO ado : dos){
+			ArticleDTO article = new ArticleDTO();
+			BeanUtils.copyProperties(ado, article);
+			if(null == article.getCommentCount()){
+				article.setCommentCount(0);
+			}
+			if(null == article.getVisitCount()){
+				article.setVisitCount(0);
+			}
+			if(null == article.getLikeCount()){
+				article.setLikeCount(0);
+			}
+			ars.add(article);
+		}
+		return ars;
+	}
+
+	/** (non-Javadoc)
+	 * @see cn.com.qingqfeng.archer.service.article.IArticleService#requestArticleManageTotal(cn.com.qingqfeng.archer.pojo.article.ArticleQuery)
+	 */
+	@Override
+	public Long requestArticleManageTotal(ArticleQuery query) {
+		return this.articleDao.queryArticelManageTotal(query);
 	}
 
 }

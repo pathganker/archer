@@ -2,7 +2,7 @@
   <div class="creation-content">
     <Split v-model="splitper"  ref="split" min="255" >
       <div slot="left" class="demo-split-pane no-padding">
-        <Edition :editionList="editionList" :cured="cured" :curar="curar"></Edition>
+        <Edition :editionList="editionList"  :edid="edid" :arid="arid"></Edition>
       </div>
       <div slot="right" class="demo-split-pane">
         <Markdown ref="mark" :article="article" :draft="draft"></Markdown>
@@ -34,22 +34,24 @@ export default{
       draft: ({editionList}) => editionList.draft,
       article: ({backendArticle}) => backendArticle.article,
       editionList: ({editionList}) => editionList.items,
-      cured: ({editionList}) => editionList.cured == null ?  getCookie('cured') : editionList.cured,
-      curar: ({editionList}) => editionList.curar == null ?  getCookie('curar') : editionList.curar,
-      user: ({auth}) =>auth.user,
+      user: ({auth}) => auth.user,
       splitmin: ({globalVal}) => globalVal.splitper,
+      edid: ({editionList}) => editionList.edid,
+      arid: ({editionList}) => editionList.arid,
+
     }),
   },
   created(){
     this.getEditionList()
-    if(getCookie('arid')){
-      this.getBackendArticle(getCookie('arid'))
-    }
-    if(getCookie('cured')){
-      store.commit(CURRENT_EDITION,{cured:getCookie('cured')})
-    }
-    if(getCookie('curar')){
-      store.commit(CURRENT_ARTICLE,{curar:getCookie('curar')})
+    const aid = this.$route.params.aid
+    if(null == aid){
+      if(getCookie('arid')){
+        console.log(getCookie('arid'))
+        this.getBackendArticle(getCookie('arid'))
+      }
+    }else{
+      store.commit(CURRENT_ARTICLE,{arid: aid})
+       this.getBackendArticle(aid)
     }
     this.$parent.hideNavbar()
   },
@@ -66,11 +68,11 @@ export default{
     handleGetArticle(id){
       this.getBackendArticle(id)
     },
-    handleAddEdition(content){
-      this.addEdition(
+    handleAddEdition(data){
+    return  this.addEdition(
         {
-          id: uuid(),
-          title: content,
+          id: data.id,
+          title: data.title,
           articles: [],
           userId: this.user.id,
           createTime: new Date(),
@@ -78,13 +80,13 @@ export default{
         }
       )
     },
-    handleCreateBlog(id){
+    handleCreateBlog(data){
       let blog ={
-        id: uuid(),
+        id: data.id,
         title: formatDate(new Date()),
         backendContent: null,
         frontContent: null,
-        edition: id,
+        edition: data.edition,
         userId: this.user.id,
         createTime: new Date(),
       }
@@ -127,7 +129,6 @@ export default{
   },
   watch:{
     splitmin(val){
-      const WIDTH = document.documentElement.clientWidth * val
       this.splitper = val
     }
   },

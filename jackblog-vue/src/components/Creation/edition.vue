@@ -18,7 +18,7 @@
 								 登出
 						  	</a>  
 							</li>       
-              <li  @click="edition()" ><a class="fa fa-plus">&nbsp;&nbsp;&nbsp;新建文集</a></li>
+              <li  @click="editionNew()" ><a class="fa fa-plus">&nbsp;&nbsp;&nbsp;新建文集</a></li>
               <li v-show="editionEdit" class="input-group medium" >
                 <div class="panel-body">
                   <input type="text" name="newEdition" v-model="newEdition" v-validate="'required'" class="form-control" placeholder="新建文集" data-vv-as="文集名">
@@ -31,9 +31,9 @@
               </li>
             </ul>
             <ul class="nav nav-pills nav-stacked">
-              <li v-for="(edition,index) in editionList" :key="index" @click="editionActive(edition,index)" :class="{active:index==cured}" @dblclick="edconfig(index)">
+              <li v-for="(edition,index) in editionList" :key="index" @click="editionActive(edition)" :class="{active:edition.id==edid}" @dblclick="edconfig(index)">
                 <a>{{edition.title}}  
-                  <span class="glyphicon glyphicon-cog " aria-hidden="true" @click="edconfig(index)" style="display:none;float:right;" :class="{active:index==cured}"></span>
+                  <span class="glyphicon glyphicon-cog " aria-hidden="true" @click="edconfig(index)" style="display:none;float:right;" :class="{active:edition.id==edid}"></span>
                   <ul class="dropdown-menu"  :id="'ed_drop_menu_'+index" style="display:none;user-select:none;" v-clickany="index">
                     <li><a @click="edModify(edition)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span>&nbsp;&nbsp;修改名称</a></li>
                     <li><a @click="edDelete(edition)"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>&nbsp;&nbsp;删除文集</a></li>
@@ -49,17 +49,17 @@
             <ul class="nav nav-pills nav-stacked">
               <li><a class="fa fa-plus" @click="createblog()">&nbsp;&nbsp;&nbsp;新建文章</a></li>
             </ul>
-            <ul v-if="editionList[cured]!=null" class="nav nav-pills nav-stacked">
-              <li  v-for="(article,index) in editionList[cured].articles" :key="index" @click="articleActive(index,article.id)" :class="{active:index==curar}" @dblclick="arconfig(index)">
+            <ul v-if="edition!=null" class="nav nav-pills nav-stacked">
+              <li  v-for="(article,index) in edition.articles" :key="index" @click="articleActive(article.id)" :class="{active:article.id==arid}" @dblclick="arconfig(index)">
                 <a>{{article.title}}
-                  <span class="glyphicon glyphicon-cog" aria-hidden="true" style="display:none;float:right" @click="arconfig(index)" :class="{active:index==curar}"></span>
+                  <span class="glyphicon glyphicon-cog" aria-hidden="true" style="display:none;float:right" @click="arconfig(index)" :class="{active:article.id==arid}"></span>
                     <ul class="dropdown-menu"  :id="'ar_drop_menu_'+index" style="user-select:none;" v-clickoutside="index">
                     <li><a v-if="!article.publish" @click="arPublish(article.id,index)"><span class="glyphicon glyphicon-share" aria-hidden="true"></span>&nbsp;&nbsp;发布文章</a>
                         <a v-else @click="arHide(article.id,index)"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span>&nbsp;&nbsp;取消发布</a></li>
                     <li><a @click="arModifyTitle(index)"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>&nbsp;&nbsp;修改标题</a></li>
                     <li><a @click="arMove(index)"><span class="glyphicon glyphicon-triangle-left" aria-hidden="true"></span>&nbsp;&nbsp;移动</a>
                     <ul class="dropdown-menu second" :id="'ar_drop_menu_sec_'+index" v-clickoutside="index">
-                      <li v-for="(edition,key) in editionList" :key="key" @click="moveArticle(article.id, edition.id, index)"><a class="ar-title" v-if="key!=cured"><span class="glyphicon glyphicon-book" aria-hidden="true"></span>&nbsp;&nbsp;{{edition.title}}</a></li>
+                      <li v-for="(edition,key) in editionList" :key="key" @click="moveArticle(article.id, edition.id, index)"><a class="ar-title" v-if="edition.id!=edid"><span class="glyphicon glyphicon-book" aria-hidden="true"></span>&nbsp;&nbsp;{{edition.title}}</a></li>
                     </ul>
                     </li>
                     <li>
@@ -126,9 +126,34 @@ import {
 } from '../../store/types'
 import {formatDate, uuid} from '../../utils/stringUtils'
 export default {
-  props:['editionList','cured','curar'],
+  props:['editionList','edid','arid'],
   components:{
     Split,Modal,Upload,Button
+  },
+  computed:{
+    edition: {
+      get: function(){
+        let x
+        for(x in this.editionList){
+          console.log(this.editionList[x].id)
+          if(this.editionList[x].id == this.edid){
+            return this.editionList[x]
+          }
+        }
+        return null
+      },
+      set: function(){
+        let x,y
+        for(x in this.editionList) {
+          for (y in this.editionList[x].articles){
+            if(this.editionList[x].articles[y] == this.arid){
+              store.commit(CURRENT_EDITION,{edid:this.editionList[x].id}) 
+              return this.editionList
+            }
+          }
+        }
+      }
+    }
   },
   methods:{
     ...mapActions([
@@ -137,30 +162,27 @@ export default {
       'uploadCover',
       'deleteEdition',
     ]),
-    editionActive(edition,num){
-      if(num!= this.cured && this.$parent.$parent.isedit ){
+    editionActive(edition){
+      if(edition.id!= this.edid && this.$parent.$parent.isedit ){
         this.$parent.$parent.openSaveModal()
         return
       }
       this.newEdition=edition.title
       this.editionId=edition.id
-      store.commit(CURRENT_EDITION,{cured:num})
+      store.commit(CURRENT_EDITION,{edid:edition.id}) 
       const id = edition.articles[0]?edition.articles[0].id:'null'
-      store.commit(CURRENT_ARTICLE,{curar:0,arid: id})
+      store.commit(CURRENT_ARTICLE,{arid: id})
       this.$parent.$parent.getBackendArticle(id)
     },
-    articleActive(num, id){
-      if(num!= this.curar && this.$parent.$parent.isedit){
+    articleActive(id){
+      if(id!= this.arid && this.$parent.$parent.isedit){
         this.$parent.$parent.openSaveModal()
         return
       }
-      store.commit(CURRENT_ARTICLE,{curar:num, arid: id})
+      store.commit(CURRENT_ARTICLE,{arid: id})
       this.$parent.$parent.getBackendArticle(id)
     },
-    newActive(num){
-      store.commit(CURRENT_ARTICLE,{curar:num})
-    },
-    edition(){
+    editionNew(){
       this.editionId=null
       this.newEdition='新建文件夹'+(1+this.editionList.length)
       this.editionEdit=true
@@ -171,8 +193,9 @@ export default {
           if(this.editionId!=null){
             this.$parent.$parent.handleUpdateEdition(this.editionId, this.newEdition)
           }else{
-            this.$parent.$parent.handleAddEdition(this.newEdition)
-            this.editionId = this.editionList[this.cured].id
+            const id = uuid()
+            this.$parent.$parent.handleAddEdition({id: id, title:this.newEdition})
+            this.editionId = this.id
           }
           this.editionEdit=false
         }
@@ -182,16 +205,20 @@ export default {
        this.editionEdit=false
     },
     createblog(){
-      store.commit(CURRENT_ARTICLE, {curar:0})
-      if(null ==this.cured){
+      const id = uuid()
+      store.commit(CURRENT_ARTICLE, {arid:id})
+      if(null ==this.edid){
         if(null !=this.editionList[0]){
-          store.commit(CURRENT_EDITION,{cured:0})
-          this.$parent.$parent.handleCreateBlog(this.editionList[0].id)
+          store.commit(CURRENT_EDITION,{edid:this.editionList[0].id})
+          this.$parent.$parent.handleCreateBlog({id:id,edition: this.editionList[0].id})
         }else{
-          this.$parent.$parent.handleUpdateEdition('新建文件夹').then(this.createblog())
+          const tempid = uuid()
+          this.$parent.$parent.handleAddEdition({id:temp, title:'新建文件夹'}).then(()=> {
+            this.$parent.$parent.handleCreateBlog({id:id,edition: tempid})
+          })
         }
       }else{
-        this.$parent.$parent.handleCreateBlog(this.editionList[this.cured].id)
+        this.$parent.$parent.handleCreateBlog({id:id,edition: this.edid})
       }
       
     },
@@ -232,8 +259,6 @@ export default {
       }
     },
     publishConfirm(){
-      store.commit(CURRENT_EDITION,{cured:this.cured})
-      store.commit(CURRENT_ARTICLE,{curar:this.curar})
       this.$parent.$parent.handleUpdateBlog(this.newblog)
       this.showPublish=false
     },
@@ -249,8 +274,6 @@ export default {
       }
     },
     hideConfirm(){
-      store.commit(CURRENT_EDITION,{cured:this.cured})
-      store.commit(CURRENT_ARTICLE,{curar:this.curar})
       this.$parent.$parent.handleUpdateBlog(this.newblog)
       this.cancelPublish=false
     },
@@ -266,8 +289,6 @@ export default {
       this.dialog=index
     },
     deleteConfirm(id,index){
-      store.commit(CURRENT_EDITION,{cured:this.cured})
-      store.commit(CURRENT_ARTICLE,{curar:this.curar})
       document.getElementById('ar_drop_menu_'+this.dialog).style.display='none'
       this.$parent.$parent.hadleDeleteBlog(this.deleteId)
       this.showDelete=false
@@ -281,8 +302,6 @@ export default {
         id: aid,
         edition: eid
       }
-      store.commit(CURRENT_EDITION,{cured:this.cured})
-      store.commit(CURRENT_ARTICLE,{curar:this.curar})
       store.commit(MOVE_ARTICLE,this.newblog)
       this.$parent.$parent.handleUpdateBlog(this.newblog)
       document.getElementById('ar_drop_menu_'+index).style.display='none'
@@ -291,20 +310,12 @@ export default {
     },
     addCover(e,id){
       let file = e.target.files[0]
-      // let data = new FormData()
-      // data.append('picture', file)
-      // if(file) {
-      //   this.uploadCover({
-      //     picture: data,
-      //     id: id
-      //   })
-      // }
       this.$parent.$parent.showCropper()
       this.$parent.$parent.changeImage(file)
     },
     wholeDelete(){
       this.edition_loading=true
-      this.deleteEdition(this.editionId).then(response =>{
+      this.deleteEdition(this.editionId).then(() =>{
         this.edition_loading=false
         this.editDelete=false
       })

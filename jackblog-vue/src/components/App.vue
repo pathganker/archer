@@ -28,10 +28,16 @@ import store from 'store'
 import Navbar from './Navbar'
 import Toaster from './Toaster'
 import CanvasStar from './Effects'
+import { mapState } from 'vuex'
 import {Modal} from 'iview'
 import { getCookie,saveCookie,removeCookie} from '../utils/cookies'
 export default {
   components:{ Navbar,Toaster, CanvasStar, Modal },
+  computed: {
+    ...mapState({
+    arid: ({editionList}) => editionList.arid,
+    })
+  },
   methods:{
     handleMove(e){
       this.$refs.star.drawMove(e)
@@ -53,8 +59,12 @@ export default {
   },
   watch:{
     $route(to, from ){
-      if(from.path == '/creation'){
+      if(from.matched.length == 0){
+        return
+      }
+      if(from.matched[0].path == '/creation' || from.matched[0].path == '/creation/:aid'){
         this.togo = to.path
+        saveCookie('arid',this.arid)
         if(getCookie('isedit')){
           this.openSaveModal()
           this.$router.push(from.path)
@@ -68,8 +78,10 @@ export default {
     window.onresize = () => {
       return (() => {
         this.$refs.star.handleWindowWidth()
-        const splitper = 255/document.documentElement.clientWidth
-        store.commit(CHANGE_SPLITER,{splitper:splitper})
+        const width = document.documentElement.clientWidth
+        const height = document.documentElement.clientHeight
+        const splitper = 255/width
+        store.commit(CHANGE_SPLITER,{splitper:splitper,width:width,height:height})
       })()
     }
   },

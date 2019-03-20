@@ -12,8 +12,9 @@ const state = {
   styleMode: getCookie('styleMode') || 'day-mode',
   captchaUrl: API_ROOT + 'auth/captcha/',
   captchaKey: Math.random(),
-  splitper: 0.2
-
+  splitper: 0.2,
+  height: 1080,
+  width: 1080,
 }
 
 const mutations = {
@@ -30,6 +31,8 @@ const mutations = {
   },
   [CHANGE_SPLITER](state,data){
     state.splitper = data.splitper
+    state.height = data.height
+    state.width = data.width
   }
 }
 
