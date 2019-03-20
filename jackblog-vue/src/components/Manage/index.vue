@@ -8,29 +8,29 @@
             </Breadcrumb>
                 <Layout class="layout-content">
                     <Sider class="sider-menu" :style="{background: '#fff'}">
-                        <Menu active-name="1-2" theme="light" width="auto" :open-names="['1']">
+                        <Menu active-name="1-1" theme="light" width="auto" :open-names="['1']">
                             <Submenu name="1">
                                 <template slot="title">
                                     <Icon type="ios-navigate"></Icon>
                                     文章管理
                                 </template>
-                                <MenuItem name="1-1" :to="{ path: '#/article' }">文章列表</MenuItem>
-                                <MenuItem name="1-2" :to="{ path: '#/tag' }">标签管理</MenuItem>
+                                <MenuItem name="1-1" :to="{ path: '/manage/article' }">文章列表</MenuItem>
+                                <MenuItem name="1-2" :to="{ path: '/manage/tag' }">标签管理</MenuItem>
                             </Submenu>
                             <Submenu name="2">
                                 <template slot="title">
                                     <Icon type="ios-keypad"></Icon>
                                     用户管理
                                 </template>
-                                <MenuItem name="2-1">个人用户</MenuItem>
-                                <MenuItem name="2-2">微信/微博用户</MenuItem>
+                                <MenuItem name="2-1" :to="{ path: '/manage/my' }">个人用户</MenuItem>
+                                <MenuItem name="2-2" :to="{ path: '/manage/other' }">微信/微博用户</MenuItem>
                             </Submenu>
                             <Submenu name="3">
                                 <template slot="title">
-                                    <Icon type="ios-analytics"></Icon>
+                                    <Icon type="ios-analytics" :to="{ path: '/manage/statics' }"></Icon>
                                     统计数据
                                 </template>
-                                <MenuItem name="3-1">访问次数</MenuItem>
+                                <MenuItem name="3-1">访问记录</MenuItem>
                             </Submenu>
                         </Menu>
                     </Sider>
@@ -53,7 +53,7 @@ export default {
     position: absolute;
     width: 100%;
     background:white;
-    top: 298px;
+    top: 289px;
     bottom: 0;
     
 }

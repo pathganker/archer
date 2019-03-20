@@ -13,8 +13,10 @@ package cn.com.qingqfeng.archer.enums;
 public enum ArticleSortNameEnum {
 	
 	PUBLISTHTIME("publishTime","publish_time"),
-	VISITCOUNT("visitCount","visit_count");
-	
+	CRATETIME("createTime","create_time"),
+	VISITCOUNT("visitCount","visit_count"),
+	COMMENTCOUNT("commentCount","comme_count"),
+	LIKECOUNT("likeCount","like_count");
 	private String view;
 	private String code;
 	

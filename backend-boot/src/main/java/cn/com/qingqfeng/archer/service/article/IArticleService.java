@@ -171,5 +171,29 @@ public interface IArticleService {
 	 * @version 1.0
 	 */
 	List<ArticleDTO> requestArticleByEdition(String id);
+	/**
+	 * 
+	 * <p>方法名:  requestArticleManage </p> 
+	 * <p>描述:    查询需要管理的文章列表 </p>
+	 * <p>创建时间:  2019年3月20日上午10:50:15 </p>
+	 * @version 1.0
+	 * @author lijunliang
+	 * @param query
+	 * @return  
+	 * List<ArticleDTO>
+	 */
+	List<ArticleDTO> requestArticleManage(ArticleQuery query);
+	/**
+	 * 
+	 * <p>方法名:  requestArticleManageTotal </p> 
+	 * <p>描述:    查询需要管理的文章总数 </p>
+	 * <p>创建时间:  2019年3月20日上午11:05:43 </p>
+	 * @version 1.0
+	 * @author lijunliang
+	 * @param query
+	 * @return  
+	 * Long
+	 */
+	Long requestArticleManageTotal(ArticleQuery query);
 	
 }

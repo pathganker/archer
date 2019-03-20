@@ -1,6 +1,7 @@
 import axios from 'axios'
 import store from '../store'
 import {API_ROOT} from '../config'
+import {showMsg} from '../store/actions'
 import {
   REFRESH_ACCESS_TOKEN
 } from '../store/types'
@@ -52,7 +53,8 @@ service.interceptors.response.use(
     return response
   },
   error => {
-    console.log('error' + error)// for debug
+    console.log(error)
+    showMsg(store, '连接服务器失败', 'error')
     return Promise.reject(error)
   }
 )

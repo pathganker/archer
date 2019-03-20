@@ -87,7 +87,12 @@ const router = new Router({
       component: Creation,
       meta:{
         requiresAuth: true
-      } 
+      },
+    },
+    {
+      path:'/creation/:aid',
+      name: 'Modify',
+      component: Creation
     },
     {
       path: '/about',
@@ -103,7 +108,12 @@ const router = new Router({
       },
       children:[
         {
-          path: '#/article',
+          path: '',
+          name: 'ManageIndex',
+          component: ArticelMana,
+        },
+        {
+          path: 'article',
           name: 'articleMana',
           component: ArticelMana,
         },

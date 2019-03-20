@@ -130,5 +130,28 @@ public interface IArticleDao {
 	 * @version 1.0
 	 */
 	List<ArticleDO> queryArticleByEdition(String id);
-	
+	/**
+	 * 
+	 * <p>方法名:  queryArticleManage </p> 
+	 * <p>描述:    查询需要管理的文章列表 </p>
+	 * <p>创建时间:  2019年3月20日上午11:02:13 </p>
+	 * @version 1.0
+	 * @author lijunliang
+	 * @param query
+	 * @return  
+	 * List<ArticleDO>
+	 */
+	List<ArticleDO> queryArticleManage(ArticleQuery query);
+	/**
+	 * 
+	 * <p>方法名:  queryArticelManageTotal </p> 
+	 * <p>描述:    查询需要管理的总数目 </p>
+	 * <p>创建时间:  2019年3月20日上午11:02:15 </p>
+	 * @version 1.0
+	 * @author lijunliang
+	 * @param query
+	 * @return  
+	 * Long
+	 */
+	Long queryArticelManageTotal(ArticleQuery query);
 }

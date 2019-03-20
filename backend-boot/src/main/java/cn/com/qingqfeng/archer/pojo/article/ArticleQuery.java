@@ -23,8 +23,12 @@ public class ArticleQuery extends Query{
 		super(page, pageSize);
 	}
 	public ArticleQuery(Integer page, Integer pageSize, String sortName, String sortType){
-		this.page = page;
-		this.pageSize = pageSize;
+		if(null != page){
+			this.page = page;
+		}
+		if(null != pageSize){
+			this.pageSize = pageSize;
+		}
 		ArticleSortNameEnum name = ArticleSortNameEnum.requestEnumByView(sortName);
 		if(null != name){
 			this.sortName = name.getCode();

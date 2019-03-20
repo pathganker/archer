@@ -14,17 +14,16 @@ import {
   MOVE_ARTICLE,
   SAVE_EDITION,
 } from '../types'
-import {saveCookie,getCookie} from '../../utils/cookies'
 const state = {
   items:[],
-  cured: null,
-  curar: null,
   draft: null,
+  arid: null,
+  edid: null,
 }
 // actions
 const actions = {
   getEditionList ({ commit }){
-    api.getEditionList().then(response => {
+    return  api.getEditionList().then(response => {
       const  json = response.data
       if(200==json.code){
         const editions = json.data
@@ -89,16 +88,18 @@ const mutations = {
     state.items=[]
   },
   [CURRENT_EDITION](state, data){
-    state.cured = data.cured
-    saveCookie('cured', data.cured)
+    state.edid = data.edid
   },
   [CURRENT_ARTICLE](state, data){
-    state.curar = data.curar
-    saveCookie('curar', data.curar)
-    saveCookie('arid', data.arid)
+    state.arid = data.arid
   },
   [ADD_ARTICLE](state, data){
-    state.items[state.cured ==null ? getCookie('cured') : state.cured].articles.unshift(data.article)
+    state.items.map(item => {
+      if(item.id == data.edition){
+        item.articles.unshift(data)
+      }
+      return item
+    })
   },
   [ADD_EDITION](state, data){
     state.items.unshift(data)
@@ -107,46 +108,55 @@ const mutations = {
 
   },
   [UPDATE_ARTICLE](state, data){
-    state.items[state.cured].articles.map(item =>{
-      if(data.id == item.id){
-        if(data.title){
-          item.title = data.title
+    state.items.map(ed =>{
+      ed.articles.map(item =>{
+        if(data.id == item.id){
+          if(data.title!=null){
+            item.title = data.title
+          }
+          if(data.backendContent!=null){
+            item.backendContent = data.backendContent
+          }
+          if(data.publish!=null){
+            item.publish = data.publish
+          }
+          if(data.publishTime!=null){
+            item.publishTime = data.publishTime
+          }
         }
-        if(data.backendContent){
-          item.backendContent = data.backendContent
-        }
-        if(data.publish){
-          item.publish = data.publish
-        }
-        if(data.publishTime){
-          item.publishTime = data.publishTime
-        }
-      }
-      return item
+        return item
+      })
+      return ed
     })
   },
   [DELETE_ARTICLE](state,data){
-    let items = state.items[state.cured].articles
-    state.items[state.cured].articles.splice(items.findIndex(item =>
-      item.id == data.id),1)
-    state.curar--
-  },
-  [MOVE_ARTICLE](state,data){
-    let ars = state.items[state.cured].articles
-    let article = ars.map(item =>{
-      if(item.id === data.id){
-        item.edition = data.edition
+    state.items.map(item =>{
+      const index = item.articles.findIndex(item =>
+        item.id == data.id)
+      if(index!=-1){
+        item.articles.splice(index,1)
+        state.arid=null
       }
       return item
     })
-    state.items[state.cured].articles.splice(ars.findIndex(item =>
-      item.id == data.id),1)
+  },
+  [MOVE_ARTICLE](state,data){
+    let article = null
+    state.items.map(item =>{
+      const index = item.articles.findIndex(ar =>
+        ar.id == data.id)
+      if(index!=-1){
+        article =item.articles[index]
+        item.articles.splice(index,1)
+      }
+      return item
+    })
     state.items.map(item =>{
       if(item.id == data.edition){
-        item.articles.unshift(article[state.curar])
+        item.articles.push(article)
       }
+      return item
     })
-    state.curar==0?0:state.curar--
   },
   [SAVE_EDITION](state,data){
     state.items.map(item =>{
