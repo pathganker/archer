@@ -3,6 +3,7 @@ const merge = require('webpack-merge')
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 const common = require('./webpack.common.js')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 module.exports = merge(common, {
   entry: {
     vendor: ['vue','vuex','vue-router'],
@@ -21,6 +22,7 @@ module.exports = merge(common, {
         collapseWhitespace: true    //删除空白符与换行符
       }
     }),
+    new BundleAnalyzerPlugin(),
     new UglifyJSPlugin({
       sourceMap: true
     }),
