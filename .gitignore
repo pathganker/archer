@@ -31,6 +31,7 @@ backend-boot/target
 
 jackblog-vue/node_modules/
 jackblog-vue/dist/
+jackblog-vue/build/dist/
 jackblog-vue/package-lock.json
 jackblog-vue/.eslintrc.js
 jackblog-vue/.eslintignore
