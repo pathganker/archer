@@ -91,7 +91,6 @@ export default {
         const width = document.documentElement.clientWidth
         const height = document.documentElement.clientHeight
         const splitper = 255/width
-        console.log(splitper)
         store.commit(CHANGE_SPLITER,{splitper:splitper,width:width,height:height})
         return
     },
