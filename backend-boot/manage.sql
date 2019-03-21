@@ -166,3 +166,6 @@ CREATE TABLE `qfeng_visit_record` (
   KEY `Index_article` (`article_id`),
   KEY `Index_user` (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=331 DEFAULT CHARSET=utf8;
+
+ALTER TABLE `qfeng_article`
+ADD COLUMN `preview`  varchar(500) NULL AFTER `modify_time`;
