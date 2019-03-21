@@ -17,6 +17,7 @@
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
         <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />        
         <result column="is_publish" property="publish" jdbcType="INTEGER" />        
+        <result column="preview" property="preview" jdbcType="VARCHAR" />        
     </resultMap>
 <!-- 分页查询 -->
     <select id="queryArticleByOptions" parameterType="cn.com.qingqfeng.archer.pojo.article.ArticleQuery" resultMap="BaseResultMap"  >
@@ -138,6 +139,7 @@
            <if test="publish != null">is_publish = #{publish},</if>
            <if test="profile != null ">profile = #{profile},</if>
            <if test="image !=null"> image = #{image},</if>
+           <if test="preview !=null"> preview = #{preview},</if>
        </trim>
        WHERE 
             id = #{id}
@@ -173,7 +175,7 @@
 <!-- 查询需要管理的文章列表 -->
     <select id="queryArticleManage" parameterType="cn.com.qingqfeng.archer.pojo.article.ArticleQuery" resultMap="BaseResultMap"  >
        SELECT 
-            a.id, a.title, a.is_publish, a.publish_time,a.create_time, a.image, a.profile, c.visit_count, if(isnull(i.reply), d.comme_count, (d.comme_count+i.reply) ) as comme_count, e.like_count 
+            a.id, a.title, a.is_publish, a.publish_time,a.create_time, a.image, a.preview, a.profile, c.visit_count, if(isnull(i.reply), d.comme_count, (d.comme_count+i.reply) ) as comme_count, e.like_count 
        FROM 
             qfeng_article a 
        LEFT JOIN
@@ -211,4 +213,43 @@
         where
             a.is_delete =0 
     </select>
+<!-- 批量删除 -->
+    <select id="batDeleteArticle">
+       UPDATE 
+             qfeng_article
+       SET
+             is_delete=1 
+       WHERE 
+             id in 
+        <foreach collection="array" item="id" index="index" open="("
+            separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+<!-- 批量发布 -->
+    <select id="batPublishArticle">
+       UPDATE 
+             qfeng_article
+       SET
+             is_publish=1 
+       WHERE 
+             id in 
+        <foreach collection="array" item="id" index="index" open="("
+            separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+<!-- 批量撤回 -->
+    <select id="batRecallArticle">
+       UPDATE 
+             qfeng_article
+       SET
+             is_publish=0
+       WHERE 
+             id in 
+        <foreach collection="array" item="id" index="index" open="("
+            separator="," close=")">
+            #{id}
+        </foreach>    
+    </select> 
 </mapper>

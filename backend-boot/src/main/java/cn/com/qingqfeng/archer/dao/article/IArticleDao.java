@@ -154,4 +154,37 @@ public interface IArticleDao {
 	 * Long
 	 */
 	Long queryArticelManageTotal(ArticleQuery query);
+	/**
+	 * 
+	 * <p>方法名:  batDeleteArticle </p> 
+	 * <p>描述:    批量删除 </p>
+	 * <p>创建时间:  2019年3月21日下午7:45:21 </p>
+	 * @version 1.0
+	 * @author lijunliang
+	 * @param ids  
+	 * void
+	 */
+	void batDeleteArticle(String[] ids);
+	/**
+	 * 
+	 * <p>方法名:  batPublishArticle </p> 
+	 * <p>描述:    批量发布 </p>
+	 * <p>创建时间:  2019年3月21日下午7:46:09 </p>
+	 * @version 1.0
+	 * @author lijunliang
+	 * @param ids  
+	 * void
+	 */
+	void batPublishArticle(String[] ids);
+	/**
+	 * 
+	 * <p>方法名:  batRecallArticle </p> 
+	 * <p>描述:    批量撤回 </p>
+	 * <p>创建时间:  2019年3月21日下午7:46:11 </p>
+	 * @version 1.0
+	 * @author lijunliang
+	 * @param ids  
+	 * void
+	 */
+	void batRecallArticle(String[] ids);
 }

@@ -195,5 +195,20 @@ public interface IArticleService {
 	 * Long
 	 */
 	Long requestArticleManageTotal(ArticleQuery query);
+	/**
+	 * 
+	 * <p>方法名:  batDeleteArticle </p> 
+	 * <p>描述:    TODO </p>
+	 * <p>创建时间:  2019年3月21日下午7:44:45 </p>
+	 * @version 1.0
+	 * @author lijunliang
+	 * @param ids  
+	 * void
+	 */
+	void batDeleteArticle(String[] ids);
+	
+	void batPublishArticle(String[] ids);
+	
+	void batRecallArticle(String[] ids);
 	
 }

@@ -1,9 +1,12 @@
 spring:
   profiles:
     active: dev
+  servlet:
+    multipart:
+      maxFileSize: 30MB
 server:
   port: 7000
-  serlvet:
-    multipart:
-      max-file-size: 30Mb
+  tomcat:
+    basedir: /ROOT/temp/tomcat
+
       

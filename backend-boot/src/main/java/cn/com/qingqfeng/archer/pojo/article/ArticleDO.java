@@ -12,6 +12,8 @@ import java.util.Date;
  * 
  */
 public class ArticleDO {
+	/** 预览图 */
+	private String preview;
 	/** 图片 */
 	private String image;
 	/** 主键 */
@@ -139,6 +141,12 @@ public class ArticleDO {
 	}
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
+	}
+	public String getPreview() {
+		return preview;
+	}
+	public void setPreview(String preview) {
+		this.preview = preview;
 	}
 	
 }

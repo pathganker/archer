@@ -2,10 +2,10 @@
   <div class="creation-content">
     <Split v-model="splitper"  ref="split" min="255" >
       <div slot="left" class="demo-split-pane no-padding">
-        <Edition :editionList="editionList"  :edid="edid" :arid="arid"></Edition>
+        <Edition :editionList="editionList"  :edid="edid" :arid="arid" :isedit="isedit"></Edition>
       </div>
       <div slot="right" class="demo-split-pane">
-        <Markdown ref="mark" :article="article" :draft="draft"></Markdown>
+        <Markdown ref="mark" :article="article"  :isedit="isedit" ></Markdown>
       </div>
      </Split>
      <Savemodal ref='savmodal' ></Savemodal>
@@ -24,6 +24,7 @@ import {Split} from 'iview'
 import {
   CURRENT_EDITION,
   CURRENT_ARTICLE,
+  CHANGE_EDIT_STATUS
 } from '../../store/types'
 import {getCookie,saveCookie,removeCookie} from '../../utils/cookies'
 import {formatDate, uuid} from '../../utils/stringUtils'
@@ -31,27 +32,34 @@ export default{
   components:{ Edition, Markdown, Savemodal, Split, Cropper},
   computed:{
     ...mapState({
-      draft: ({editionList}) => editionList.draft,
       article: ({backendArticle}) => backendArticle.article,
       editionList: ({editionList}) => editionList.items,
       user: ({auth}) => auth.user,
       splitmin: ({globalVal}) => globalVal.splitper,
       edid: ({editionList}) => editionList.edid,
       arid: ({editionList}) => editionList.arid,
-
+      isedit: ({editionList}) => editionList.isedit
     }),
   },
   created(){
     this.getEditionList()
     const aid = this.$route.params.aid
     if(null == aid){
-      if(getCookie('arid')){
-        console.log(getCookie('arid'))
-        this.getBackendArticle(getCookie('arid'))
+      if(getCookie('arid')!='null'){
+        this.getBackendArticle(getCookie('arid')).then(()=>{
+          if(this.article){
+            store.commit(CURRENT_EDITION,{edid:this.article.edition})
+            store.commit(CURRENT_ARTICLE,{arid:this.article.id})
+          }
+        })
       }
     }else{
-      store.commit(CURRENT_ARTICLE,{arid: aid})
-       this.getBackendArticle(aid)
+       this.getBackendArticle(aid).then(()=>{
+          if(this.article){
+            store.commit(CURRENT_EDITION,{edid:this.article.edition})
+            store.commit(CURRENT_ARTICLE,{arid:this.article.id})
+          }
+       })
     }
     this.$parent.hideNavbar()
   },
@@ -63,7 +71,7 @@ export default{
       'addEdition',
       'updateEdition',
       'updateBackendArticle',
-      'deleteBackendArticle'
+      'deleteBackendArticle',
     ]),
     handleGetArticle(id){
       this.getBackendArticle(id)
@@ -110,12 +118,10 @@ export default{
       this.$refs.savmodal.showModal()
     },
     editActive(){
-      this.isedit = true
-      saveCookie('isedit', true)
+      store.commit(CHANGE_EDIT_STATUS,true)
     },
     editCancel(){
-      this.isedit = false
-      removeCookie('isedit')
+      store.commit(CHANGE_EDIT_STATUS,false)
     },
     showCropper(){
       this.croppershow=true
@@ -135,9 +141,17 @@ export default{
   data(){
     return {
       newblog:'',
-      isedit: false,
       splitper: document.documentElement.clientWidth * 0.2>255?0.2:255/document.documentElement.clientWidth,
       croppershow: false,
+    }
+  },
+  mounted(){
+    window.onbeforeunload = e =>{
+      const returnValue = "Are you sure you want to lose unsaved changes?"
+      if(this.isedit){
+        ( e || window.event).returnValue=returnValue
+        return returnValue
+      }
     }
   }
 }

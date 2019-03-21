@@ -46,7 +46,7 @@ public class ManageController {
 	 * Result
 	 */
 	@RequestMapping(value="article/list", method={RequestMethod.GET})
-	public Result getFrontArticleList(Integer page, Integer pageSize, String tag, String sortName, String sortType) {
+	public Result getBackendArticleList(Integer page, Integer pageSize, String tag, String sortName, String sortType) {
 		Result result = new Result();
 		ArticleQuery query = new ArticleQuery(page, pageSize, sortName, sortType);
 		query.setTag(tag);
@@ -63,5 +63,59 @@ public class ManageController {
 		result.setData(data);
 		return result;
 	}
+	/**
+	 * 
+	 * <p>方法名:  batDeleteArticle </p> 
+	 * <p>描述:    TODO </p>
+	 * <p>创建时间:  2019年3月21日下午8:09:54 </p>
+	 * @version 1.0
+	 * @author lijunliang
+	 * @param ids
+	 * @return  
+	 * Result
+	 */
 
+	@RequestMapping(value="article/batdelete", method={RequestMethod.DELETE})
+	public Result batDeleteArticle(String[] ids){
+		Result rs = new Result();
+		this.articleService.batDeleteArticle(ids);
+		rs.setCode(ApiCodeEnum.SUCCESS);
+		return rs;
+	}
+	/**
+	 * 
+	 * <p>方法名:  batPublishArticle </p> 
+	 * <p>描述:    TODO </p>
+	 * <p>创建时间:  2019年3月21日下午8:09:59 </p>
+	 * @version 1.0
+	 * @author lijunliang
+	 * @param ids
+	 * @return  
+	 * Result
+	 */
+	@RequestMapping(value="article/batpublish", method={RequestMethod.GET})
+	public Result batPublishArticle(List<String> ids){
+		Result rs = new Result();
+		this.articleService.batPublishArticle((String[])ids.toArray());
+		rs.setCode(ApiCodeEnum.SUCCESS);
+		return rs;	
+	}
+	/**
+	 * 
+	 * <p>方法名:  batRecallArticle </p> 
+	 * <p>描述:    TODO </p>
+	 * <p>创建时间:  2019年3月21日下午8:10:04 </p>
+	 * @version 1.0
+	 * @author lijunliang
+	 * @param ids
+	 * @return  
+	 * Result
+	 */
+	@RequestMapping(value="article/batrecall", method={RequestMethod.GET})
+	public Result batRecallArticle(String[] ids){
+		Result rs = new Result();
+		this.articleService.batRecallArticle(ids);
+		rs.setCode(ApiCodeEnum.SUCCESS);
+		return rs;	
+	}
 }

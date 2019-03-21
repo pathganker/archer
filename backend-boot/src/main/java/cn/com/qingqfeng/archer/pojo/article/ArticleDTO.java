@@ -21,6 +21,8 @@ public class ArticleDTO implements Serializable{
 	private static final long serialVersionUID = 1879598723154109228L;
 	/** 图片 */
 	private String image;
+	/** 预览图 */
+	private String preview;
 	/** 主键 */
 	private String id;
 	/** 标题 */
@@ -150,5 +152,11 @@ public class ArticleDTO implements Serializable{
 	}
 	public void setModifyTime(Date modifyTime) {
 		this.modifyTime = modifyTime;
+	}
+	public String getPreview() {
+		return preview;
+	}
+	public void setPreview(String preview) {
+		this.preview = preview;
 	}
 }

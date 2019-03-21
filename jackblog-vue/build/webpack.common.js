@@ -38,19 +38,6 @@ module.exports ={
       disable: false, 
       allChunks: true 
     }),
-    new CopyWebpackPlugin([{
-      from: path.resolve(__dirname, '../static/WEB-INF'),
-      to: 'WEB-INF'
-    },
-    {
-      from: path.resolve(__dirname, '../static/css'),
-      to: 'static/css'
-    },
-    {
-      from: path.resolve(__dirname, '../static/fonts'),
-      to: 'static/fonts'
-    }
-    ])
   ],
   module: {
     rules: [

@@ -3,6 +3,7 @@ const webpack = require('webpack')
 const merge = require('webpack-merge')
 const common = require('./webpack.common.js')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const CopyWebpackPlugin=require('copy-webpack-plugin')
 module.exports = merge(common, {
   entry: {
     vendor: ['vue','vuex','vue-router'],
@@ -23,6 +24,23 @@ module.exports = merge(common, {
         collapseWhitespace:true    //删除空白符与换行符
       }
     }),
+    new CopyWebpackPlugin([{
+      from: path.resolve(__dirname, '../static/WEB-INF'),
+      to: 'WEB-INF'
+    },
+    {
+      from: path.resolve(__dirname, '../static/css'),
+      to: 'static/css'
+    },
+    {
+      from: path.resolve(__dirname, '../static/fonts'),
+      to: 'static/fonts'
+    },
+    {
+      from: path.resolve(__dirname, '../../../../../ROOT/upload'),
+      to: 'upload'
+    }
+    ])
   ],
   devServer: {
     contentBase: path.join(__dirname, 'src'),

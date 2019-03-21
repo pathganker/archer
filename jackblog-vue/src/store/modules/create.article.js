@@ -15,7 +15,7 @@ const state = {
 // actions
 const actions = {
   getBackendArticle ({ commit }, id){
-    api.getBackendArticle(id).then(response => {
+    return  api.getBackendArticle(id).then(response => {
       const  json = response.data
       if(200==json.code){
         const article = json.data
@@ -57,7 +57,7 @@ const actions = {
   },
   deleteBackendArticle (store, data){
     store.commit(DELETE_ARTICLE,{id: data})
-    api.deleteBackednArticle(data).then(response => {
+    return api.deleteBackednArticle(data).then(response => {
       const json = response.data
       if(200==json.code){
         return showMsg(store, '已删除','success')
@@ -70,7 +70,7 @@ const actions = {
     })
   },
   uploadCover(store, data){
-    api.uploadCover(data).then(response =>{
+    return  api.uploadCover(data).then(response =>{
       const json = response.data
       if(200== json.code){
         return showMsg(store, '保存成功','success')

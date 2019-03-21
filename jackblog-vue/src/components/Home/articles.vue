@@ -75,8 +75,8 @@ export default {
 	margin: 15px 0 5px 0;
 }
 .list-image img{
-	width: 90%;
-	max-width: 880px;
+	
+	max-width: 777px;
 	min-width: 364px;
 }
 .list-footer{

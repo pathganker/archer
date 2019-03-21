@@ -45,4 +45,10 @@ public class ArticleServiceTest {
 	public void deleteTest(){
 		this.articleService.deleteArticle("bdbdd26f-5df8-4b4a-9b07-69a8b22ac417");
 	}
+	
+	@Test
+	public void batDelteTest(){
+		String[] ids = {"7e7569b7-959a-4463-991a-568d1f20d674","81156c97-c252-4101-8c2e-eb4f01b96f8a"};
+		this.articleService.batDeleteArticle(ids);
+	}
 }

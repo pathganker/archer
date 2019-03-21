@@ -296,4 +296,37 @@ public class ArticleServiceImpl implements IArticleService{
 		return this.articleDao.queryArticelManageTotal(query);
 	}
 
+	/** (non-Javadoc)
+	 * @see cn.com.qingqfeng.archer.service.article.IArticleService#batDeleteArticle(java.lang.String[])
+	 */
+	@Override
+	public void batDeleteArticle(String[] ids) {
+		if(null == ids || ids.length<1){
+			return;
+		}
+		this.articleDao.batDeleteArticle(ids);
+	}
+
+	/** (non-Javadoc)
+	 * @see cn.com.qingqfeng.archer.service.article.IArticleService#batPublishArticle(java.lang.String[])
+	 */
+	@Override
+	public void batPublishArticle(String[] ids) {
+		if(null == ids || ids.length<1){
+			return;
+		}
+		this.articleDao.batPublishArticle(ids);
+	}
+
+	/** (non-Javadoc)
+	 * @see cn.com.qingqfeng.archer.service.article.IArticleService#batRecallArticle(java.lang.String[])
+	 */
+	@Override
+	public void batRecallArticle(String[] ids) {
+		if(null == ids || ids.length<1){
+			return;
+		}
+		this.articleDao.batRecallArticle(ids);
+	}
+
 }

@@ -3,6 +3,7 @@
  */
 package cn.com.qingqfeng.archer.webapi.controller.article;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -42,6 +43,7 @@ import cn.com.qingqfeng.archer.service.edition.IEditionService;
 import cn.com.qingqfeng.archer.service.record.IVisitRecordService;
 import cn.com.qingqfeng.archer.utils.FileUtils;
 import cn.com.qingqfeng.archer.utils.JwtUtils;
+import cn.com.qingqfeng.archer.utils.PictureUtils;
 
 /**   
  * <p> 类名：  ArticleController   </p>
@@ -419,14 +421,18 @@ public class ArticleController {
 			return rs;
 		}
 		String image = new String();
+		String preview = new String();
 		try {
 			image = FileUtils.handleCover(picture, id);
-		}catch(RuntimeException e){
+			preview = PictureUtils.getPreview(image);
+			
+		}catch(RuntimeException | IOException e){
 			rs.setCode(ApiCodeEnum.SERVICE_WRONG);
 			return rs;
 		}
 		article.setId(id);
 		article.setImage(image);
+		article.setPreview(preview);
 		this.articleService.updateArticle(article);
 		rs.setCode(ApiCodeEnum.SUCCESS);
 		return rs;

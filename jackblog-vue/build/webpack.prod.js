@@ -4,6 +4,7 @@ const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 const common = require('./webpack.common.js')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const CopyWebpackPlugin=require('copy-webpack-plugin')
 module.exports = merge(common, {
   entry: {
     vendor: ['vue','vuex','vue-router'],
@@ -26,6 +27,19 @@ module.exports = merge(common, {
     new UglifyJSPlugin({
       sourceMap: true
     }),
+    new CopyWebpackPlugin([{
+      from: path.resolve(__dirname, '../static/WEB-INF'),
+      to: 'WEB-INF'
+    },
+    {
+      from: path.resolve(__dirname, '../static/css'),
+      to: 'static/css'
+    },
+    {
+      from: path.resolve(__dirname, '../static/fonts'),
+      to: 'static/fonts'
+    },
+    ])
   ],
   externals: {
     'vue':'Vue',

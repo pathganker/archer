@@ -19,7 +19,7 @@ import { mapState,mapActions } from 'vuex'
 import 'mavon-editor/dist/css/index.css'
 import 'mavon-editor/dist/markdown/github-markdown.min.css'
 export default {
-  props:['article','draft'],
+  props:['article','isedit'],
   components: { mavonEditor },
   methods: {
     ...mapActions([
@@ -41,7 +41,14 @@ export default {
     edit(e){
       this.content = e
       if(this.content!='' && this.content != this.article.backendContent){
-        this.$parent.$parent.editActive()
+        if(!this.isedit){
+          this.$parent.$parent.editActive()
+        }
+      }
+      if(this.content == this.article.backendContent){
+        if(this.isedit){
+          this.$parent.$parent.editCancel()
+        }
       }
     }
   },

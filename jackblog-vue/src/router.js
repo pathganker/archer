@@ -92,7 +92,10 @@ const router = new Router({
     {
       path:'/creation/:aid',
       name: 'Modify',
-      component: Creation
+      component: Creation,
+      meta:{
+        requiresAuth: true
+      },
     },
     {
       path: '/about',

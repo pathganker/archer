@@ -126,7 +126,7 @@ import {
 } from '../../store/types'
 import {formatDate, uuid} from '../../utils/stringUtils'
 export default {
-  props:['editionList','edid','arid'],
+  props:['editionList','edid','arid','isedit'],
   components:{
     Split,Modal,Upload,Button
   },
@@ -135,7 +135,6 @@ export default {
       get: function(){
         let x
         for(x in this.editionList){
-          console.log(this.editionList[x].id)
           if(this.editionList[x].id == this.edid){
             return this.editionList[x]
           }
@@ -143,15 +142,16 @@ export default {
         return null
       },
       set: function(){
-        let x,y
-        for(x in this.editionList) {
-          for (y in this.editionList[x].articles){
-            if(this.editionList[x].articles[y] == this.arid){
-              store.commit(CURRENT_EDITION,{edid:this.editionList[x].id}) 
-              return this.editionList
-            }
-          }
-        }
+        // let x,y
+        // for(x in this.editionList) {
+        //   for (y in this.editionList[x].articles){
+        //     if(this.editionList[x].articles[y] == this.arid){
+        //       store.commit(CURRENT_EDITION,{edid:this.editionList[x].id}) 
+        //       return this.editionList
+        //     }
+        //   }
+        // }
+        return
       }
     }
   },
@@ -163,7 +163,7 @@ export default {
       'deleteEdition',
     ]),
     editionActive(edition){
-      if(edition.id!= this.edid && this.$parent.$parent.isedit ){
+      if(edition.id!= this.edid && this.isedit ){
         this.$parent.$parent.openSaveModal()
         return
       }
@@ -173,13 +173,15 @@ export default {
       const id = edition.articles[0]?edition.articles[0].id:'null'
       store.commit(CURRENT_ARTICLE,{arid: id})
       this.$parent.$parent.getBackendArticle(id)
+      this.$router.push("/creation"+"/"+id)
     },
     articleActive(id){
-      if(id!= this.arid && this.$parent.$parent.isedit){
+      if(id!= this.arid && this.isedit){
         this.$parent.$parent.openSaveModal()
         return
       }
       store.commit(CURRENT_ARTICLE,{arid: id})
+      this.$router.push("/creation/${id}")
       this.$parent.$parent.getBackendArticle(id)
     },
     editionNew(){
@@ -242,7 +244,7 @@ export default {
       this.editionId= edition.id
     },
     arModifyTitle(index){
-      this.$parent.$parent.isedit = true
+      this.$parent.$parent.editActive()
       const titleinput = document.getElementById('title-input')
       titleinput.focus()
       titleinput.click()
@@ -309,8 +311,12 @@ export default {
 
     },
     addCover(e,id){
-      let file = e.target.files[0]
       this.$parent.$parent.showCropper()
+      let file = e.target.files[0]
+      console.log(this.$refs.picInput[0].value)
+      if(this.$refs.picInput[0]){
+        this.$refs.picInput[0].value=''
+      }
       this.$parent.$parent.changeImage(file)
     },
     wholeDelete(){
@@ -385,7 +391,7 @@ export default {
       editDelete:false,
       edition_loading: false,
     }
-  }
+  },
 }
 </script>
 <style>
@@ -418,8 +424,9 @@ export default {
   color: black!important;
 }
 .upload-button :hover{
-  display: block!important;
-  color: black!important;
+  /* display: block!important;
+  color: black!important; */
+  cursor: pointer;
 }
 .file-input{
   opacity: 0;

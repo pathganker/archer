@@ -23,6 +23,7 @@
 <script>
 import {
   CHANGE_SPLITER,
+  CHANGE_EDIT_STATUS
 } from '../store/types'
 import store from 'store'
 import Navbar from './Navbar'
@@ -36,6 +37,7 @@ export default {
   computed: {
     ...mapState({
     arid: ({editionList}) => editionList.arid,
+    isedit: ({editionList}) => editionList.isedit
     })
   },
   methods:{
@@ -46,8 +48,9 @@ export default {
       this.$refs.nav.hideNav()
     },
     confirm(){
-      removeCookie('isedit')
+      store.commit(CHANGE_EDIT_STATUS,false)
       this.showSaveModal = false
+      console.log(this.togo)
       this.$router.push(this.togo)
     },
     cancel(){
@@ -58,20 +61,28 @@ export default {
     }
   },
   watch:{
-    $route(to, from ){
+    $route(to, from){
       if(from.matched.length == 0){
         return
       }
+      //编辑状态拦截
       if(from.matched[0].path == '/creation' || from.matched[0].path == '/creation/:aid'){
         this.togo = to.path
-        saveCookie('arid',this.arid)
-        if(getCookie('isedit')){
+        console.log(this.isedit)
+        if(this.isedit){
           this.openSaveModal()
-          this.$router.push(from.path)
-          return
+          return this.$router.replace(from.path)
         }
-        this.$refs.nav.showNav()
       }
+      if(to.matched.length == 0){
+        return
+      }
+      //保存cookie，显示导航栏
+      if((to.matched[0].path!='/creation' && to.matched[0].path!='/creation/:aid') &&
+        (from.matched[0].path == '/creation' || from.matched[0].path == '/creation/:aid')){
+        saveCookie('arid',this.arid)
+        this.$refs.nav.showNav()
+       }
     }
   },
   mounted(){
@@ -82,7 +93,7 @@ export default {
         const height = document.documentElement.clientHeight
         const splitper = 255/width
         store.commit(CHANGE_SPLITER,{splitper:splitper,width:width,height:height})
-      })()
+      })
     }
   },
   data(){

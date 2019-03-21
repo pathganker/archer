@@ -13,10 +13,11 @@ import {
   DELETE_EDITION,
   MOVE_ARTICLE,
   SAVE_EDITION,
+  CHANGE_EDIT_STATUS
 } from '../types'
 const state = {
   items:[],
-  draft: null,
+  isedit: false,
   arid: null,
   edid: null,
 }
@@ -169,7 +170,10 @@ const mutations = {
   },
   [DELETE_EDITION](state,data){
     state.items.splice(state.items.findIndex(item => item.id == data.id),1)
-  }
+  },
+  [CHANGE_EDIT_STATUS](state,data){
+    state.isedit=data
+  },
 }
 
 export default {
