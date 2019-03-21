@@ -146,13 +146,6 @@ export default{
     }
   },
   mounted(){
-    window.onbeforeunload = e =>{
-      const returnValue = "Are you sure you want to lose unsaved changes?"
-      if(this.isedit){
-        ( e || window.event).returnValue=returnValue
-        return returnValue
-      }
-    }
   }
 }
 

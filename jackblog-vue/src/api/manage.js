@@ -4,7 +4,7 @@ export default {
     return fetch({
       url: 'manage/article/list',
       method: 'get',
-      params: {ids:data}
+      params: data
     })
   },
   batDeleteArticle: function (data) {

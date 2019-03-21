@@ -68,7 +68,6 @@ export default {
       //编辑状态拦截
       if(from.matched[0].path == '/creation' || from.matched[0].path == '/creation/:aid'){
         this.togo = to.path
-        console.log(this.isedit)
         if(this.isedit){
           this.openSaveModal()
           return this.$router.replace(from.path)
@@ -86,14 +85,22 @@ export default {
     }
   },
   mounted(){
+    const _this = this;
     window.onresize = () => {
-      return (() => {
-        this.$refs.star.handleWindowWidth()
+        _this.$refs.star.handleWindowWidth()
         const width = document.documentElement.clientWidth
         const height = document.documentElement.clientHeight
         const splitper = 255/width
+        console.log(splitper)
         store.commit(CHANGE_SPLITER,{splitper:splitper,width:width,height:height})
-      })
+        return
+    },
+    window.onbeforeunload = e =>{
+      const returnValue = "Are you sure you want to lose unsaved changes?"
+      if(_this.isedit){
+        ( e || window.event).returnValue=returnValue
+        return returnValue
+      }
     }
   },
   data(){
