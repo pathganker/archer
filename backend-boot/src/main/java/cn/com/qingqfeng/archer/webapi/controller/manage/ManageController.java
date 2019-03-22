@@ -76,9 +76,15 @@ public class ManageController {
 	 */
 
 	@RequestMapping(value="article/batdelete", method={RequestMethod.DELETE})
-	public Result batDeleteArticle(String[] ids){
+	public Result batDeleteArticle(String ids){
 		Result rs = new Result();
-		this.articleService.batDeleteArticle(ids);
+		if(null == ids){
+			rs.setCode(ApiCodeEnum.ARGS_WRONG);
+			return rs;
+		}
+		//字符串转数组
+		String[] params = ids.split(",");
+		this.articleService.batDeleteArticle(params);
 		rs.setCode(ApiCodeEnum.SUCCESS);
 		return rs;
 	}
@@ -94,9 +100,15 @@ public class ManageController {
 	 * Result
 	 */
 	@RequestMapping(value="article/batpublish", method={RequestMethod.GET})
-	public Result batPublishArticle(List<String> ids){
+	public Result batPublishArticle(String ids){
 		Result rs = new Result();
-		this.articleService.batPublishArticle((String[])ids.toArray());
+		if(null == ids){
+			rs.setCode(ApiCodeEnum.ARGS_WRONG);
+			return rs;
+		}
+		//字符串转数组
+		String[] params = ids.split(",");
+		this.articleService.batPublishArticle(params);
 		rs.setCode(ApiCodeEnum.SUCCESS);
 		return rs;	
 	}
@@ -112,9 +124,15 @@ public class ManageController {
 	 * Result
 	 */
 	@RequestMapping(value="article/batrecall", method={RequestMethod.GET})
-	public Result batRecallArticle(String[] ids){
+	public Result batRecallArticle(String ids){
 		Result rs = new Result();
-		this.articleService.batRecallArticle(ids);
+		if(null == ids){
+			rs.setCode(ApiCodeEnum.ARGS_WRONG);
+			return rs;
+		}
+		//字符串转数组
+		String[] params = ids.split(",");
+		this.articleService.batRecallArticle(params);
 		rs.setCode(ApiCodeEnum.SUCCESS);
 		return rs;	
 	}

@@ -17,13 +17,14 @@
     </div>
     <Modal v-model="showDelete"  width="400" 
         title="删除"
+        :loading="delloading"
         @on-ok="deleteConfirm"
         @on-cancel="deleteCancel">
         <p>这篇博客将要人间蒸发</p>
     </Modal>
     <Modal v-model="batDeleteModal"  width="400" 
         title="删除"
-        :loading="delloading"
+        :loading="batdelloading"
         @on-ok="batDeleteConfirm"
         @on-cancel="batDeleteCancel">
         <p>这些博客将要粉身碎骨</p>
@@ -52,6 +53,7 @@ export default {
             deleteId: null,
             selectId:[],
             publoading: false,
+            batdelloading: false,
             delloading: false,
             recloading: false,
             tableColumns1: [
@@ -176,7 +178,7 @@ export default {
                                     click: () => {
                                         this.remove(params.row.id)
                                     }
-                                }
+                                },
                             }, '删除')
                         ])
                     }
@@ -247,15 +249,18 @@ export default {
             this.previewModel = true
         },
         remove(id){
+            this.delloading=true
             this.showDelete=true
             this.deleteId=id
         },
         deleteConfirm(){
-            this.loading = true
+            setTimeout(()=>{
             this.deleteBackendArticle(this.deleteId).then(()=>{
+                this.delloading=false
                 this.showDelete=false
                 this.getData()
             })
+            },1000) 
         },
         deleteCancel(){
             this.showDelete=false
@@ -264,14 +269,15 @@ export default {
             if(this.selectId.length<1){
                 return
             }
+            this.batdelloading =true
             this.batDeleteModal=true
         },
         batDeleteConfirm(){
-            this.delloading=true
             setTimeout(()=>{
             this.batDeleteArticle(this.selectId).then(()=>{
                 this.delloading=false
                 this.batDeleteModal=false
+                this.getData()
             })
             },1000) 
         },
@@ -286,6 +292,7 @@ export default {
             setTimeout(()=>{
             this.batPublishArticle(this.selectId).then(()=>{
                 this.publoading=false
+                this.getData()
             })
             },1000) 
         },
@@ -297,20 +304,16 @@ export default {
             setTimeout(()=>{
                 this.batRecallArticle(this.selectId).then(()=>{
                 this.recloading=false
+                this.getData()
             })
             },1000) 
         },
         selectChange(e){
             let i
-            let data = new Object()
             this.selectId =[]
             for(i in e){
                 this.selectId.push(e[i].id)
-                data[i]=e[i].id
             }
-            console.log(JSON.stringify(this.selectId ))
-            console.log(data)
-           
         }
     }
 }

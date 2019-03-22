@@ -20,8 +20,8 @@
        FROM 
             qfeng_edition a 
        LEFT JOIN 
-            (select id, title, edition, create_time, user, is_publish from qfeng_article where (is_delete =0 or is_delete is null)) b ON a.id=b.edition
-       WHERE a.is_delete =0 and a.user_id = b.user and a.user_id = #{id}
+            (select id, title, edition, create_time, user, is_publish from qfeng_article where (is_delete =0 or is_delete is null)) b ON (a.id=b.edition) and (a.user_id = b.user)
+       WHERE a.is_delete =0  and a.user_id = #{id}
        ORDER BY
             a.create_time DESC, b.create_time DESC
     </select>

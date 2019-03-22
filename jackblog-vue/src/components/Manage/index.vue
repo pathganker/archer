@@ -2,35 +2,19 @@
     <div class="manage-container">
         <Layout class="layout-body">
             <Breadcrumb  class="nav-bread">
-                <BreadcrumbItem>管理</BreadcrumbItem>
-                <BreadcrumbItem>文章管理</BreadcrumbItem>
-                <BreadcrumbItem>文章列表</BreadcrumbItem>
+                <BreadcrumbItem :to="{ path: '/manage/' }"><Icon type="ios-ice-cream"></Icon>&nbsp;&nbsp;管理</BreadcrumbItem>
+                <BreadcrumbItem ><Icon :type="curMenu.icon"></Icon>&nbsp;&nbsp;{{curMenu.title}}</BreadcrumbItem>
+                <BreadcrumbItem><Icon type="ios-cafe"></Icon>&nbsp;&nbsp;{{curSubmenu.title}}</BreadcrumbItem>
             </Breadcrumb>
                 <Layout class="layout-content">
                     <Sider class="sider-menu" :style="{background: '#fff'}">
-                        <Menu active-name="1-1" theme="light" width="auto" :open-names="['1']">
-                            <Submenu name="1">
+                        <Menu active-name="1-1" theme="light" width="auto" :open-names="openNames" @on-select="select" @on-open-change="open">
+                            <Submenu v-for="(menu,i) in menudata" :key="i" :name="menu.name" >
                                 <template slot="title">
-                                    <Icon type="ios-navigate"></Icon>
-                                    文章管理
+                                    <Icon :type="menu.icon"></Icon>
+                                    {{menu.title}}
                                 </template>
-                                <MenuItem name="1-1" :to="{ path: '/manage/article' }">文章列表</MenuItem>
-                                <MenuItem name="1-2" :to="{ path: '/manage/tag' }">标签管理</MenuItem>
-                            </Submenu>
-                            <Submenu name="2">
-                                <template slot="title">
-                                    <Icon type="ios-keypad"></Icon>
-                                    用户管理
-                                </template>
-                                <MenuItem name="2-1" :to="{ path: '/manage/my' }">个人用户</MenuItem>
-                                <MenuItem name="2-2" :to="{ path: '/manage/other' }">微信/微博用户</MenuItem>
-                            </Submenu>
-                            <Submenu name="3">
-                                <template slot="title">
-                                    <Icon type="ios-analytics" :to="{ path: '/manage/statics' }"></Icon>
-                                    统计数据
-                                </template>
-                                <MenuItem name="3-1">访问记录</MenuItem>
+                                <MenuItem v-for="(menunext,j) in menu.submenu" :key="j" :name="menunext.name" :to="{ path: menunext.path }" >{{menunext.title}}</MenuItem>
                             </Submenu>
                         </Menu>
                     </Sider>
@@ -45,7 +29,42 @@
 <script>
 import {Layout,Breadcrumb,BreadcrumbItem,Content,Sider,Menu,Submenu,MenuItem,Footer,Icon} from 'iview'
 export default {
-    components:{Layout,Breadcrumb,BreadcrumbItem,Content,Sider,Menu,Submenu,MenuItem,Footer,Icon}
+    components:{Layout,Breadcrumb,BreadcrumbItem,Content,Sider,Menu,Submenu,MenuItem,Footer,Icon},
+    data(){
+        return{
+            curMenu: {name:"1", title:"文章管理",icon:"ios-albums"},
+            curSubmenu: {name:"1-1",title:"文章列表",path:"/manage/article"},
+            openNames: ["1"],
+            menudata: [
+                {name:"1", title:"文章管理",icon:"ios-albums",submenu:[
+                    {name:"1-1",title:"文章列表",path:"/manage/article"},
+                    {name:"1-2",title:"标签管理",path:"/manage/tag"},
+                    ]
+                },
+                {name:"2",title:"用户管理",icon:"ios-people",submenu:[
+                    {name:"2-1",title:"个人用户",path:"/manage/my"},
+                    {name:"2-2",title:"微博/微信",path:"/manage/other"},
+                    ]
+                },
+                {name:"3",title:"统计数据",icon:"ios-analytics", submenu:[
+                    {name:"3-1",title:"访问记录",path:"/manage/statics"},
+                    ]
+                }
+            ]
+        }
+    },
+    methods:{
+        select(e){
+            const index = e.split('-')
+            if(index.length == 2 && this.menudata){
+                this.curMenu = this.menudata[index[0]-1]
+                this.curSubmenu = this.menudata[index[0]-1].submenu[index[1]-1]
+            }
+        },
+        open(e){
+            console.log(this.openNames)
+        },
+    }
 }   
 </script>
 <style>

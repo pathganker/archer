@@ -196,7 +196,7 @@
             <if test="sortName!=null and sortName!='publish_time'">
             ${sortName} ${sortType},
             </if>
-            publish_time DESC
+            publish_time ${sortType}
        limit #{pageSize} offset #{page}    
     </select>
 <!-- 查询管理总数目 -->

@@ -85,7 +85,7 @@ export default {
     }
   },
   mounted(){
-    const _this = this;
+    const _this = this
     window.onresize = () => {
         _this.$refs.star.handleWindowWidth()
         const width = document.documentElement.clientWidth
