@@ -313,7 +313,6 @@ export default {
     addCover(e,id){
       this.$parent.$parent.showCropper()
       let file = e.target.files[0]
-      console.log(this.$refs.picInput[0].value)
       if(this.$refs.picInput[0]){
         this.$refs.picInput[0].value=''
       }

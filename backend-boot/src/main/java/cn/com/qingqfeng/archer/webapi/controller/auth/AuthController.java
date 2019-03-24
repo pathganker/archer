@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,10 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
-
-
-
+import cn.com.qingqfeng.archer.config.WeiboOauth;
 import cn.com.qingqfeng.archer.enums.ApiCodeEnum;
 import cn.com.qingqfeng.archer.pojo.Result;
 import cn.com.qingqfeng.archer.utils.ArcherWebUtils;
@@ -43,6 +41,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @RestController
 @RequestMapping("auth")
 public class AuthController {
+	 @Autowired
+	 private WeiboOauth weibo;
 	
 	 @Autowired
 	 private StringRedisTemplate redisTemplate; 
@@ -142,5 +142,11 @@ public class AuthController {
         return rs;
     }
 	
+	@RequestMapping(value="oauth2/callback")
+	public Result oauthTokenTest(String provider, String code) {
+		Result rs = new Result();
+		rs.setCode(ApiCodeEnum.SUCCESS);
+		return rs;
+	}
 	
 }

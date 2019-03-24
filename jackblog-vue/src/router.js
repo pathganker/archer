@@ -18,6 +18,7 @@ const TagMana =() => import('components/Manage/tag')
 const My =() => import('components/Manage/my')
 const Other =() => import('components/Manage/other')
 const Statics =() => import('components/Manage/statics')
+const Oauth =() => import('components/Oauth/index')
 import {isLogin} from './utils/cookies'
 import store from './store'
 Vue.use(Router)
@@ -57,11 +58,6 @@ const router = new Router({
         goTop: true
       }      
     },
-    // {
-    //   path: '/apps',
-    //   name: 'apps',
-    //   component: Apps
-    // },
     {
       path: '/edition',
       name: 'edition',
@@ -141,6 +137,11 @@ const router = new Router({
           component: Statics,
         }
       ]
+    },
+    {
+      path: '/oauth2/callback/:provider',
+      name: 'oauth',
+      component: Oauth,
     }
   ]
 })
