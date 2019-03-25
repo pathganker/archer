@@ -116,4 +116,49 @@ public class UserServiceImpl implements IUserService{
 		return this.likeDao.queryLikeByUserId(id);
 	}
 
+	/** (non-Javadoc)
+	 * @see cn.com.qingqfeng.archer.service.user.IUserService#addThirdParty(cn.com.qingqfeng.archer.pojo.user.UserDTO)
+	 */
+	@Override
+	public void addThirdParty(UserDTO user) {
+		if(null == user || StringUtils.isBlank(user.getId())){
+			return;
+		}
+		UserDO udo = new UserDO();
+		BeanUtils.copyProperties(user, udo);
+		this.userDao.insert(udo);
+	}
+
+	/** (non-Javadoc)
+	 * @see cn.com.qingqfeng.archer.service.user.IUserService#checkUserExist(java.lang.String)
+	 */
+	@Override
+	public Boolean checkUserExist(String id) {
+		if(StringUtils.isBlank(id)){
+			return false;
+		}
+		UserDO user = this.userDao.queryUserById(id);
+		if(null == user || !id.equals(user.getId())){
+			return false;
+		}
+		return true;
+	}
+
+	/** (non-Javadoc)
+	 * @see cn.com.qingqfeng.archer.service.user.IUserService#requestUserById(java.lang.String)
+	 */
+	@Override
+	public UserDTO requestUserById(String id) {
+		UserDTO result = new UserDTO();
+		if(StringUtils.isBlank(id)){
+			return result;
+		}
+		UserDO user = this.userDao.queryUserById(id);
+		if(null == user){
+			return result;
+		}
+		BeanUtils.copyProperties(user, result);
+		return result;
+	}
+
 }

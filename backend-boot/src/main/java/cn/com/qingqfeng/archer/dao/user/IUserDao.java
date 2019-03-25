@@ -21,7 +21,7 @@ public interface IUserDao {
 	
 	List<UserDO> getAll();
 	
-	UserDO getOne(String id);
+	UserDO queryUserById(String id);
 	
 	void insert(UserDO user);
 	

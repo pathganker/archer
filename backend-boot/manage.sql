@@ -169,3 +169,6 @@ CREATE TABLE `qfeng_visit_record` (
 
 ALTER TABLE `qfeng_article`
 ADD COLUMN `preview`  varchar(500) NULL AFTER `modify_time`;
+
+ALTER TABLE `qfeng_user`
+ADD COLUMN `type`  int(1) NULL DEFAULT 4 AFTER `email`;

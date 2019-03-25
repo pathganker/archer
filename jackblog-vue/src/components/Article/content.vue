@@ -40,9 +40,20 @@ export default {
   text-align: center
 }
 .list-image img{
-  width: 100%;
-  max-width: 880px;
+  width: 80%;
+  max-width: 777px;
   min-width: 364px;
   display: inline-block;
+}
+.markdown-body{
+  width: 80%;
+  margin: 20px auto;
+}
+@media (max-width: 600px){
+  .markdown-body{
+  width: 100%;
+  margin: 20px 0;
+  padding: 0 5px;
+}
 }
 </style>

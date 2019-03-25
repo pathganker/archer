@@ -117,14 +117,15 @@
     width: 100%;
     background: 0 0;
   }
-  .day-mode .navbar-menu .navbar-items {
-    margin: 0px 0px 0px 0px;
-    height: 100%;
+  .day-mode .navbar-items{
+    text-align: center;
   }
-  .day-mode .navbar-menu a.navbar-item {
+  .day-mode .navbar-item {
+    display: inline-block;
     height: 100%;
-    width: 40px;
+    width: 55px;
     margin: 0px 0px 0px 0px;
+    padding: 0;
   }
   .day-mode .navbar-menu .navtitle{
     margin-left: 0px;

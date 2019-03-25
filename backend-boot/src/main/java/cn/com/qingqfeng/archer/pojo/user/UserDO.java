@@ -40,6 +40,8 @@ public class UserDO implements Serializable{
 	private String avatar;
 	/** 邮件 */
 	private String email;
+	/** 类型  微信/微博/QQ */
+	private Integer type;
 	public String getId() {
 		return id;
 	}
@@ -111,6 +113,12 @@ public class UserDO implements Serializable{
 	}
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	public Integer getType() {
+		return type;
+	}
+	public void setType(Integer type) {
+		this.type = type;
 	}
 	
 }

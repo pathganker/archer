@@ -7,7 +7,7 @@ import {
   LOGOUT_USER,
   UPDATE_USER_SUCCESS,
   GET_ACCESS_TOKEN,
-  REFRESH_ACCESS_TOKEN
+  REFRESH_ACCESS_TOKEN,
 } from '../types'
 import { getCookie,saveCookie,signOut } from '../../utils/cookies'
 import router from '../../router'
@@ -18,6 +18,7 @@ const state = {
   isRefreshToken: false,
   accessToken: '',
   isSigin: false,
+  isAdmin: false,
 }
 
 const actions = {
@@ -56,12 +57,12 @@ const actions = {
     })
   },
   getUserInfo({ commit }){
-    api.getMe().then(response => {
+    return api.getMe().then(response => {
       const json = response.data
       if(200!=json.code){
         return commit(USERINFO_FAILURE)
       }
-      commit(USERINFO_SUCCESS, { user: json.data })
+      commit(USERINFO_SUCCESS, json.data )
     }, 
     error => {
       commit(USERINFO_FAILURE)
@@ -94,8 +95,23 @@ const actions = {
     }).catch(error => {
       console.log(error)
     })
+  },
+  getOauthToken({commit},data){
+    return api.getOauthToken(data).then(response =>{
+      const json = response.data
+      if(200== json.code){
+        commit(GET_ACCESS_TOKEN, {
+          accessToken: json.data,
+        })
+        saveCookie('token',json.data)
+      }
+    },
+    error =>{
+      console.log(error)
+    })
   }
 }
+
 
 
 
@@ -104,9 +120,10 @@ const mutations = {
     state.token = action.token
     state.isSigin = true
   },
-  [USERINFO_SUCCESS](state,action){
-    state.user = action.user
+  [USERINFO_SUCCESS](state,data){
+    state.user = data.user
     state.isSigin = true
+    state.isAdmin = data.admin
   },
   [USERINFO_FAILURE](state,action){
     state.user = null
@@ -122,11 +139,12 @@ const mutations = {
     state.user = action.user
   },
   [GET_ACCESS_TOKEN](state, data){
+    state.token = data.accessToken
     state.accessToken = data.accessToken
   },
   [REFRESH_ACCESS_TOKEN](state, data){
     state.isRefreshToken = data.isRefreshToken
-  }
+  },
 }
 
 export default {

@@ -212,6 +212,15 @@ export default {
       method: 'get',
       params: {id:id}
     })
+  },
+  getOauthToken: function(data){
+    return fetch({
+      url: 'auth/oauth2/callback',
+      method: 'get',
+      params:{
+        provider:data.provider,
+        code:data.code
+      }
+    })
   }
-
 }

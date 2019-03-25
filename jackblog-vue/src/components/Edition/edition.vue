@@ -46,7 +46,7 @@ export default {
 <style>
 
 .article-list-container{
-    width: 40%;
+    width: 50%;
     margin: 0 auto;
 }
 .article-list-sort{
@@ -72,6 +72,21 @@ export default {
 .link-title-article{
     color: black!important;
     font-size: 18px;
+}
+@media (max-width: 600px) {
+  .article-list-container {
+    width:95%;
+  }
+  .article-list-sort{
+      margin: 0 10px;
+  }
+  .article-sort{
+      padding: 0;
+  }
+  .article-sort-header{
+      margin: 0;
+      padding: 10px 0 0 0;
+  }
 }
 </style>
 

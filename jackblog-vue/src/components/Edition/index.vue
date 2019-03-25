@@ -40,7 +40,7 @@ export default {
   text-align: center;
 }
 .sort-list{
-  width:30%;
+  width:33%;
   display: inline-block;
 }
 .sort-item{
@@ -56,7 +56,7 @@ export default {
   margin: auto;
   font-size: 20px;
   color: white!important;
-  overflow:hidden;
+  overflow: hidden;
   text-overflow:ellipsis;
   white-space:nowrap;
   font-family: "KaiTi";
@@ -64,5 +64,13 @@ export default {
   border-bottom:1px solid #ccc; /* #ccc换成链接的颜色 */
   display: inline-block; 
   padding-bottom:3px;  /*这里设置你要空的距离*/
+}
+@media (max-width: 600px) {
+  .sort-container {
+    width:95%;
+  }
+  .sort-title{
+    word-break: break-all;
+  }
 }
 </style>

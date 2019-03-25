@@ -86,5 +86,40 @@ public interface IUserService {
 	 * List<String>
 	 */
 	List<String> requestUserLikeByUserId(String id);
+	/**
+	 * 
+	 * <p>方法名:  addThirdParty </p> 
+	 * <p>描述:    添加第三方用户 </p>
+	 * <p>创建时间:  2019年3月25日上午11:49:29 </p>
+	 * @version 1.0
+	 * @author lijunliang
+	 * @param user  
+	 * void
+	 */
+	void addThirdParty(UserDTO user);
+	/**
+	 * 
+	 * <p>方法名:  checkUserExist </p> 
+	 * <p>描述:    检查第三方用户是否已注册 </p>
+	 * <p>创建时间:  2019年3月25日上午11:57:01 </p>
+	 * @version 1.0
+	 * @author lijunliang
+	 * @param id
+	 * @return  
+	 * Boolean
+	 */
+	Boolean checkUserExist(String id);
+	/**
+	 * 
+	 * <p>方法名:  requestUserById </p> 
+	 * <p>描述:    根据id查询 </p>
+	 * <p>创建时间:  2019年3月25日下午9:02:00 </p>
+	 * @version 1.0
+	 * @author lijunliang
+	 * @param id
+	 * @return  
+	 * UserDTO
+	 */
+	UserDTO requestUserById(String id);
 	
 }

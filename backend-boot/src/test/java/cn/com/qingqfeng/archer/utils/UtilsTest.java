@@ -2,12 +2,20 @@
 package cn.com.qingqfeng.archer.utils;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.client.RestTemplate;
 
 import com.alibaba.fastjson.JSON;
 
@@ -41,5 +49,21 @@ public class UtilsTest {
 		
 		List<String> param = JSON.parseArray(json,String.class);
 		System.out.println(param);
+	}
+	
+	@Test
+	public void HttpTest(){
+        RestTemplate client = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("username","test");
+        params.put("password", "hello");
+        HttpEntity<Map<String,String>> requestEntity = new HttpEntity<Map<String,String>>(params, headers);
+        //  执行HTTP请求
+        ResponseEntity<String> response = client.exchange("http://127.0.0.1:7000/login/siginin", HttpMethod.POST, requestEntity, String.class);
+        String result = response.getBody();
+        System.out.println(result); 
+		
 	}
 }

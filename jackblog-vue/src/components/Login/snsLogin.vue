@@ -2,7 +2,7 @@
 	<div class="login-sns">
 	  <ul>
       <li  v-for="(item,index) in logins" :key="index" @click.stop.prevent="snsLogin(item)">
-        <a v-bind:class="item" href="#"><i v-bind:class="'fa fa-' + item"></i></a>
+        <a v-bind:class="item.name" href="#"><i v-bind:class="'fa fa-' + item.name"></i></a>
       </li>
 	  </ul>
 	</div>
@@ -21,11 +21,7 @@ export default {
   methods: {
     snsLogin(provider){
       console.log(provider)
-      let search = API_ROOT + 'auth/' + provider + '?redirectUrl=' + window.location.origin
-      if (isLogin()) {
-        const token = getCookie('token')
-        search += '&access_token=' + token.replace(/(^\")|(\"$)/g, '')
-      }
+      let search = provider.authorizationUri + '?client_id=' + provider.clientId + '&redirect_uri=' + provider.redirectUri
       window.location.href = search
     }
   }

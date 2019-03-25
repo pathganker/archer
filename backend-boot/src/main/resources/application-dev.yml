@@ -22,7 +22,14 @@ spring:
     port: 6379
     password: redis@1010
     timeout: 1000
-
+oauth2:
+  weibo:
+    clientId: 18952497
+    clientSecret: f5e26155c0109a16d33e142d7db00c7e
+    redirectUri: http://127.0.0.1:3000/oauth2/callback/weibo
+    authorizationUri: https://api.weibo.com/oauth2/authorize
+    tokenUri: https://api.weibo.com/oauth2/access_token
+    userInfoUri: https://api.weibo.com/2/users/show.json
         
           
       

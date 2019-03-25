@@ -3,7 +3,9 @@
  */
 package cn.com.qingqfeng.archer.webapi.controller.user;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.BeanUtils;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import cn.com.qingqfeng.archer.enums.ApiCodeEnum;
+import cn.com.qingqfeng.archer.enums.UserTypeEnum;
 import cn.com.qingqfeng.archer.pojo.Result;
 import cn.com.qingqfeng.archer.pojo.user.UserDTO;
 import cn.com.qingqfeng.archer.pojo.user.UserVO;
@@ -52,15 +55,21 @@ public class UserController {
 			rs.setCode(ApiCodeEnum.NO_RESULT);
 			return rs;
 		}
-		String username = jwtPlayload.getUserId();
 		String userId = jwtPlayload.getId();
-		UserDTO user = this.userService.requestUserByName(username);
+		UserDTO user = this.userService.requestUserById(userId);
 		UserVO userVO = new UserVO();
 		BeanUtils.copyProperties(user, userVO);
 		List<String> likes = this.userService.requestUserLikeByUserId(userId);
 		userVO.setLikes(likes);
+		Map<String, Object> data = new HashMap<String, Object>();
+		if(UserTypeEnum.ADMIN.getCode().equals(user.getType())){
+			data.put("admin", true);
+		}else{
+			data.put("admin", false);
+		}
+		data.put("user", userVO);
 		rs.setCode(ApiCodeEnum.SUCCESS);
-		rs.setData(userVO);
+		rs.setData(data);
 		return rs;
 	}
 	

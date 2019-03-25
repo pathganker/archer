@@ -3,6 +3,7 @@ package cn.com.qingqfeng.archer.webapi.controller.auth;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -11,21 +12,28 @@ import java.util.concurrent.TimeUnit;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSON;
+
 import cn.com.qingqfeng.archer.config.WeiboOauth;
 import cn.com.qingqfeng.archer.enums.ApiCodeEnum;
+import cn.com.qingqfeng.archer.enums.UserTypeEnum;
 import cn.com.qingqfeng.archer.pojo.Result;
+import cn.com.qingqfeng.archer.pojo.user.UserDTO;
+import cn.com.qingqfeng.archer.service.user.IUserService;
 import cn.com.qingqfeng.archer.utils.ArcherWebUtils;
+import cn.com.qingqfeng.archer.utils.HttpUtils;
 import cn.com.qingqfeng.archer.utils.JwtUtils;
 import cn.com.qingqfeng.archer.utils.VerifyCodeUtils;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -47,6 +55,8 @@ public class AuthController {
 	 @Autowired
 	 private StringRedisTemplate redisTemplate; 
 	
+	 @Autowired
+	 private IUserService userService;
 
 	 private final static String CAPTCHA_KEY = "captcha:key_";
 
@@ -141,11 +151,87 @@ public class AuthController {
         rs.setData(data);
         return rs;
     }
-	
-	@RequestMapping(value="oauth2/callback")
-	public Result oauthTokenTest(String provider, String code) {
+	/**
+	 * 
+	 * <p>方法名:  oauth2Token </p> 
+	 * <p>描述:    第三方授权 </p>
+	 * <p>创建时间:  2019年3月25日下午1:17:42 </p>
+	 * @version 1.0
+	 * @author lijunliang
+	 * @param provider
+	 * @param code
+	 * @param req
+	 * @return  
+	 * Result
+	 */
+	@RequestMapping(value="oauth2/callback",method={RequestMethod.GET})
+	public Result oauth2Token(String provider, String code, HttpServletRequest req) {
 		Result rs = new Result();
-		rs.setCode(ApiCodeEnum.SUCCESS);
+		if(StringUtils.isBlank(code)){
+			rs.setCode(ApiCodeEnum.API_AUTHORITY);
+			return rs;
+		}
+		String clientKey = req.getHeader("Auth-clientKey");
+		String host = ArcherWebUtils.getRemoteIpAddr(req);
+		if("weibo".equals(provider)){
+			//access_token
+			Map<String, String> params = new LinkedHashMap<String, String>();
+			params.put("client_id",weibo.getClientId());
+			params.put("client_secret",weibo.getClientSecret());
+			params.put("grant_type","authorization_code");
+			params.put("code",code);
+			params.put("redirect_uri",weibo.getRedirectUri());
+			String tokenJson = "";
+			try{
+				tokenJson=HttpUtils.client(weibo.getTokenUri(), HttpMethod.POST, params);
+			}catch(Exception e){
+				System.out.println(e.getMessage());
+			}
+			@SuppressWarnings("unchecked")
+			Map<String,String> tokenMap = (Map<String, String>) JSON.parse(tokenJson);
+			if(null == tokenMap){
+				rs.setCode(ApiCodeEnum.ARGS_WRONG);
+				return rs;
+			}
+			String accessToken = tokenMap.get("access_token");
+			if(StringUtils.isBlank(accessToken)){
+				rs.setCode(ApiCodeEnum.ARGS_WRONG);
+				return rs;
+			}
+			String uid = tokenMap.get("uid");
+			//user_info
+			params.clear();
+			params.put("access_token",accessToken);
+			params.put("uid",uid);
+			//已注册 直接发放token
+			if(this.userService.checkUserExist(uid)){
+				String token = JwtUtils.issueJwt(uid, clientKey, "token-server", 24*3600*1000*7L, "ordinary", "comment", host, SignatureAlgorithm.HS256);
+				rs.setData(token);
+				rs.setCode(ApiCodeEnum.SUCCESS);
+				return rs;
+			}
+			//新注册用户
+			String userJson = HttpUtils.client(weibo.getUserInfoUri(), HttpMethod.GET, params);
+			@SuppressWarnings("unchecked")
+			Map<String,String> userMap = (Map<String, String>) JSON.parse(userJson);
+			String userName = userMap.get("screen_name");
+			String avatar = userMap.get("avatar_large");
+			//添加用户
+			UserDTO user = new UserDTO();
+			user.setId(uid);
+			user.setavatar(avatar);
+			user.setNickname(userName);
+			user.setType(UserTypeEnum.WEIBO.getCode());
+			user.setCreateTime(new Date());
+			user.setModifyTime(new Date());
+			this.userService.addThirdParty(user);
+			//发放token
+			String token = JwtUtils.issueJwt(uid, clientKey, "token-server", 24*3600*1000*7L, "ordinary", "comment", host, SignatureAlgorithm.HS256);
+			rs.setData(token);
+			rs.setCode(ApiCodeEnum.SUCCESS);
+			return rs;
+		}
+		rs.setCode(ApiCodeEnum.API_AUTHORITY);
 		return rs;
 	}
 	

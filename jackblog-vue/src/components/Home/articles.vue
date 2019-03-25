@@ -75,7 +75,7 @@ export default {
 	margin: 15px 0 5px 0;
 }
 .list-image img{
-	
+	width: 80%;
 	max-width: 777px;
 	min-width: 364px;
 }
@@ -84,9 +84,6 @@ export default {
 }
 .list-footer a{
 	color: #2d8cf0;
-}
-.ivu-card{
-	
 }
 .portal-article{
 	position: relative;

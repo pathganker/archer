@@ -28,10 +28,6 @@ public class UserServiceTest {
 	
 	@Test
 	public void addTest() {
-		UserDTO user = new UserDTO();
-		user.setUsername("zankokutenshi@yeah.net");
-		user.setPassword("cankutianshi");
-		this.userService.addUser(user);
 	}
 	@Test
 	public void updateTest(){

@@ -53,5 +53,13 @@ export default {
   display: inline-block; 
   padding-bottom:3px;  /*这里设置你要空的距离*/
 }
+@media (max-width: 600px) {
+  .tag-container{
+    width: 95%;
+  }
+  .tag-item{
+    width:26%;
+  }
+}
 </style>
 

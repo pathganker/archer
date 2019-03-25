@@ -56,7 +56,7 @@ const router = new Router({
       component: Article,
       meta: {
         goTop: true
-      }      
+      },
     },
     {
       path: '/edition',
