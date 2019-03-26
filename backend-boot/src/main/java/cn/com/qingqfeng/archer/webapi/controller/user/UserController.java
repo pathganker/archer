@@ -57,6 +57,10 @@ public class UserController {
 		}
 		String userId = jwtPlayload.getId();
 		UserDTO user = this.userService.requestUserById(userId);
+		if(null == userId || !userId.equals(user.getId())) {
+			rs.setCode(ApiCodeEnum.NO_RESULT);
+			return rs;
+		}
 		UserVO userVO = new UserVO();
 		BeanUtils.copyProperties(user, userVO);
 		List<String> likes = this.userService.requestUserLikeByUserId(userId);

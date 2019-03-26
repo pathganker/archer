@@ -6,7 +6,8 @@ let cookieConfig = {}
 cookieConfig = { 
   domain: CookieDomain,
   // expires: new Date(today.getMilliseconds+3600*1000*24),
-  maxAge: 3600*24*7
+  maxAge: 3600*24*7,
+  path: '/'
 } //path:'/',maxAge:365*24*60*60
 
 export function saveCookie(name,value) {

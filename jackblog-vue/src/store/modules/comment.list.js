@@ -39,6 +39,7 @@ const actions = {
     })
   },
   addReply(store,data){
+    console.log(data)
     api.addNewReply(data).then(response => {
       const json = response.data
       if(200!=json.code){

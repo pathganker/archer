@@ -23,7 +23,7 @@
 
             <Reply v-show="comment.replys && comment.replys.length > 0" :replys="comment.replys" :k="i"></Reply>
 
-             <form v-bind:id="'replyForm' + i" class="new-reply hide" @submit.prevent="submitReplyToComment(i,comment.uid)"> 
+             <form v-bind:id="'replyForm' + i" class="new-reply hide" @submit.prevent="submitReplyToComment(i,comment)"> 
                <div class="comment-text"> 
                   <textarea v-bind:id="'replyContent' + i"
                       required 
@@ -80,10 +80,10 @@ export default {
       this.$parent.handleSubmitComment(this.newCommentContent)
       this.newCommentContent = ''
     },
-    submitReplyToComment(i,cid){
+    submitReplyToComment(i,comment){
       const eleForm = document.getElementById('replyForm' + i)
       const eleTextarea = document.getElementById('replyContent' + i)
-      this.$parent.handleSubmitReplyToComment(cid,eleTextarea.value)
+      this.$parent.handleSubmitReplyToComment(comment,eleTextarea.value)
       eleTextarea.value = ''
       eleForm.className += ' hide'
     },

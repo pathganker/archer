@@ -11,7 +11,6 @@
     <Prenext :prev-article="prevArticle" :next-article="nextArticle"></Prenext>
     <Comment :comment-list="commentList" :user="user"></Comment>
     <Loginmodal ref='modal'></Loginmodal>
-    <Scrolltop></Scrolltop>
   </div>
 </template>
 <script>
@@ -20,11 +19,10 @@ import Comment from './comment.vue'
 import Prenext from './prenext.vue'
 import Like from './like.vue'
 import Loginmodal from '../Login/modal.vue'
-import Scrolltop from '../Scrolltop/index.vue'
 import { mapState,mapActions } from 'vuex'
 import {formatDate, uuid} from '../../utils/stringUtils'
 export default {
-  components: { ArtickeContent,Like,Prenext,Comment,Scrolltop,Loginmodal },
+  components: { ArtickeContent,Like,Prenext,Comment,Loginmodal },
   computed: {
     ...mapState({
       articleDetail: ({articleDetail}) => articleDetail.item,
@@ -53,9 +51,9 @@ export default {
     ]),
     initData(){
       const aid = this.$route.params.aid
+      this.getArticleDetail(aid)
       this.getPrenext(aid)
       this.getCommentList(aid)
-      this.getArticleDetail(aid)
     }, 
     openLoginModal(){
       this.$refs.modal.showModal()
@@ -73,7 +71,8 @@ export default {
         nickname: this.user.nickname,
         avatar: this.user.avatar,
         userId: this.user.id,
-        createTime: new Date()
+        createTime: new Date(),
+        replys: [],
       })
       }else{
         this.openLoginModal()
@@ -85,16 +84,16 @@ export default {
         this.openLoginModal()
       }
     },
-    handleSubmitReplyToComment(cid,content){
+    handleSubmitReplyToComment(comment,content){
       if(this.user && content.trim() !== ''){
         this.addReply({
           content: content,
-          commentId: cid,
+          commentId: comment.uid,
           createTime: new Date(),
           userId: this.user.id,
           nickname: this.user.nickname,
-          targetId: this.articleDetail.userId,
-          targetName: this.articleDetail.nickname
+          targetId: comment.userId,
+          targetName: comment.nickname
         })
       }else{
         this.openLoginModal()

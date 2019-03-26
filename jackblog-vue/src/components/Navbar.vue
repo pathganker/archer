@@ -39,6 +39,11 @@
 								管理
 								</router-link>
 							</li>
+							<li v-if="auth.token && isSign" class="navbar-item">
+								<a href="javascript:;"  @click="logout()"   title="登出"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span><br>
+								登出
+								</a>
+							</li>
 						</ul>
 					</div>
 		  </div> 
@@ -59,7 +64,8 @@ export default {
     ...mapState({
 			auth: state => state.auth,
 			styleMode: state => state.globalVal.styleMode,
-			admin: state => state.auth.isAdmin
+			admin: state => state.auth.isAdmin,
+			isSign: state => state.auth.isSigin
     }),
     defaultAvatar() {
       return defaultAvatar

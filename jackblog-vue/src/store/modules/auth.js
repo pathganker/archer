@@ -16,7 +16,6 @@ const state = {
   token: getCookie('token') || null,
   user: null,
   isRefreshToken: false,
-  accessToken: '',
   isSigin: false,
   isAdmin: false,
 }
@@ -82,13 +81,13 @@ const actions = {
     })
   },
   getAccessToken({commit}){
-    api.getAccessToken().then(response => {
+    return api.getAccessToken().then(response => {
       const json=response.data
       if(200 == json.code){
         commit(GET_ACCESS_TOKEN, {
           accessToken: json.data.jwt,
         })
-        return response
+        saveCookie('token',json.data.jwt)   
       }else{
         console.log(response)
       }
@@ -140,7 +139,6 @@ const mutations = {
   },
   [GET_ACCESS_TOKEN](state, data){
     state.token = data.accessToken
-    state.accessToken = data.accessToken
   },
   [REFRESH_ACCESS_TOKEN](state, data){
     state.isRefreshToken = data.isRefreshToken

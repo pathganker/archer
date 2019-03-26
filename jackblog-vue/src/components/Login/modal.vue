@@ -4,6 +4,7 @@
     title="请用以下方式登录"
   >
       <div class="portlet-body">
+        <p style="text-align:center;font-size:14px">≧▽≦仅开放评论功能≧▽≦</p>
         <SnsLogin :logins="logins"></SnsLogin>
       </div>
       <div slot="footer">
@@ -30,7 +31,7 @@ export default {
       logins:[{
         name: 'weibo',
         authorizationUri: 'https://api.weibo.com/oauth2/authorize',
-        clientId: '18952497',
+        clientId: '3748264479',
         redirectUri: 'http://127.0.0.1:3000/oauth2/callback/weibo'
       }]
     }
@@ -47,3 +48,8 @@ export default {
   }
 }
 </script>
+<style>
+.day-mode a.weibo{
+  background-color: #ec782b
+}
+</style>

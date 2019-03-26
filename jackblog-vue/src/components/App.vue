@@ -6,6 +6,7 @@
       <transition>
          <router-view class="enter"></router-view>
       </transition>
+      <Scrolltop></Scrolltop>
     </div>
     <Toaster></Toaster>
     <Modal 
@@ -29,11 +30,12 @@ import store from 'store'
 import Navbar from './Navbar'
 import Toaster from './Toaster'
 import CanvasStar from './Effects'
+import Scrolltop from './Scrolltop'
 import { mapState } from 'vuex'
 import {Modal} from 'iview'
 import { getCookie,saveCookie,removeCookie} from '../utils/cookies'
 export default {
-  components:{ Navbar,Toaster, CanvasStar, Modal },
+  components:{ Navbar,Toaster, CanvasStar, Modal, Scrolltop },
   computed: {
     ...mapState({
     arid: ({editionList}) => editionList.arid,

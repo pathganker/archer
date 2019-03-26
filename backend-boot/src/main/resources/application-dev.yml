@@ -24,8 +24,8 @@ spring:
     timeout: 1000
 oauth2:
   weibo:
-    clientId: 18952497
-    clientSecret: f5e26155c0109a16d33e142d7db00c7e
+    clientId: 3748264479
+    clientSecret: dc4bad08bf0eb5cac9cac161caf98780
     redirectUri: http://127.0.0.1:3000/oauth2/callback/weibo
     authorizationUri: https://api.weibo.com/oauth2/authorize
     tokenUri: https://api.weibo.com/oauth2/access_token

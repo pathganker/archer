@@ -45,7 +45,7 @@ export default{
     this.getEditionList()
     const aid = this.$route.params.aid
     if(null == aid){
-      if(getCookie('arid')!='null'){
+      if(typeof(getCookie('arid'))!=undefined){
         this.getBackendArticle(getCookie('arid')).then(()=>{
           if(this.article){
             store.commit(CURRENT_EDITION,{edid:this.article.edition})

@@ -12,8 +12,9 @@ export default {
         console.log(code)
         if(provider && code){
             this.getOauthToken({provider:provider,code:code}).then(()=>{
-               // this.$router.go(-1)
-               this.getUserInfo()
+               this.getUserInfo().then(()=>{
+                    this.$router.push({path:'/'})
+               })
             })
         }
         

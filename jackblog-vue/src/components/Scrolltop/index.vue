@@ -7,7 +7,7 @@
 export default {
   data(){
     return {
-      isShowTop:false
+      isShowTop:true
     }
   },
   mounted(){
@@ -18,10 +18,11 @@ export default {
       if (window.scrollY > 200) {
         this.isShowTop = true
       } else {
-        this.isShowTop = false
+        this.isShowTop = true
       }
     },
     gotop(){
+      console.log(document.documentElement.scrollTop)
       window.scrollTo(0,0)
     }
   }
