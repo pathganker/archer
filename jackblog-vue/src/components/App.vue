@@ -4,9 +4,10 @@
     <div class="second-box" @mousemove="handleMove">
       <Navbar ref="nav"></Navbar>
       <transition>
-         <router-view class="enter"></router-view>
+         <router-view class="enter">
+         </router-view>
       </transition>
-      <Scrolltop></Scrolltop>
+      <Scrolltop ref="scroll"></Scrolltop>
     </div>
     <Toaster></Toaster>
     <Modal 

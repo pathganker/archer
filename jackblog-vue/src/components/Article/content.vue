@@ -13,7 +13,7 @@
 					<div class="list-image" >
 						<img :src="articleDetail.image"  style="margin:10px auto;padding:3px;border: 1px solid #ddd;"/>
 					</div>
-          <div class="markdown-body" v-html="articleDetail.frontContent"></div>
+          <div class="markdown-body detail-content" v-html="articleDetail.frontContent"></div>
 				</div>
       </Card>
   </div>
@@ -45,7 +45,7 @@ export default {
   min-width: 364px;
   display: inline-block;
 }
-.markdown-body{
+.detail-content{
   width: 80%;
   margin: 20px auto;
 }

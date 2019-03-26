@@ -14,7 +14,7 @@
                                     <Icon :type="menu.icon"></Icon>
                                     {{menu.title}}
                                 </template>
-                                <MenuItem v-for="(menunext,j) in menu.submenu" :key="j" :name="menunext.name" :to="{ path: menunext.path }" >{{menunext.title}}</MenuItem>
+                                <MenuItem v-for="(menunext,j) in menu.submenu" :key="j" :name="menunext.name" :to="{ path: menunext.path }" class="menunext">{{menunext.title}}</MenuItem>
                             </Submenu>
                         </Menu>
                     </Sider>
@@ -106,5 +106,8 @@ export default {
     text-align: center;
     height: 70px;
     background: rgb(134, 171, 252);
+}
+.menunext{
+    color:#515a6e!important;
 }
 </style>

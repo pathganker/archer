@@ -55,3 +55,11 @@ export default {
   }
 }
 </script>
+<style>
+.reply-user{
+  color: black!important;
+}
+.reply-content{
+  color: black;
+}
+</style>

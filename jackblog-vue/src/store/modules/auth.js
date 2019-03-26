@@ -133,6 +133,7 @@ const mutations = {
     state.user = null
     state.token = null
     state.isSigin = false
+    state.isAdmin = false
   },
   [UPDATE_USER_SUCCESS](state,action){
     state.user = action.user

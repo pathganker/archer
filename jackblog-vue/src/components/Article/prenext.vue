@@ -13,3 +13,11 @@ export default {
   props:['prevArticle','nextArticle']
 }
 </script>
+<style>
+.prenext .next a, .prenext .prev a{
+  color: black!important; 
+}
+.prenext .next a:focus, .prenext .prev a:focus{
+  text-decoration: none;
+}
+</style>

@@ -31,8 +31,8 @@ export default {
       logins:[{
         name: 'weibo',
         authorizationUri: 'https://api.weibo.com/oauth2/authorize',
-        clientId: '3748264479',
-        redirectUri: 'http://127.0.0.1:3000/oauth2/callback/weibo'
+        clientId: '18952497',
+        redirectUri: 'http://106.12.198.62/oauth2/callback/weibo'
       }]
     }
   },

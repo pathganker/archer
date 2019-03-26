@@ -114,3 +114,17 @@ export default {
   }
 }
 </script>
+<style>
+.comment-head{
+  color: black;
+}
+.author-name{
+  color: black!important;
+}
+.reply-time{
+  color: black;
+}
+.comment-content{
+  color: black;
+}
+</style>

@@ -8,8 +8,8 @@
                 <Button type="primary" @click="batRecall" :loading="recloading"> 批量取消发布</Button>
                 <Button type="warning" @click="batDelete"> 批量删除</Button>
             </div>
-            <div style="float: right;">
-                <Page :total="total" :current="1" @on-change="changePage"></Page>
+            <div style="float: right;" >
+                <Page :total="total" :current="1" @on-change="changePage" class="page"></Page>
             </div>
         </div>
     <div class="image-preview" v-show="previewModel" @click="hide"> 
@@ -346,6 +346,9 @@ export default {
 .image-preview img{
     /* display: inline; */
     margin: auto;
+}
+.page>li>a{
+    color:#515a6e!important;
 }
 </style>
 
