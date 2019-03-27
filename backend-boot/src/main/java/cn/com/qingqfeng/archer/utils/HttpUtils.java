@@ -3,7 +3,10 @@
  */
 package cn.com.qingqfeng.archer.utils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -24,6 +27,9 @@ public class HttpUtils {
         RestTemplate client = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        List<MediaType> acceptableMediaTypes = new ArrayList<MediaType>();
+        acceptableMediaTypes.add(MediaType.APPLICATION_JSON);
+        headers.setAccept(acceptableMediaTypes);
         HttpEntity<Map<String,String>> requestEntity = new HttpEntity<Map<String,String>>(null, headers);
         //  执行HTTP请求
         url+=jsonToUrlParams(params);

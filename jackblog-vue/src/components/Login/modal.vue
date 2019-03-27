@@ -16,6 +16,7 @@
 import { mapState,mapActions } from 'vuex'
 import { Modal } from 'iview'
 import SnsLogin from './snsLogin.vue'
+import {Weibo,Github} from '../../config.js'
 export default {
   components:{
     Modal, SnsLogin
@@ -28,16 +29,10 @@ export default {
   data(){
     return {
       showLoginModal:false,
-      logins:[{
-        name: 'weibo',
-        authorizationUri: 'https://api.weibo.com/oauth2/authorize',
-        clientId: '18952497',
-        redirectUri: 'http://106.12.198.62/oauth2/callback/weibo'
-      }]
+      logins:[Weibo,Github]
     }
   },
   created () {
-
   },
   methods: {
     ...mapActions([
@@ -49,7 +44,10 @@ export default {
 }
 </script>
 <style>
-.day-mode a.weibo{
+.day-mode a.weibo {
   background-color: #ec782b
+}
+.day-mode a.github{
+  background-color: rgba(15, 180, 9, 0.993)
 }
 </style>

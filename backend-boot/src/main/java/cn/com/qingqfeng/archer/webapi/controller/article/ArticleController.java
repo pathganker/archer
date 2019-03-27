@@ -424,7 +424,7 @@ public class ArticleController {
 		String preview = new String();
 		try {
 			image = FileUtils.handleCover(picture, id);
-			preview = PictureUtils.getPreview(image);
+			preview = PictureUtils.getPreview(image,40,40);
 			
 		}catch(RuntimeException | IOException e){
 			rs.setCode(ApiCodeEnum.SERVICE_WRONG);

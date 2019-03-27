@@ -106,6 +106,8 @@ public class StatelessShiroConfig {
 		filterChainDefinitionMap.put("/auth/captcha/**", "anon");
 		filterChainDefinitionMap.put("/auth/jwttoken", "anon");
 		filterChainDefinitionMap.put("/users/info/me", "jwt,role[ordinary]");
+		filterChainDefinitionMap.put("/users/info/new", "jwt,role[ordinary]");
+		filterChainDefinitionMap.put("/users/upload/avatar/**", "jwt,role[ordinary]");
 		filterChainDefinitionMap.put("/users/**", "jwt,role[admin]");
 		filterChainDefinitionMap.put("/article/edition", "jwt,role[admin]");
 		filterChainDefinitionMap.put("/article/backend/**", "jwt,role[admin]");

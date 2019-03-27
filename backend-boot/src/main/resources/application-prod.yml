@@ -30,6 +30,12 @@ oauth2:
     authorizationUri: https://api.weibo.com/oauth2/authorize
     tokenUri: https://api.weibo.com/oauth2/access_token
     userInfoUri: https://api.weibo.com/2/users/show.json
-        
+  github:
+    clientId: 19b4af3bf0e0c9ce92e4
+    clientSecret: 96494e92185ad95a2c88c01662e09109d751dc6e
+    redirectUri: http://106.12.198.62/oauth2/callback/github
+    authorizationUri: https://github.com/login/oauth/authorize
+    tokenUri: https://github.com/login/oauth/access_token
+    userInfoUri: https://api.github.com/user
           
       

@@ -19,11 +19,11 @@ export default {
       method: 'get'
     })
   },
-  mdUser: function (data) {
+  mdUser: function (user) {
     return fetch({
       url: 'users/info/new',
       method: 'post',
-      data: data
+      data: user
     })
   },
   getTagList:function () {
@@ -221,6 +221,14 @@ export default {
         provider:data.provider,
         code:data.code
       }
+    })
+  },
+  uploadAvatar: function(data){
+    console.log(data)
+    return fetch({
+      url: 'users/upload/avatar/'+data.id,
+      method: 'post',
+      data: data.picture
     })
   }
 }

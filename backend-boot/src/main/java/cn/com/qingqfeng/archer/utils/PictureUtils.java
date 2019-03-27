@@ -19,12 +19,10 @@ import javax.imageio.ImageIO;
  */
 public class PictureUtils {
 	
-	private final static Integer HEIGHT = 40;
-	private final static Integer WIDTH = 40;
 	private final static String BASEDIR = "/ROOT";
 	
 	
-	public static String getPreview(String imageUrl) throws IOException{
+	public static String getPreview(String imageUrl, int wid, int heig) throws IOException{
 		File image = new File(BASEDIR+imageUrl);
 		String[] name = imageUrl.split("\\.");
 		String targetUrl = BASEDIR+name[0]+"_pre"+".png";
@@ -46,13 +44,12 @@ public class PictureUtils {
 			x=(width-height)/2;
 		}
 		BufferedImage temp = bufImage.getSubimage(x, y, w, h);
-		Image  preview = temp.getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
-		BufferedImage bufprev = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+		Image  preview = temp.getScaledInstance(wid, heig, Image.SCALE_SMOOTH);
+		BufferedImage bufprev = new BufferedImage(wid, heig, BufferedImage.TYPE_INT_RGB);
 		Graphics2D g2 = bufprev.createGraphics();
-		g2.drawImage(preview, 0, 0,WIDTH, HEIGHT, null);
+		g2.drawImage(preview, 0, 0,wid, heig, null);
 		g2.dispose();
 		ImageIO.write(bufprev, "png", target);
 		return name[0]+"_pre"+".png";
-		
 	}
 }

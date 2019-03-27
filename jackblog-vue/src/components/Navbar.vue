@@ -39,6 +39,11 @@
 								管理
 								</router-link>
 							</li>
+							<li v-if="!isSign" class="navbar-item">
+								<router-link   :to="{ path: '/login' }"  title="登录"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span><br>
+							登录
+							</router-link>
+							</li>
 							<li v-if="auth.token && isSign" class="navbar-item">
 								<a href="javascript:;"  @click="logout()"   title="登出"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span><br>
 								登出

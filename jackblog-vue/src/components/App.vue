@@ -9,6 +9,7 @@
       </transition>
       <Scrolltop ref="scroll"></Scrolltop>
     </div>
+    <Avatarnav></Avatarnav>
     <Toaster></Toaster>
     <Modal 
       v-model="showSaveModal" class-name="vertical-center-modal"
@@ -32,11 +33,12 @@ import Navbar from './Navbar'
 import Toaster from './Toaster'
 import CanvasStar from './Effects'
 import Scrolltop from './Scrolltop'
+import Avatarnav from './About/Avatarnav.vue'
 import { mapState } from 'vuex'
 import {Modal} from 'iview'
 import { getCookie,saveCookie,removeCookie} from '../utils/cookies'
 export default {
-  components:{ Navbar,Toaster, CanvasStar, Modal, Scrolltop },
+  components:{ Navbar,Toaster, CanvasStar, Modal, Scrolltop,Avatarnav},
   computed: {
     ...mapState({
     arid: ({editionList}) => editionList.arid,

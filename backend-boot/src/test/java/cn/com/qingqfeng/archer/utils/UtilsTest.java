@@ -34,7 +34,7 @@ public class UtilsTest {
 	public void pictureUtilsTest(){
 		String imageUrl = "E:/ROOT/upload/picture/cover/5700b6db-d0c8-465a-88e7-b04464285d05/20190321111501_cover.png";
 		try {
-			PictureUtils.getPreview(imageUrl);
+			PictureUtils.getPreview(imageUrl,40,40);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -14,7 +14,8 @@ public enum UserTypeEnum {
 	WEIBO(1),
 	WEIXIN(2),
 	QQ(3),
-	OTHER(4);
+	OTHER(4),
+	GITHUB(5);
 	
 	private Integer code;
 	

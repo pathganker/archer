@@ -9,7 +9,6 @@
 </template>
 
 <script>
-import {API_ROOT} from '../../config'
 import {getCookie,isLogin} from '../../utils/cookies'
 
 export default {
@@ -27,3 +26,8 @@ export default {
   }
 }
 </script>
+<style>
+.day-mode a.weibo, .day-mode a.github{
+  background: 0 0;
+}
+</style>

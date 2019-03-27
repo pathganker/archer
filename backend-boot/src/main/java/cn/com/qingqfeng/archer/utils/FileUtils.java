@@ -27,7 +27,20 @@ public class FileUtils {
 	private final static  Logger LOGGER = LoggerFactory.getLogger(FileUtils.class); 
 	private final static String BASEDIR = "/ROOT";
 	private final static String COVERDIR = "/upload/picture/cover";
-	
+	private final static String AVATARDIR = "/upload/picture/avatar";
+	/**
+	 * 
+	 * <p>方法名:  handleCover </p> 
+	 * <p>描述:    TODO </p>
+	 * <p>创建时间:  2019年3月27日下午12:35:54 </p>
+	 * @version 1.0
+	 * @author lijunliang
+	 * @param file
+	 * @param articleId
+	 * @return
+	 * @throws RuntimeException  
+	 * String
+	 */
 	public static String handleCover(MultipartFile file, String articleId) throws RuntimeException{
 		if(null == file || file.getSize() < 1){
 			return null;
@@ -57,5 +70,48 @@ public class FileUtils {
     		throw new RuntimeException("复制文件错误:"+e);
     	}
     	return  COVERDIR+"/"+articleId+"/"+newFilename;
+	}
+	/**
+	 * 
+	 * <p>方法名:  handleAvatar </p> 
+	 * <p>描述:    TODO </p>
+	 * <p>创建时间:  2019年3月27日下午12:37:39 </p>
+	 * @version 1.0
+	 * @author lijunliang
+	 * @param file
+	 * @param userId
+	 * @return
+	 * @throws RuntimeException  
+	 * String
+	 */
+	public static String handleAvatar(MultipartFile file, String userId) throws RuntimeException{
+		if(null == file || file.getSize() < 1){
+			return null;
+		}
+		//重命名
+		String filename = file.getOriginalFilename();
+    	String time = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+    	String newFilename =time+"_"+filename;
+    	//创建文件
+    	File newFile = new File(BASEDIR+AVATARDIR+"/"+userId, newFilename);
+    	if(!newFile.exists()){
+    		newFile.getParentFile().mkdirs();
+    	}
+    	//拷贝
+    	try{
+    		InputStream source = file.getInputStream();
+    		OutputStream target = new FileOutputStream(newFile.getAbsoluteFile());
+    		byte[] buffer = new byte[1024];
+    	    int bytesRead;
+    	    while ((bytesRead = source.read(buffer)) != -1) {
+    	    	target.write(buffer, 0, bytesRead);
+    	    }
+    	    target.close();
+    	    source.close();
+    	}catch(IllegalStateException | IOException e){
+    		LOGGER.error("复制文件错误:{}",e);
+    		throw new RuntimeException("复制文件错误:"+e);
+    	}
+    	return  AVATARDIR+"/"+userId+"/"+newFilename;
 	}
 }

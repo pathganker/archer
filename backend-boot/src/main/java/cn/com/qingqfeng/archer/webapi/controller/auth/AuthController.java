@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
 
+import cn.com.qingqfeng.archer.config.GithubOauth;
 import cn.com.qingqfeng.archer.config.WeiboOauth;
 import cn.com.qingqfeng.archer.enums.ApiCodeEnum;
 import cn.com.qingqfeng.archer.enums.UserTypeEnum;
@@ -51,6 +52,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class AuthController {
 	 @Autowired
 	 private WeiboOauth weibo;
+	 @Autowired
+	 private GithubOauth github;
 	
 	 @Autowired
 	 private StringRedisTemplate redisTemplate; 
@@ -227,6 +230,62 @@ public class AuthController {
 			this.userService.addThirdParty(user);
 			//发放token
 			String token = JwtUtils.issueJwt(uid, clientKey, "token-server", 24*3600*1000*7L, "ordinary", "comment", host, SignatureAlgorithm.HS256);
+			rs.setData(token);
+			rs.setCode(ApiCodeEnum.SUCCESS);
+			return rs;
+		}
+		if("github".equals(provider)){
+			//access_token
+			Map<String, String> params = new LinkedHashMap<String, String>();
+			params.put("client_id",github.getClientId());
+			params.put("client_secret",github.getClientSecret());
+			params.put("code",code);
+			params.put("redirect_uri",github.getRedirectUri());
+			String tokenJson = "";
+			try{
+				tokenJson=HttpUtils.client(github.getTokenUri(), HttpMethod.POST, params);
+			}catch(Exception e){
+				System.out.println(e.getMessage());
+			}
+			@SuppressWarnings("unchecked")
+			Map<String,String> tokenMap = (Map<String, String>) JSON.parse(tokenJson);
+			if(null == tokenMap){
+				rs.setCode(ApiCodeEnum.ARGS_WRONG);
+				return rs;
+			}
+			String accessToken = tokenMap.get("access_token");
+			if(StringUtils.isBlank(accessToken)){
+				rs.setCode(ApiCodeEnum.ARGS_WRONG);
+				return rs;
+			}
+			//user_info
+			params.clear();
+			params.put("access_token",accessToken);
+			String userJson = HttpUtils.client(github.getUserInfoUri(), HttpMethod.GET, params);
+			@SuppressWarnings("unchecked")
+			Map<String,Object> userMap = (Map<String, Object>) JSON.parse(userJson);
+			Integer id = (Integer) userMap.get("id");
+			String userName = (String) userMap.get("login");
+			String avatar = (String) userMap.get("avatar_url");
+			//已注册 直接发放token
+			if(this.userService.checkUserExist(id.toString())){
+				String token = JwtUtils.issueJwt(id.toString(), clientKey, "token-server", 24*3600*1000*7L, "ordinary", "comment", host, SignatureAlgorithm.HS256);
+				rs.setData(token);
+				rs.setCode(ApiCodeEnum.SUCCESS);
+				return rs;
+			}
+			//新注册用户
+			//添加用户
+			UserDTO user = new UserDTO();
+			user.setId(id.toString());
+			user.setavatar(avatar);
+			user.setNickname(userName);
+			user.setType(UserTypeEnum.GITHUB.getCode());
+			user.setCreateTime(new Date());
+			user.setModifyTime(new Date());
+			this.userService.addThirdParty(user);
+			//发放token
+			String token = JwtUtils.issueJwt(id.toString(), clientKey, "token-server", 24*3600*1000*7L, "ordinary", "comment", host, SignatureAlgorithm.HS256);
 			rs.setData(token);
 			rs.setCode(ApiCodeEnum.SUCCESS);
 			return rs;

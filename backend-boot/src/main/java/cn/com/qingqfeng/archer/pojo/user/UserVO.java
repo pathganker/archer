@@ -4,6 +4,8 @@ package cn.com.qingqfeng.archer.pojo.user;
 import java.io.Serializable;
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 /**   
  * <p>类名称: UserVO </p> 
  * <p>描述: TODO  </p>
@@ -25,12 +27,14 @@ public class UserVO implements Serializable{
 	private String nickname;
 	/** 联系电话 */
 	private String telephone;
-	/** 头像base64*/
+	/** 头像地址*/
 	private String avatar;
 	/** 邮件 */
 	private String email;
 	/** 喜欢 */
 	private List<String> likes;
+	/** 头像文件 */
+	private MultipartFile file;
 	public String getId() {
 		return id;
 	}
@@ -72,6 +76,12 @@ public class UserVO implements Serializable{
 	}
 	public void setLikes(List<String> likes) {
 		this.likes = likes;
+	}
+	public MultipartFile getFile() {
+		return file;
+	}
+	public void setFile(MultipartFile file) {
+		this.file = file;
 	}
 	
 	

@@ -11,9 +11,9 @@
     </div>
     <div class="settings-container">
       <div class="settings-content" :class="{active:navIndex==0}">
-        <form class="form-horizontal" @submit.prevent="mdUser()" novalidate >
+        <form class="form-horizontal"  novalidate >
           <div class="form-group">
-            <a class="col-sm-4" v-bind:title="nickname">
+            <a class="col-sm-4" v-bind:title="ori.nickname">
               <canvas id="canvascontainer" ref='cutCanvas' class="setting-avatar">
                 您的浏览器不支持canvas，请升级最新版本
               </canvas>
@@ -31,7 +31,7 @@
             </div>
           </div>
           <hr />
-          <div class="form-group">
+          <div class="form-group" style="margin-top:15px;">
             <label class="col-sm-4 control-label">邮箱</label>
             <div class="col-sm-8">
               <input type="text" name="email" v-model="user.email" v-validate="" class="form-control" placeholder="" />
@@ -43,7 +43,7 @@
           </div>
           <div class="form-group">
             <div class="col-sm-4">
-              <button type="submit" class="btn btn-block btn-lg btn-primary">保 存</button>
+              <Button type="primary" @click="mdUser" :size="'large'" :loading="loading" style="float:left"> 保&nbsp;&nbsp;&nbsp;存</Button>
             </div>
           </div>
         </form>
@@ -58,34 +58,37 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import { Validator } from 'vee-validate'
+import { Button } from 'iview'
 import defaultAvatar from '../../assets/images/avatar.png'
 export default {
+  components :{Button},
   data() {
     return {
       navIndex: 0,
       settings:[
         {title: '基本设置'},
-        {title: '其他设置'}
+        // {title: '其他设置'}
         ],
       newAvatar:'',
       cutCanvas: null,
       cutCtx: null,
       originCanvas: null,
       originCtx: null,
+      imageFile: null,
+      loading: false,
     }
   },
   computed: {
     ...mapState({
-      nickname: ({auth}) => auth.user &&auth.user.nickname,
-      avatar: ({auth}) => auth.user && auth.user.avatar,
-      email: ({auth}) => auth.user && auth.user.email
+      ori:  state => state.auth.user,
     }),
     user: {
       get(){
         return {
-          nickname: this.nickname,
-          avatar: this.avatar,
-          email: this.email
+          id: this.ori.id,
+          nickname: this.ori.nickname,
+          avatar: this.ori.avatar,
+          email: this.ori.email,
         }
       },
       set(){
@@ -94,7 +97,7 @@ export default {
           email: value
         }  
       }
-    }
+    },
   },
   created(){
     this.getUserInfo()
@@ -103,13 +106,27 @@ export default {
     ...mapActions([
       'updateUser',
       'getUserInfo',
+      'uploadAvatar',
       'showMsg',
     ]),  
     mdUser() {
       this.$validator.validateAll().then(valid =>{
         if(valid){
-          console.log(this.user)
-          this.updateUser(this.user)
+          this.loading = true
+          if(null != this.imageFile){
+            let params = new FormData()
+            params.append('picture', this.imageFile)
+            this.uploadAvatar({picture: params, id: this.user.id}).then(()=>{
+              this.user.avatar = this.ori.avatar
+              this.updateUser(this.user).then(()=>{
+                this.loading = false
+              })
+            })
+          }else{
+            this.updateUser(this.user).then(()=>{
+              this.loading = false
+            })
+          }
         }else{
           this.showMsg("请正确填写内容",'info')
         }
@@ -120,11 +137,12 @@ export default {
     },
     changeAvatar(e){
       let file = e.target.files[0]
+      this.imageFile=e.target.files[0]
       if(file){
         this.changeDataURL(file, (data)=>{
           let cutImg  = new Image()
           cutImg.src = data
-          this.cutCtx.clearRect(0,0,120,120)
+          this.clearCanvas()
           cutImg.onload =()=>{
             let width = 0
             let height = 0
@@ -140,8 +158,8 @@ export default {
               height = (imageHeight - imageWidth)/(-2)
             }
             this.cutCtx.drawImage(cutImg,width,height,imageWidth,imageHeight)
-            this.user.avatar = this.cutCanvas.toDataURL('image/jpeg',0.92)
           }
+          
         })
       }
     },
@@ -174,6 +192,23 @@ export default {
 
 </script>
 <style>
+.settings-box{
+  width: 50%;
+  min-width: 760px;
+  padding: 20px 45px 10px 45px;
+  margin: 0px auto;
+  text-align: center;
+  background-color: aliceblue;
+}
+.setting-nav{
+  display: inline-block;
+  width: 18%;
+}
+.settings-container{
+  display: inline-block;
+  min-width: 450px;
+  width: 80%;
+}
 .setting-avatar {
   border-radius: 50%;
 }

@@ -305,9 +305,6 @@ footer{
   height: 30px;
   width: 90px;
 }
-.settings-box{
-  margin-top: 61px;
-}
 .navbar-menu a.navbar-item-expand img{
   height: 52px;
   width: 55px;
@@ -412,22 +409,6 @@ span.active{
   height: 100%;
   width: 100%;
   display: inline-block;
-}
-.setting-nav{
-  float: left;
-  width: 200px;
-}
-.settings-container{
-  float: left;
-  min-width: 450px;
-  width: 50%;
-}
-.settings-box{
-  height: 100%;
-  width: 70%;
-  min-width: 760px;
-  padding: 20px 45px 10px 45px;
-  margin: 61px 0% 10px 8%;
 }
 .settings-content{
   opacity: 0;

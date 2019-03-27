@@ -8,6 +8,7 @@ import {
   UPDATE_USER_SUCCESS,
   GET_ACCESS_TOKEN,
   REFRESH_ACCESS_TOKEN,
+  UPLOAD_AVATAR
 } from '../types'
 import { getCookie,saveCookie,signOut } from '../../utils/cookies'
 import router from '../../router'
@@ -68,12 +69,12 @@ const actions = {
     })
   },
   updateUser(store,user){
-    api.mdUser(user).then(response => {
+    store.commit(UPDATE_USER_SUCCESS, { user: user })
+    return api.mdUser(user).then(response => {
       const json =response.data
-      if(200!=response.data){
+      if(200!=json.code){
         return showMsg(store,json.message || '更新用户资料失败!')
       }
-      store.commit(UPDATE_USER_SUCCESS, { user: json.data })
       showMsg(store,'更新资料成功!','success')
     }, 
     error => {
@@ -106,6 +107,17 @@ const actions = {
       }
     },
     error =>{
+      console.log(error)
+    })
+  },
+  uploadAvatar({commit},data){
+    return api.uploadAvatar(data).then(response =>{
+      const json = response.data
+      if(200== json.code){
+        commit(UPLOAD_AVATAR,{avatar:json.data})
+      }
+    },
+    error => {
       console.log(error)
     })
   }
@@ -144,6 +156,9 @@ const mutations = {
   [REFRESH_ACCESS_TOKEN](state, data){
     state.isRefreshToken = data.isRefreshToken
   },
+  [UPLOAD_AVATAR](state,data){
+    state.user.avatar = data.avatar
+  }
 }
 
 export default {
