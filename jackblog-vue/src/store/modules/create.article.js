@@ -80,6 +80,20 @@ const actions = {
     },error=>{
       showMsg(store, error)
     })
+  },
+  uploadContentPic(store, data){
+    return api.uploadContentPic(data).then(response =>{
+      const json = response.data
+      if(200 == json.code){
+        showMsg(store, '图片已上传','success')
+        return json.data
+      }else{
+        showMsg(store, json.message || '图片未上传')
+        return null
+      }
+    },error=>{
+      showMsg(store, error)
+    })
   }
 
 }

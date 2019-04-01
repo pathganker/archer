@@ -438,4 +438,35 @@ public class ArticleController {
 		return rs;
 	}
 	
+	/**
+	 * 
+	 * <p> 方法名 ：uploadContent  </p> 
+	 * <p> 描述 ：TODO </p> 
+	 * <p> 创建时间  ： 2019年4月1日 下午11:15:02 </p>  
+	 * @param picture
+	 * @param id
+	 * @return           
+	 * @author lijunliang 
+	 * @version 1.0
+	 */
+	@RequestMapping(value="backend/upload/content/{id}", method={RequestMethod.POST})
+	public Result uploadContent(MultipartFile picture, @PathVariable String id){
+		Result rs = new Result();
+		ArticleDTO old = this.articleService.requestArticleById(id);
+		String userId = JwtUtils.getCurrentUserId();
+		if(null == old || null == old.getUserId() || !old.getUserId().equals(userId)){
+			rs.setCode(ApiCodeEnum.API_AUTHORITY);
+			return rs;
+		}
+		String image = new String();
+		try {
+			image = FileUtils.handleContent(picture, id);
+		}catch(RuntimeException e){
+			rs.setCode(ApiCodeEnum.SERVICE_WRONG);
+			return rs;
+		}
+		rs.setData(image);
+		rs.setCode(ApiCodeEnum.SUCCESS);
+		return rs;
+	}
 }

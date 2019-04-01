@@ -3,12 +3,11 @@
     <div class="edit-body" v-if="article!=null">
       <input id="title-input" class="intro-head " name="title" type="text" :value="article.title" @input="title = $event.target.value" autocomplete="false" />
       <mavon-editor  ref="md" :value="article.backendContent == null ? '': article.backendContent" @input="edit" @save="save()" 
-        :toolbars="toolbars" :externalLink="externalLink"/>
-        <!-- :externalLink="externalLink" -->
+        :toolbars="toolbars" :externalLink="externalLink" @imgAdd="$imgAdd" />
     </div>
     <div v-else>
             <mavon-editor  ref="md" :value="''" @input="edit" @save="save" :editable="editable"
-        :toolbars="toolbars" :externalLink="externalLink"/>
+        :toolbars="toolbars" :externalLink="externalLink" @imgAdd="$imgAdd"/>
     </div>
   </div>
 </template>
@@ -23,6 +22,7 @@ export default {
   components: { mavonEditor },
   methods: {
     ...mapActions([
+      'uploadContentPic'
     ]),
     save(){
       let backendContent = this.content
@@ -50,6 +50,17 @@ export default {
           this.$parent.$parent.editCancel()
         }
       }
+    },
+    $imgAdd(pos, $file){
+      var params = new FormData()
+      params.append('picture', $file)
+      this.uploadContentPic({
+        picture: params,
+        id: this.article.id
+      }).then((url) => {
+        setTimeout(
+        this.$refs.md.$img2Url(pos, url),1000)
+      })
     }
   },
   data() {
@@ -119,7 +130,7 @@ export default {
       },
       content:'',
       title: null,
-      editable: false
+      editable: false,
     }
   }
 }
