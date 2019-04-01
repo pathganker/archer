@@ -98,4 +98,7 @@ export default {
 .signin-box{
   padding: 0;
 }
+.day-mode a.weibo, .day-mode a.github{
+  background: 0 0;
+}
 </style>

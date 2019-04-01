@@ -26,8 +26,3 @@ export default {
   }
 }
 </script>
-<style>
-.day-mode a.weibo, .day-mode a.github{
-  background: 0 0;
-}
-</style>
