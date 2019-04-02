@@ -39,6 +39,9 @@ module.exports = merge(common, {
     {
       from: path.resolve(__dirname, '../../../../../ROOT/upload'),
       to: 'upload'
+    },{
+      from: path.resolve(__dirname, '../static/js'),
+      to: 'static/js'
     }
     ])
   ],

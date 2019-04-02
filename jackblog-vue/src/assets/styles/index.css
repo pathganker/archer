@@ -350,7 +350,6 @@ span.active{
 }
 .markdown-body{
   height: auto;
-  margin: 0 0 0 6px;
 }
 .markdown-container-max{
   padding: 0px 6px 5px 2px;
@@ -455,7 +454,17 @@ span.active{
 .markdown-body pre>code{
   word-wrap: break-word !important;
   white-space: pre-wrap !important;
-  line-height:22px
+  line-height:22px;
+}
+.markdown-body pre{
+  font-size: 100%!important;
+}
+.markdown-body p{
+  letter-spacing: 1.5px;
+  line-height: 1.7;
+}
+.markdown-body>p{
+  text-align: justify;
 }
 [type=button] {
   -webkit-appearance: none!important;

@@ -3,11 +3,11 @@
     <div class="edit-body" v-if="article!=null">
       <input id="title-input" class="intro-head " name="title" type="text" :value="article.title" @input="title = $event.target.value" autocomplete="false" />
       <mavon-editor  ref="md" :value="article.backendContent == null ? '': article.backendContent" @input="edit" @save="save()" 
-        :toolbars="toolbars" :externalLink="externalLink" @imgAdd="$imgAdd" />
+        :toolbars="toolbars" :externalLink="externalLink" @imgAdd="$imgAdd" :ishljs="true"/>
     </div>
     <div v-else>
             <mavon-editor  ref="md" :value="''" @input="edit" @save="save" :editable="editable"
-        :toolbars="toolbars" :externalLink="externalLink" @imgAdd="$imgAdd"/>
+        :toolbars="toolbars" :externalLink="externalLink" @imgAdd="$imgAdd" :ishljs="true"/>
     </div>
   </div>
 </template>
@@ -17,6 +17,8 @@ import  { mavonEditor } from 'mavon-editor'
 import { mapState,mapActions } from 'vuex'
 import 'mavon-editor/dist/css/index.css'
 import 'mavon-editor/dist/markdown/github-markdown.min.css'
+import 'mavon-editor/dist/highlightjs/styles/vs2015.min.css'
+import 'mavon-editor/dist/highlightjs/languages/r.min.js'
 export default {
   props:['article','isedit'],
   components: { mavonEditor },
