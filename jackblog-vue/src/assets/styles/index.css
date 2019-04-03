@@ -466,6 +466,9 @@ span.active{
 .markdown-body>p{
   text-align: justify;
 }
+.markdown-body a{
+  color: blue;
+}
 [type=button] {
   -webkit-appearance: none!important;
 }
