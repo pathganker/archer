@@ -28,6 +28,7 @@ public class FileUtils {
 	private final static String BASEDIR = "/ROOT";
 	private final static String COVERDIR = "/upload/picture/cover";
 	private final static String AVATARDIR = "/upload/picture/avatar";
+	private final static String CONTENTDIR = "/upload/picture/content";
 	/**
 	 * 
 	 * <p>方法名:  handleCover </p> 
@@ -113,5 +114,36 @@ public class FileUtils {
     		throw new RuntimeException("复制文件错误:"+e);
     	}
     	return  AVATARDIR+"/"+userId+"/"+newFilename;
+	}
+	
+	public static String handleContent(MultipartFile file, String articleId) throws RuntimeException{
+		if(null == file || file.getSize() < 1){
+			return null;
+		}
+		//重命名
+		String filename = file.getOriginalFilename();
+    	String time = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+    	String newFilename =time+"_"+filename;
+    	//创建文件
+    	File newFile = new File(BASEDIR+CONTENTDIR+"/"+articleId, newFilename);
+    	if(!newFile.exists()){
+    		newFile.getParentFile().mkdirs();
+    	}
+    	//拷贝
+    	try{
+    		InputStream source = file.getInputStream();
+    		OutputStream target = new FileOutputStream(newFile.getAbsoluteFile());
+    		byte[] buffer = new byte[1024];
+    	    int bytesRead;
+    	    while ((bytesRead = source.read(buffer)) != -1) {
+    	    	target.write(buffer, 0, bytesRead);
+    	    }
+    	    target.close();
+    	    source.close();
+    	}catch(IllegalStateException | IOException e){
+    		LOGGER.error("复制文件错误:{}",e);
+    		throw new RuntimeException("复制文件错误:"+e);
+    	}
+    	return  CONTENTDIR+"/"+articleId+"/"+newFilename;
 	}
 }

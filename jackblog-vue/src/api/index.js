@@ -219,9 +219,15 @@ export default {
     })
   },
   uploadAvatar: function(data){
-    console.log(data)
     return fetch({
       url: 'users/upload/avatar/'+data.id,
+      method: 'post',
+      data: data.picture
+    })
+  },
+  uploadContentPic: function(data){
+    return fetch({
+      url: 'article/backend/upload/content/'+data.id,
       method: 'post',
       data: data.picture
     })

@@ -1,5 +1,5 @@
 export const API_ROOT = (process.env.NODE_ENV === 'production')
-  ? 'http://106.12.198.62:7000/'
+  ? 'http://www.qingqfeng.com.cn:7000/'
   :'http://127.0.0.1:7000/'
 
 export const CookieDomain = (process.env.NODE_ENV === 'production')
@@ -11,7 +11,7 @@ export const Weibo = (process.env.NODE_ENV === 'production')
     name: 'weibo',
     authorizationUri: 'https://api.weibo.com/oauth2/authorize',
     clientId: '18952497',
-    redirectUri: 'http://106.12.198.62/oauth2/callback/weibo'
+    redirectUri: 'http://www.qingqfeng.com.cn/oauth2/callback/weibo'
   }
   : {
     name: 'weibo',
@@ -25,7 +25,7 @@ export const Github = (process.env.NODE_ENV === 'production')
     name: 'github',
     authorizationUri: 'https://github.com/login/oauth/authorize',
     clientId: '19b4af3bf0e0c9ce92e4',
-    redirectUri: 'http://106.12.198.62/oauth2/callback/github'
+    redirectUri: 'http://www.qingqfeng.com.cn/oauth2/callback/github'
   }
   : {
     name: 'github',
