@@ -3,9 +3,7 @@ package cn.com.qingqfeng.archer.webapi.controller.auth;
 
 import io.jsonwebtoken.SignatureAlgorithm;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
@@ -60,7 +58,7 @@ public class LoginController {
 	
 	/**
 	 * 
-	 * <p>方法名:  Siginin </p> 
+	 * <p>方法名:  Signin </p> 
 	 * <p>描述:    TODO </p>
 	 * <p>创建时间:  2019年2月28日下午3:29:47 </p>
 	 * @version 1.0
@@ -69,7 +67,7 @@ public class LoginController {
 	 * @return  
 	 * Result
 	 */
-	@RequestMapping(value="siginin", method={RequestMethod.POST})
+	@RequestMapping(value="signin", method={RequestMethod.POST})
 	public Result Siginin(@RequestBody UserDTO user) {
 		Result rs = new Result();
 		//简单参数校验
@@ -102,43 +100,8 @@ public class LoginController {
 		}
 		return rs;
 	}
-	/**
-	 * 
-	 * <p>方法名:  Siginup </p> 
-	 * <p>描述:    TODO </p>
-	 * <p>创建时间:  2019年2月28日下午6:57:50 </p>
-	 * @version 1.0
-	 * @author lijunliang
-	 * @param user
-	 * @return  
-	 * Result
-	 */
-	@RequestMapping(value="siginup", method={RequestMethod.POST})
-	public Result Siginup(@RequestBody UserDTO user){
-		Result rs = new Result();
-		rs.setCode(ApiCodeEnum.SUCCESS);
-		return rs;
-	}
-	/**
-	 * 
-	 * <p>方法名:  requestSnsLogins </p> 
-	 * <p>描述:    TODO </p>
-	 * <p>创建时间:  2019年2月25日下午8:19:39 </p>
-	 * @version 1.0
-	 * @author lijunliang
-	 * @return  
-	 * Result
-	 */
-	@RequestMapping("snsLogins")
-	public Result requestSnsLogins() {
-		Result result = new Result();
-		//test
-		result.setCode(ApiCodeEnum.SUCCESS);
-		List<String> code = new ArrayList<>();
-		code.add("test");
-		result.setData(code);
-		return result;
-	}
+
+
 	
 	
 }

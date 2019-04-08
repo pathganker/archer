@@ -3,14 +3,9 @@ import store from '../store'
 export default {
   localLogin: function (data) {
     return fetch({
-      url: 'login/siginin',
+      url: 'login/signin',
       method: 'post',
       data: data
-    })
-  },
-  getSnsLogins: function () {
-    return fetch({
-
     })
   },
   getMe: function () {
