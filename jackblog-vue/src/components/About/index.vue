@@ -1,5 +1,7 @@
 <template>
-  <About :article-detail="about" class="about"></About>
+  <div>
+    <About :article-detail="about" class="about"></About>
+  </div>
 </template>
 
 <script>
@@ -16,7 +18,7 @@ export default {
         visitCount: 'ω',
         commentCount: 'ω',
         likeCount: 'ω',
-        frontContent: '<pre><code>作为一名互联网初级民工，用户研究的从业者，里面会记录我学习到的研究方法，统计方法以及统计实现方法，以及可视化的实现方法，帮自己梳理再次加工知识。作为一个善变的每天内心活动满满的双子座，会偶尔写一些微小说，表达我最近的感悟。</code></pre>',
+        frontContent: '<p>作为一名互联网初级民工，用户研究的从业者，里面会记录我学习到的研究方法，统计方法以及统计实现方法，以及可视化的实现方法，帮自己梳理再次加工知识。作为一个善变的每天内心活动满满的双子座，会偶尔写一些微小说，表达我最近的感悟。</p>',
         image: image
       },
     }

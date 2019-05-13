@@ -343,8 +343,9 @@ span.active{
   width: 100%;
 }
 .markdown-container{
+  position: fixed;
   padding: 0px 6px 0px 0px;
-  width: 100%;
+  width: 80%;
   height: 100%;
   text-align: center;
 }
@@ -448,27 +449,98 @@ span.active{
   background: 0 0;
 }
 .markdown-body pre code{
-  word-wrap: break-word !important;
-  white-space: pre-wrap;
+  /* word-wrap: break-word !important;
+  white-space: pre-wrap; */
+  white-space: inherit;
 }
 .markdown-body pre>code{
-  word-wrap: break-word !important;
-  white-space: pre-wrap !important;
+  /* word-wrap: break-word !important;
+  white-space: pre-wrap !important; */
   line-height:22px;
 }
 .markdown-body pre{
   font-size: 100%!important;
 }
-.markdown-body p{
+/* .markdown-body p{
+  letter-spacing: 1.5px;
+  line-height: 1.7;
+} */
+.markdown-body>p{
+  text-align: justify;
+  text-indent: 2.1em;
+}
+.markdown-body blockquote>p{
+  text-align: justify;
+  text-indent: 2.1em;
+}
+.markdown-body p img{
+  display: block;
+}
+.markdown-body ul{
+  padding-left: 3.5em;
+}
+.markdown-body ul li{
+  list-style-type: disc;
+}
+.markdown-body ol{
+  padding-left: 3.5em;
+}
+.markdown-body ol li{
+  list-style-type: decimal;
+}
+/* .markdown-body>ol{
+  counter-reset:num start;
+}
+.markdown-body>ol>li:before{
+  content:counter(num)'. ';
+  counter-increment:num;
+} */
+.markdown-body {
   letter-spacing: 1.5px;
   line-height: 1.7;
 }
-.markdown-body>p{
-  text-align: justify;
-}
+
 .markdown-body a{
   color: blue;
 }
 [type=button] {
   -webkit-appearance: none!important;
 }
+
+.v-show-content pre code{
+  white-space: inherit;
+  line-height:22px;
+}
+.v-show-content {
+  letter-spacing: 1.5px;
+  line-height: 1.7;
+}
+.v-show-content>p{
+  text-align: justify;
+  text-indent: 2.1em;
+}
+.v-show-content p img{
+  display: block;
+}
+.v-show-content blockquote>p{
+  text-align: justify;
+  text-indent: 2.1em;
+}
+.v-show-content ul{
+  padding-left: 3.5em;
+}
+.v-show-content ul li{
+  list-style-type: disc;
+  letter-spacing: 1.5px;
+  line-height: 1.7;
+}
+.v-show-content ol{
+  padding-left: 3.5em;
+}
+.v-show-content ol li{
+  list-style-type: decimal;
+}
+/* .v-show-content ol>li:before{
+  content:counter(num)'. ';
+  counter-increment:num;
+} */

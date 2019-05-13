@@ -10,7 +10,7 @@
           </div> 
 				</header>
 				<div class="list-body" style="margin:10px 0px">
-					<div class="list-image" >
+					<div class="list-image" v-if="show" >
 						<img :src="articleDetail.image"  style="margin:10px auto;padding:3px;border: 1px solid #ddd;"/>
 					</div>
           <div class="markdown-body detail-content" v-html="articleDetail.frontContent"></div>
@@ -26,7 +26,26 @@ import 'mavon-editor/dist/highlightjs/styles/vs2015.min.css'
 import 'mavon-editor/dist/highlightjs/languages/r.min.js'
 export default {
   props:['articleDetail'],
-  components:{Card}
+  components:{Card},
+  data(){
+    return{
+      show: false
+    }
+  },
+  methods:{
+    picture(){
+      const path = this.$route.path
+      confirm.log(path)
+      if(path=='/about'){
+        this.show=true
+      }else{
+        this.show=false
+      }
+    }
+  },
+  watch:{
+    'route':'picture'
+  }
 }
 </script>
 <style>

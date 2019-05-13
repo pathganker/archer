@@ -136,6 +136,10 @@ export default{
   watch:{
     splitmin(val){
       this.splitper = val
+    },
+    splitper(val){
+      const contain= document.getElementById('markdownContent')
+      contain.style.width=document.documentElement.clientWidth *(1-val)+'px'
     }
   },
   data(){

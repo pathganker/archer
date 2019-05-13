@@ -1,5 +1,5 @@
 <template>
-    <div class="right-nav" v-if="isSign">
+    <div class="right-nav" v-if="isSign && show">
         <Button @click="navicon = true" type="primary"><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></Button>
         <Drawer title="导航" placement="right" :closable="false" v-model="navicon">
                 <Row>
@@ -34,13 +34,25 @@ export default {
     data(){
         return{
             defaulAvatar:DefaulAvatar,
-            navicon: false
+            navicon: false,
+            show: true,
         }
     },
     methods:{
         ...mapActions([
             'logout'
-        ])
+        ]),
+        isshow(){
+            const path =this.$route.path
+            if(path=='/creation'){
+                this.show=false
+            }else{
+                 this.show=true
+            }
+        }
+    },
+    watch:{
+        '$route': 'isshow'
     }
 }
 </script>
