@@ -29,7 +29,6 @@ export default {
     save(){
       let backendContent = this.content
       let frontContent = this.$refs.md.markdownIt.render(backendContent)
-      console.log(this.article.id)
       let blog ={
         id: this.article.id,
         title: this.title == null ? this.article.title : this.title,
@@ -152,11 +151,9 @@ export default {
   }
 .v-note-wrapper {
   background-color: #C7EDCC!important;
+  height: 93%;
 }
-.markdown-body pre{
-  letter-spacing: 1.5px!important;
-  line-height: 1.7!important;
-}
+
 </style>
 
 
