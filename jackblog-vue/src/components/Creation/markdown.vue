@@ -61,7 +61,7 @@ export default {
         id: this.article.id
       }).then((url) => {
         setTimeout(
-        this.$refs.md.$img2Url(pos, url),1000)
+        this.$refs.md.$img2Url(pos, url),100)
       })
     }
   },
